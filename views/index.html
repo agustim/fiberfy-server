@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+  <title>FibraPaint</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="public/css/leaflet.css" />
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.ie.css" />
+  <![endif]-->
+  <link rel="stylesheet" href="public/css/responsive.min.css" />
+  <link rel="stylesheet" href="public/css/style.css" />
+</head>
+<body>
+  <div id="map-group">
+    <nav class="menu">
+      <ul class="active">
+          <li><a id='make_site'>Crea Lloc</a></li>
+          <li><a id='make_section'>Crea Tram</a></li>
+          <li><a id='load'>Load Xoc</a></li>
+      </ul>
+      <a id="nav_responsive" class="toggle-nav">&#9776;<label></label></a>
+    </nav>
+    <div id="map"></div>
+  </div>
+  <!-- site fusion-->
+  <div id="zoom-site-fusion-group" class="zoom-fusion-group hide">
+    <div id="zoom-site-fusion">
+      <nav class="menu">
+        <ul class="active">
+            <li><a class='back_map'>Torna Mapa</a></li>
+            <li><a class='back_site'>Torna Site</a></li>
+            <li><a id='fusion_graph'>Grafic Fusió</a></li>
+        </ul>
+      </nav>
+      <div class="row">
+        <div class="col-s-12">
+          <div class="notify"></div>
+        </div>
+      </div>
+      <div class="site-fusion">
+      </div>
+    </div>
+  </div>
+  <!-- site -->
+  <div id="zoom-site-group" class="zoom-group hide">
+    <div id="zoom-site">
+      <nav class="menu">
+        <ul class="active">
+            <li><a class='back_map'>Torna Mapa</a></li>
+        </ul>
+      </nav>
+      <div class="site">
+        <div class="row">
+          <div class="col-s-12">
+            <div class="notify"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-s-6">
+            <label for="site-name">Name</label>
+            <input id="site-name"/>
+
+            <label for="site-latitude">Latituded</label>
+            <input id="site-latitude"/>
+
+            <label for="site-longitude">Longitude</label>
+            <input id="site-longitude"/>
+          </div>
+          <div class="col-s-6">
+            <label for="site-observation">Observation</label>
+            <textarea id="site-observation"/></textarea>
+            <button id="site-update">Update</button>
+            <button id="site-fusion">Fusions</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-s-12">
+            <h1>Elements</h1>
+            <div id="box">
+            </div>
+            <div id="add-box">
+              <button id="add-new-box">Afegir element...</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- site fusion-->
+  <div id="zoom-fusion-graph-group" class="zoom-fusion-graph-group hide">
+    <div id="zoom-fusion-graph">
+      <nav class="menu">
+        <ul class="active">
+            <li><a class='back_map'>Torna Mapa</a></li>
+            <li><a class='back_site'>Torna Site</a></li>
+            <li><a id='back_fusion'>Torna Fusions</a></li>
+        </ul>
+      </nav>
+      <div class="row">
+        <div class="col-s-12">
+          <div class="notify"></div>
+          <canvas id="fusionGraph" resize></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- path -->
+  <div id="zoom-path-group" class="zoom-group hide">
+    <div id="zoom-path">
+      <nav class="menu">
+        <ul class="active">
+            <li><a class='back_map'>Torna Mapa</a></li>
+        </ul>
+      </nav>
+      <div class="path">
+        <div class="row">
+          <div class="col-s-12">
+            <div class="notify"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-s-6">
+            <div id="div-path-name" class="input">
+              <label>Name :</label>
+              <input id="path-name"/>
+            </div>
+            <div id="div-path-first-site" class="input">
+              <label>First Box :</label>
+              <input id="path-first-site"/>
+            </div>
+            <div id="div-path-end-site" class="input">
+              <label>End Box :</label>
+              <input id="path-end-site"/>
+            </div>
+          </div>
+          <div class="col-s-6">
+            <div id="div-path-intermedial" class="input">
+              <label>Intermedial :</label>
+              <textarea id="path-intermedial"/></textarea>
+            </div>
+            <div id="div-path-observation" class="input">
+              <label>Observation :</label>
+              <textarea id="path-observation"/></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-s-12">
+            <div id="div-path-colors" class="input">
+              <label>Colors :</label>
+              <textarea id="path-colors"/></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-s-12">
+            <div id="div-path-colors-gui" class="input">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-s-12">
+            <div id="div-path-save" class="button">
+              <button id="path-update">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="public/js/bundle.js"></script>
+  <script src="public/js/responsive.min.js"></script>
+</body>
+</html>
