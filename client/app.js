@@ -1,3 +1,4 @@
+// Nova versió compactada.
 
 // require jquery
 var $ = require('jquery-browserify')
@@ -26,7 +27,7 @@ $(document).ready(function(){
 })
 
 // Define $.put and $.delete
-jQuery.each( [ "put", "delete" ], function( i, method ) {
+jQuery.each( [ "put", "delete", "post", "get" ], function( i, method ) {
   jQuery[ method ] = function( url, data, callback, type ) {
     if ( jQuery.isFunction( data ) ) {
       type = type || callback;
@@ -37,6 +38,7 @@ jQuery.each( [ "put", "delete" ], function( i, method ) {
     return jQuery.ajax({
       url: url,
       type: method,
+      contentType: 'application/json',
       dataType: type,
       data: data,
       success: callback
