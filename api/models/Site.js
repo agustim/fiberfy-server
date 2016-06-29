@@ -14,7 +14,8 @@ module.exports = class Site extends Model {
   static schema () {
     return {
       name: {
-        type: 'string'
+        type: 'string',
+        unique: true
       },
       latitude: {
         type: 'float'
