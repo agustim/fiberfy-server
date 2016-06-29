@@ -31,13 +31,19 @@
     "winston": "^2.2"
   },
   "devDependencies": {
+    "browserify": "^13.0.1",
     "eslint": "^2.8",
     "eslint-config-trails": "latest",
+    "jquery-browserify": "^1.8.1",
+    "leaflet": "^0.7.7",
     "mocha": "^2.4",
-    "supertest": "^1.2"
+    "paper": "^0.9.25",
+    "supertest": "^1.2",
+    "uglifyjs": "^2.4.10"
   },
   "scripts": {
-    "test": "eslint . && mocha"
+    "test": "eslint . && mocha",
+    "build": "cd client && browserify app.js -o ../public/js/bundle.js"
   },
   "engines": {
     "node": ">= 4.0.0"
