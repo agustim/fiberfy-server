@@ -31,7 +31,7 @@ function Mapa(divMap){
   });
 // Declare new red Icon & blue icon.
 
-  L.Icon.Default.imagePath = 'images';
+  L.Icon.Default.imagePath = 'public/images';
   var RedIcon = L.Icon.extend({
      options: {
            iconUrl: L.Icon.Default.imagePath + '/red-marker-icon.png'
@@ -175,7 +175,7 @@ Mapa.prototype.loadExternalMap = function() {
   that.info.update('Loading map');
   track.on("loaded", function(e) {
       that.map.fitBounds(e.target.getBounds());
-      that.info.update(''); 
+      that.info.update('');
     });
   this.map.addLayer(track);
 };
