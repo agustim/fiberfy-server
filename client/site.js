@@ -11,14 +11,14 @@ var Site = function(id, name, latlng, m){
   this.type = null;  // Tipus de lloc
   this.observations = null;  // Observacions
   this.marker = null;  // Marcador en el mapa
-  this.map_parent = m  // referencia al mapa on està
+  this.map_parent = m;  // referencia al mapa on està
   this.boxs = new Array(); // Coses que hi ha al site
   this.actualFusionSite = null;  // L'última grup de dades d'una fusió
-}
+};
 
 Site.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/site"
+  strUrl = this.map_parent.serverUrl + "/api/v1/site";
   console.log('API call: ' + strUrl);
   if (this.id == 0 || this.id == null) {
     $.post( strUrl, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat, "longitude": this.latlng.lng }))
@@ -33,18 +33,18 @@ Site.prototype.save = function (){
         that.map_parent.notify("Updated!");
       }, "json");
   }
-}
+};
 
 Site.prototype.draw = function (){
   var that = this;
   this.marker = L.marker(this.latlng)
-                  .on('click', function() { return that.onSiteClick() })
-                  .on('mouseover', function() { return that.onSiteMouseOver() })
-                  .on('mouseout', function() { return that.onSiteMouseOut() })
+                  .on('click', function() { return that.onSiteClick(); })
+                  .on('mouseover', function() { return that.onSiteMouseOver(); })
+                  .on('mouseout', function() { return that.onSiteMouseOut(); })
                   .addTo(this.map_parent.map);
   if (!this.id)
     this.save();
-}
+};
 Site.prototype.onSiteMouseOver = function (e){
   switch(this.map_parent.status) {
     case 'path':
@@ -58,7 +58,7 @@ Site.prototype.onSiteMouseOver = function (e){
       $('#make_site').text('Edita Lloc');
       break;
   }
-}
+};
 Site.prototype.onSiteMouseOut = function (e){
   switch(this.map_parent.status) {
     case 'path':
@@ -72,7 +72,7 @@ Site.prototype.onSiteMouseOut = function (e){
       $('#make_site').text('Crea Lloc');
       break;
   }
-}
+};
 Site.prototype.onSiteClick = function (e){
   switch(this.map_parent.status){
     case "path":
@@ -86,7 +86,7 @@ Site.prototype.onSiteClick = function (e){
         console.log('inici tram.');
         this.marker.setIcon(this.map_parent.redMarker);
         this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent);
-        this.map_parent.active_path.setFirstSite(this)
+        this.map_parent.active_path.setFirstSite(this);
       }
       break;
     case "split":
@@ -98,11 +98,11 @@ Site.prototype.onSiteClick = function (e){
       this.siteDefine();
       break;
     }
-}
+};
 // Carraguem els seus boxs
 Site.prototype.loadBoxes = function() {
   var that = this;
-  strUrl = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/boxes"
+  strUrl = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/boxes";
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
@@ -112,17 +112,17 @@ Site.prototype.loadBoxes = function() {
     });
     that.siteCallbackBoxes();
   });
-}
+};
 Site.prototype.siteCallbackBoxes = function() {
   var that = this;
 
   // Mostrar els elements d'un site.
   for(idx_box in this.boxs){
-    actual_box = this.boxs[idx_box]
+    actual_box = this.boxs[idx_box];
     actual_box.addHtmlBox();
   }
 
-}
+};
 // Pagina de Site
 Site.prototype.siteDefine = function() {
   var that = this;
@@ -146,12 +146,12 @@ Site.prototype.siteDefine = function() {
     that.latlng = L.latLng($('#site-latitude').val(), $('#site-longitude').val());
     that.observations = $('#site-observation').val();
     that.save();
-  })
+  });
 
   $('#site-fusion').on('click', function(e){
     that.siteFusion();
     $('#zoom-site-group').toggleClass('hide');
-  })
+  });
 
   // Neteja el que ja tenia
   $('#box').html("");
@@ -173,16 +173,16 @@ Site.prototype.siteDefine = function() {
   // Amagar mapa.
   $('#map-group').hide();
   $('#zoom-site-group').toggleClass('hide');
-}
+};
 Site.prototype.deleteBox = function(uuid){
     //Buscar el box, i esborrar-lo
-    box = this.boxs[uuid]
+    box = this.boxs[uuid];
     if (box.id != 0)
       box.delete(box.id);
     else
-      $('#box-'+ box.uuid).remove()
-    delete this.boxs[uuid]
-}
+      $('#box-'+ box.uuid).remove();
+    delete this.boxs[uuid];
+};
 
 // Pagina de Definició de fusió
 Site.prototype.siteFusion = function(){
@@ -194,18 +194,18 @@ Site.prototype.siteFusion = function(){
   $('#map-group').hide();
   $('#zoom-site-fusion-group').toggleClass('hide');
 
-  this.siteFusionPaint()
-}
+  this.siteFusionPaint();
+};
 Site.prototype.siteFusionPaint = function() {
   // Carreguem dades.
   var that =  this;
 
   var global = $('<div>');
   // Carreguem les fusions
-  var strUrlMerger = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/merger"
+  var strUrlMerger = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/merger";
   $.getJSON(strUrlMerger, function (dataMerger){
     // Carreguem les caixes.
-    var strUrlSection = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/section"
+    var strUrlSection = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/section";
     $.getJSON(strUrlSection, function (dataSection) {
       // Insertem els boto per fusionar o la fusió que té.
       that.actualFusionSite = that.map_parent.buildSiteMerger(dataSection, dataMerger);
@@ -213,13 +213,13 @@ Site.prototype.siteFusionPaint = function() {
       var row = $('<div class="row">').appendTo(global);
       $.each(that.actualFusionSite, function (index, tram) {
         try {
-          colors = $.parseJSON(tram.colors)
+          colors = $.parseJSON(tram.colors);
         } catch (e) {
           console.log(e);
           console.log(tram.colors);
         }
         var columns = $('<div class="col-s-3">').appendTo(row);
-        var title_tram = $('<h1 title="' + tram.name + '">Del Tram ' + tram.id + '</h1>')
+        var title_tram = $('<h1 title="' + tram.name + '">Del Tram ' + tram.id + '</h1>');
         title_tram.on('click', function(){
           that.map_parent.getPath(tram.id);
         });
@@ -227,7 +227,7 @@ Site.prototype.siteFusionPaint = function() {
         var this_site = $('<ul>').appendTo(columns);
         if (colors) {
           $.each(colors, function (itub,tub){
-              var this_tub = $(document.createElement("li")).text(tub.name)
+              var this_tub = $(document.createElement("li")).text(tub.name);
               var this_fibers = $(document.createElement("ul"));
               $.each(tub.fibers, function (ifiber, fiber){
                 var this_select_fusio;
@@ -238,7 +238,7 @@ Site.prototype.siteFusionPaint = function() {
                   $.each(tram.fusion_options, function(i, value) {
                     this_select_fusio.append($('<option>').text(value.label).attr('value', value.value));
                   });
-                  this_select_fusio.on('change',function(e){ that.onChangeSelect(e); })
+                  this_select_fusio.on('change',function(e){ that.onChangeSelect(e); });
                 } else {
                   this_remove_link = $('<a class="fusion-fiber">')
                                       .attr('data-input', tram.id + "_" + tub.name + "_" + fiber.color)
@@ -248,20 +248,20 @@ Site.prototype.siteFusionPaint = function() {
                                         .attr({'value':fiber.fusionat, 'id':tram.id + "_" + tub.name + "_" + fiber.color}))
                                       .append($('<span class=".input-group-addon .supplement input-close">')
                                         .append(this_remove_link)
-                                      )
-                 this_remove_link.on('click', function(e){ that.removeFusion(e); })
+                                      );
+                 this_remove_link.on('click', function(e){ that.removeFusion(e); });
                 }
-                var row_line = $('<div class="row">')
+                var row_line = $('<div class="row">');
                 var col_line_Name = $('<div class="col-s-4">')
                     .append($('<input type="text" class="readonly">')
                       .attr('value',fiber.color))
                     .appendTo(row_line);
                 var col_line_Fusio = $('<div class="col-s-8">').append(this_select_fusio).appendTo(row_line);
-                var linea = row_line
-                this_fibers.append(linea)
-              })
-             this_site.append(this_tub).append(this_fibers)
-          })
+                var linea = row_line;
+                this_fibers.append(linea);
+              });
+             this_site.append(this_tub).append(this_fibers);
+          });
         }
       });
     });
@@ -269,7 +269,7 @@ Site.prototype.siteFusionPaint = function() {
   // Netejem les caixes existents al mapa?
   $('.site-fusion').html("");
   global.appendTo($('.site-fusion'));
-}
+};
 Site.prototype.onChangeSelect = function(e){
   strFFiber = new String(e.target.id).substr(5);
   strLFiber = $('#'+e.target.id).val();
@@ -278,7 +278,7 @@ Site.prototype.onChangeSelect = function(e){
 
     // Mirar de grabar la fusió
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/merger"
+  strUrl = this.map_parent.serverUrl + "/api/v1/merger";
   console.log('API call: ' + strUrl);
   $.post( strUrl, JSON.stringify({ "site_id": that.id , "fsection_id": ffiber[0], "fcolor": ffiber[1]+"."+ffiber[2], "lsection_id": lfiber[0], "lcolor": lfiber[1]+"."+lfiber[2] }))
     .done(function( data ) {
@@ -287,7 +287,7 @@ Site.prototype.onChangeSelect = function(e){
       that.siteFusionPaint();
     }, "json");
     // Recarregar el Site
-}
+};
 Site.prototype.removeFusion = function(e){
   strFFiber = $(e.target).data('input');
   strLFiber = $('#'+strFFiber).val();
@@ -296,7 +296,7 @@ Site.prototype.removeFusion = function(e){
 
   // Esborrar merge
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/merger"
+  strUrl = this.map_parent.serverUrl + "/api/v1/merger";
   console.log('API call: ' + strUrl);
   $.delete( strUrl, JSON.stringify({ "site_id": that.id ,"fsection_id": ffiber[0], "fcolor": ffiber[1]+"."+ffiber[2], "lsection_id": lfiber[0], "lcolor": lfiber[1]+"."+lfiber[2] }))
     .done(function( data ) {
@@ -305,5 +305,5 @@ Site.prototype.removeFusion = function(e){
       that.siteFusionPaint();
     }, "json");
   return false;
-}
+};
 module.exports = exports = Site;

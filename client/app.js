@@ -1,7 +1,7 @@
 // Nova versió compactada.
 
 // require jquery
-var $ = require('jquery-browserify')
+var $ = require('jquery-browserify');
 // require leaflet.js
 var L = require('leaflet');
 
@@ -24,10 +24,10 @@ $(document).ready(function(){
 
     e.preventDefault();
   });
-})
+});
 
 // Define $.put and $.delete
-jQuery.each( [ "put", "delete", "post", "get" ], function( i, method ) {
+jQuery.each( [ 'put', 'delete', 'post', 'get' ], function( i, method ) {
   jQuery[ method ] = function( url, data, callback, type ) {
     if ( jQuery.isFunction( data ) ) {
       type = type || callback;

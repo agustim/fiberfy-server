@@ -17,34 +17,33 @@ function Pfusion (cnvs, site) {
 
 Pfusion.prototype.draw = function () {
   paper.setup(this.canvas);
-  let x = 25;
-  let y = 40;
-  let x2 = 130
-  //Dividim per dos
-  let tubes_count = this.site.actualFusionSite.length
+  var x = 25,
+      y = 40,
+      x2 = 130,
+      tubes_count = this.site.actualFusionSite.length;
 
   //Pintem totes les fibres i fusionem a l'hora.
   if (tubes_count > 1)
-    split_tubes = Math.floor(tubes_count/2)
-    for(let idx=0; idx < split_tubes; idx++){
+    split_tubes = Math.floor(tubes_count/2);
+    for(var idx=0; idx < split_tubes; idx++){
       tube = this.site.actualFusionSite[idx];
       occupet_space = this.writePipe(x,y,'vertical',tube);
       y = occupet_space[1] + 10;
     }
     x = x2;
-    for(let idx = split_tubes; idx < tubes_count; idx++){
+    for(var idx = split_tubes; idx < tubes_count; idx++){
       tube = this.site.actualFusionSite[idx];
       occupet_space = this.writePipe(x,y,'horizontal',tube);
       x = occupet_space[0] + 10;
     }
   paper.view.draw();
-}
+};
 Pfusion.prototype.writeText = function(str, x, y, orientation, color) {
   this.writeTextPaper(str, x, y, orientation, this.fontsize, color);
-}
+};
 Pfusion.prototype.writeTitle = function(str, x, y, orientation, color) {
   this.writeTextPaper(str, x, y, orientation, this.title_fontsize, color);
-}
+};
 Pfusion.prototype.writeTextPaper = function(str, x, y, orientation, size, color) {
   if (typeof color == 'undefined') { color = 'red'; }
   var text = new paper.PointText({
@@ -55,8 +54,8 @@ Pfusion.prototype.writeTextPaper = function(str, x, y, orientation, size, color)
       rotation: orientation,
       content: str
     });
-  return text
-}
+  return text;
+};
 Pfusion.prototype.writeLine = function(x, y, x_longitud, y_longitud, color) {
 	var path = new paper.Path();
 	path.strokeColor = color;
@@ -77,32 +76,32 @@ Pfusion.prototype.writeLine = function(x, y, x_longitud, y_longitud, color) {
 		}
 	}
   */
-  return path
-}
+  return path;
+};
 Pfusion.prototype.writePipe = function(x, y, direction, tube){
-  var that = this;
-  let name = (tube.name != null) ? tube.name + "(" + tube.id + ")" : tube.id;
+  var that = this,
+      name = (tube.name != null) ? tube.name + "(" + tube.id + ")" : tube.id;
 	if (direction == 'vertical') {
 		this.writeTitle(name, x, y, 0);
 		y = y + 20;
     try {
-      colors = $.parseJSON(tube.colors)
+      colors = $.parseJSON(tube.colors);
     } catch (e) {
       console.log(e);
       console.log(tube.colors);
     }
-		for (let idx_tub in colors){
+		for (var idx_tub in colors){
 			tub = colors[idx_tub];
 			this.writeText(tub.name, x + 10, y, 0);
 			y = y + 10;
-			for (let idx_fiber in tub.fibers){
+			for (var idx_fiber in tub.fibers){
 				fiber = tub.fibers[idx_fiber];
 				this.writeLine(x+10, y, 80, 0 , fiber.color);
-        let fiber_fullname = tube.id + "." + tub.name + "." + fiber.color;
+        var fiber_fullname = tube.id + "." + tub.name + "." + fiber.color;
         that.fibers[fiber_fullname] = { x: x+10+80, y: y, color: fiber.color, direction : 'vertical' };
         if (typeof fiber.fusionat != 'undefined'){
           //Mirem si l'altre estrem ja l'hem pintat
-          let fusion_fullname = fiber.fusionat;
+          var fusion_fullname = fiber.fusionat;
           if (typeof that.fibers[fusion_fullname] != 'undefined'){
             //Hi ha els dos extrems ja podem fusionar.
             that.writeFusion(that.fibers[fiber_fullname], that.fibers[fusion_fullname]);
@@ -117,7 +116,7 @@ Pfusion.prototype.writePipe = function(x, y, direction, tube){
 		this.writeTitle(name, x, y, 90);
 		x = x + 20;
     try {
-      colors = $.parseJSON(tube.colors)
+      colors = $.parseJSON(tube.colors);
     } catch (e) {
       console.log(e);
       console.log(tube.colors);
@@ -130,11 +129,11 @@ Pfusion.prototype.writePipe = function(x, y, direction, tube){
 			for (idx_fiber in tub.fibers){
 				fiber = tub.fibers[idx_fiber];
 				this.writeLine(x+10, y, 0, 80, fiber.color);
-        let fiber_fullname = tube.id + "." + tub.name + "." + fiber.color;
+        var fiber_fullname = tube.id + "." + tub.name + "." + fiber.color;
         that.fibers[fiber_fullname] = { x: x+10, y: y, color: fiber.color, direction : 'horizontal' };
         if (typeof fiber.fusionat != 'undefined'){
           //Mirem si l'altre estrem ja l'hem pintat
-          let fusion_fullname = fiber.fusionat;
+          var fusion_fullname = fiber.fusionat;
           if (typeof that.fibers[fusion_fullname] != 'undefined'){
             //Hi ha els dos extrems ja podem fusionar.
             that.writeFusion(that.fibers[fiber_fullname], that.fibers[fusion_fullname]);
@@ -146,16 +145,16 @@ Pfusion.prototype.writePipe = function(x, y, direction, tube){
 		}
 	}
   return [ x , y ];
-}
+};
 Pfusion.prototype.writeFusion = function(fiberA, fiberB)
 {
   // Si x o y son iguals vol dir que estan a la mateixa vertical-horitzontal, cas especial!!!
-    let x_long = Math.abs(fiberB.x - fiberA.x);
-    let y_long = Math.abs(fiberB.y - fiberA.y);
+    var x_long = Math.abs(fiberB.x - fiberA.x),
+        y_long = Math.abs(fiberB.y - fiberA.y);
 
     if (fiberB.direction != fiberA.direction ) {
       if (fiberA.direction == 'vertical' && fiberB.direction == 'horizontal') {
-        let fiberC = {x: fiberA.x, y: fiberA.y, direction: fiberA.direction, color:fiberA.color };
+        var fiberC = {x: fiberA.x, y: fiberA.y, direction: fiberA.direction, color:fiberA.color };
         fiberA = {x: fiberB.x, y: fiberB.y, direction: fiberB.direction, color:fiberB.color };
         fiberB = {x: fiberC.x, y: fiberC.y, direction: fiberC.direction, color:fiberC.color };
       }
@@ -175,9 +174,9 @@ Pfusion.prototype.writeFusion = function(fiberA, fiberB)
         this.writeLine(fiberB.x, fiberB.y, 0, - 20 - this.count_horitzontal, fiberB.color );
         this.writeLine(fiberB.x , fiberB.y - 20 - this.count_horitzontal, x_long/2, 0, fiberB.color);
         this.writeLine(fiberB.x  + x_long/2, fiberB.y - 20 - this.count_horitzontal, x_long/2, 0, fiberA.color);
-        this.count_horitzontal += this.incr_horitzontal
+        this.count_horitzontal += this.incr_horitzontal;
       }
 
     }
-}
+};
 module.exports = exports = Pfusion;

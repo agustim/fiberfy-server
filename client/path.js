@@ -1,24 +1,24 @@
 //=====================
 // Tram
 function Path(id, name, first_site, end_site, dots, m){
-  this.id = id
-  this.name = name
-  this.first_site = first_site
-  this.end_site = end_site
-  this.polyline = null
-  this.dots = dots
-  this.color_building = "red"
-  this.color_did = "blue"
-  this.color_mouseover = "green"
-  this.colors = null
-  this.observations = null
+  this.id = id;
+  this.name = name;
+  this.first_site = first_site;
+  this.end_site = end_site;
+  this.polyline = null;
+  this.dots = dots;
+  this.color_building = "red";
+  this.color_did = "blue";
+  this.color_mouseover = "green";
+  this.colors = null;
+  this.observations = null;
 
-  this.map_parent = m
+  this.map_parent = m;
 }
 Path.prototype.setFirstSite = function(b){
   this.first_site = b.id;
   this.dots.push(b.latlng);
-}
+};
 Path.prototype.setEndSite = function(b){
   this.end_site = b.id;
   this.dots.push(b.latlng);
@@ -33,45 +33,45 @@ Path.prototype.setEndSite = function(b){
     // Esborrar link
     this.clear();
   }
-}
+};
 Path.prototype.clear = function() {
   this.map_parent.map.removeLayer(this.polyline);
-}
+};
 
 Path.prototype.draw = function() {
-  var that = this
+  var that = this;
   // Pintar el Tram
   if (this.polyline) {
     this.clear();
   }
 
-  var color = (this.end_site) ? this.color_did : this.color_building
+  var color = (this.end_site) ? this.color_did : this.color_building;
 
   this.polyline = new L.Polyline(this.dots, {
       color: color,
       weight: 3,
       opacity: 0.5,
       smoothFactor: 1
-  }).on('click', function(e) { return that.onPathClick(e) })
-    .on('mouseover', function(e) { return that.onPathMouseOver(e) })
-    .on('mouseout', function(e) { return that.onPathMouseOut(e) })
+  }).on('click', function(e) { return that.onPathClick(e); })
+    .on('mouseover', function(e) { return that.onPathMouseOver(e); })
+    .on('mouseout', function(e) { return that.onPathMouseOut(e); })
     .addTo(this.map_parent.map);
-}
+};
 Path.prototype.addPoint = function(point) {
   if (!this.end_site){
     if(this.first_site) {
       this.dots.push(point);
-      this.draw()
+      this.draw();
     } else {
-      console.log("Els trams comencen a una caixa.")
+      console.log("Els trams comencen a una caixa.");
     }
   } else {
-    console.log("Aquest tram ja està tancat.")
+    console.log("Aquest tram ja està tancat.");
   }
-}
+};
 Path.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/section"
+  strUrl = this.map_parent.serverUrl + "/api/v1/section";
   console.log('API call: ' + strUrl);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");
@@ -83,7 +83,7 @@ Path.prototype.save = function (){
       myPath = $.parseJSON( data );
       that.id = myPath.id;
     }, "json");
-}
+};
 Path.prototype.updateForm = function (){
   var that = this;
   // Carraguem els caps del formulari al objecte
@@ -99,7 +99,7 @@ Path.prototype.updateForm = function (){
   }
   this.observations = $('#path-observations').val();
 
-  strUrl = this.map_parent.serverUrl + "/api/v1/section/" + this.id
+  strUrl = this.map_parent.serverUrl + "/api/v1/section/" + this.id;
   console.log('API call: ' + strUrl);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");
@@ -111,9 +111,9 @@ Path.prototype.updateForm = function (){
     .done(function( data ) {
       that.map_parent.notify("Updated!");
     }, "json");
-}
+};
 Path.prototype.editForm = function() {
-  var that = this
+  var that = this;
   // Clear old click events.
   $('#path-update').unbind("click");
 
@@ -135,7 +135,7 @@ Path.prototype.editForm = function() {
   // Canviem de pàgina
   $('#map-group').hide();
   $('#zoom-path-group').toggleClass('hide');
-}
+};
 Path.prototype.onPathClick = function(e){
   var that = this;
   switch(this.map_parent.status){
@@ -149,15 +149,15 @@ Path.prototype.onPathClick = function(e){
       this.editForm();
       break;
   }
-}
+};
 Path.prototype.onPathMouseOver = function(e) {
   this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')');
   this.polyline.setStyle( { color: this.color_mouseover });
-}
+};
 Path.prototype.onPathMouseOut = function(e) {
   this.map_parent.info.update('');
   this.polyline.setStyle( { color: this.color_did });
-}
+};
 
 Path.prototype.distance = function (){
   var metros_totales_ruta = 0;
@@ -170,7 +170,7 @@ Path.prototype.distance = function (){
   }
   metros_totales_ruta = metros_totales_ruta.toFixed();
   return metros_totales_ruta;
-}
+};
 Path.prototype.getSegment = function (e){
 /* This not working yet!! need i will work more
   var point = e.layerPoint;
@@ -190,7 +190,7 @@ Path.prototype.getSegment = function (e){
   }
 */
 console.log("");
-}
+};
 Path.prototype.drawColors = function (e) {
   var that = this;
   $('#div-path-colors').hide();
@@ -199,8 +199,8 @@ Path.prototype.drawColors = function (e) {
 
   if (this.colors) {
     $.each(this.colors, function (itub,tub){
-        var label_tub = $('<label>').text("Tub")
-        var label_colors = $('<label>').text("Fibres")
+        var label_tub = $('<label>').text("Tub");
+        var label_colors = $('<label>').text("Fibres");
         var input_tub = $('<input class="tub-name" type="text" class="readonly">').attr('value',tub.name);
         var this_tub = $('<div class="row">')
                       .append($('<div class="col-s-12">')
@@ -220,7 +220,7 @@ Path.prototype.drawColors = function (e) {
                       );
         var this_fibers = $('<div class="row">');
 
-        input_tub.on('change', function(e) { that.onChangeTub(e, itub); } )
+        input_tub.on('change', function(e) { that.onChangeTub(e, itub); } );
 
         $.each(tub.fibers, function (ifiber, fiber){
           var this_remove_link = $('<a>')
@@ -232,21 +232,21 @@ Path.prototype.drawColors = function (e) {
                 .append($('<span class="input-group-addon supplement input-close">')
                   .append( this_remove_link )
                 )
-              )
-          this_remove_link.on('click', function(e) { that.onRemoveFiber(e, itub, ifiber); } )
-          input_fiber.on('change', function(e) { that.onChangeFiber(e, itub, ifiber); } )
+              );
+          this_remove_link.on('click', function(e) { that.onRemoveFiber(e, itub, ifiber); } );
+          input_fiber.on('change', function(e) { that.onChangeFiber(e, itub, ifiber); } );
 
           this_fibers.append(col_line_Name);
-        })
+        });
         var add_fiber = $('<div class="col-s-3">')
                         .append($('<button>')
                           .text('Afegir fibra...')
                         );
-        add_fiber.on('click', function(e){ that.onAddFiber(e,itub);})
+        add_fiber.on('click', function(e){ that.onAddFiber(e,itub);});
 
         this_fibers.append(add_fiber);
 
-        $('#div-path-colors-gui').append(this_tub).append(this_fibers)
+        $('#div-path-colors-gui').append(this_tub).append(this_fibers);
     });
   }
   var add_tub = $('<div class="row">')
@@ -255,36 +255,36 @@ Path.prototype.drawColors = function (e) {
                     .text('Afegir tub...')
                   )
                 );
-  add_tub.on('click', function(e){ that.onAddTub(e); })
+  add_tub.on('click', function(e){ that.onAddTub(e); });
   $('#div-path-colors-gui').append(add_tub);
 
-}
+};
 Path.prototype.onRemoveFiber = function(e, itub, ifiber) {
-    var that = this
+    var that = this;
     delete that.colors[itub].fibers[ifiber];
     // delete mark item like "undefined", need clear array.
-    that.colors[itub].fibers = $.grep(that.colors[itub].fibers,function(n){ return n == 0 || n });
+    that.colors[itub].fibers = $.grep(that.colors[itub].fibers,function(n){ return n == 0 || n; });
     $('#path-colors').val(JSON.stringify(that.colors));
     that.drawColors();
     e.stopPropagation();
     return false;
-}
+};
 Path.prototype.onChangeFiber = function(e, itub, ifiber) {
-    var that = this
+    var that = this;
     that.colors[itub].fibers[ifiber].color =  $(e.currentTarget).val();
     $('#path-colors').val(JSON.stringify(that.colors));
     e.stopPropagation();
     return false;
-}
+};
 Path.prototype.onChangeTub = function(e, itub) {
-    var that = this
+    var that = this;
     that.colors[itub].name =  $(e.currentTarget).val();
     $('#path-colors').val(JSON.stringify(that.colors));
     e.stopPropagation();
     return false;
-}
+};
 Path.prototype.onAddTub = function(e) {
-  var that = this
+  var that = this;
   if (that.colors == null || that.colors == "") {
     that.colors = new Array({"name":"", "fibers":[]});
   } else {
@@ -294,13 +294,13 @@ Path.prototype.onAddTub = function(e) {
   that.drawColors();
   e.stopPropagation();
   return false;
-}
+};
 Path.prototype.onAddFiber = function(e, itub) {
-  var that = this
+  var that = this;
   that.colors[itub].fibers.push({"color":""});
   $('#path-colors').val(JSON.stringify(that.colors));
   that.drawColors();
   e.stopPropagation();
   return false;
-}
+};
 module.exports = exports = Path;

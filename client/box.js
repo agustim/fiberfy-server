@@ -7,21 +7,21 @@ function Box(id, uuid, name, type, site, m) {
   this.name = name;
   this.type = type;
   this.observations = "";
-  this.site_parent = site
-  this.map_parent = m
+  this.site_parent = site;
+  this.map_parent = m;
   this.type_box = [ "caixa", "poster", "punt final" ];
 }
 
 Box.prototype.addHtmlBox = function(){
-  var that = this
+  var that = this;
 
-  var options_type = ""
+  var options_type = "";
   for(idx_type in this.type_box){
-    tb = this.type_box[idx_type]
+    tb = this.type_box[idx_type];
     if (this.type == tb) {
-      options_type = options_type + '<option value="' + tb + '" selected >' + tb + '</option>'
+      options_type = options_type + '<option value="' + tb + '" selected >' + tb + '</option>';
     } else {
-      options_type = options_type + '<option value="' + tb + '" >' + tb + '</option>'
+      options_type = options_type + '<option value="' + tb + '" >' + tb + '</option>';
     }
   }
 
@@ -45,18 +45,18 @@ Box.prototype.addHtmlBox = function(){
   $('#box').append(html);
   $('#box-close-' + this.uuid).on('click', function (e){
     that.site_parent.deleteBox(that.uuid);
-  })
+  });
   $('#box-' + this.uuid + ' input, #box-' + this.uuid + ' textarea, #box-' + this.uuid + ' select').on('change', function(e){
-    that.name = $('#box-name-' + that.uuid).val()
-    that.type = $('#box-type-' + that.uuid).val()
-    that.observations = $('#box-observations-' + that.uuid).val()
-    that.save()
-  })
-}
+    that.name = $('#box-name-' + that.uuid).val();
+    that.type = $('#box-type-' + that.uuid).val();
+    that.observations = $('#box-observations-' + that.uuid).val();
+    that.save();
+  });
+};
 
 Box.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/box"
+  strUrl = this.map_parent.serverUrl + "/api/v1/box";
   console.log('API call post: ' + strUrl);
   if (this.id == 0) {
     $.post( strUrl, JSON.stringify({ "name": this.name, "uuid": this.uuid, "site_id": this.site_parent.id, "type": this.type, "observations" : this.observations }))
@@ -71,16 +71,16 @@ Box.prototype.save = function (){
         that.map_parent.notify("Updated!");
       }, "json");
   }
-}
+};
 
 Box.prototype.delete = function (id){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/box/"+id
+  strUrl = this.map_parent.serverUrl + "/api/v1/box/"+id;
   console.log('API call delete: ' + strUrl);
   $.delete( strUrl )
     .done(function( data ) {
       that.map_parent.notify("Deleted!");
-      $('#box-'+ that.uuid).remove()
+      $('#box-'+ that.uuid).remove();
     });
-}
+};
 module.exports = exports = Box;
