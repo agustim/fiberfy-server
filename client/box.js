@@ -56,7 +56,7 @@ Box.prototype.addHtmlBox = function(){
 
 Box.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/box";
+  strUrl = this.map_parent.serverUrl + "/box";
   console.log('API call post: ' + strUrl);
   if (this.id == 0) {
     $.post( strUrl, JSON.stringify({ "name": this.name, "uuid": this.uuid, "site_id": this.site_parent.id, "type": this.type, "observations" : this.observations }))
@@ -75,7 +75,7 @@ Box.prototype.save = function (){
 
 Box.prototype.delete = function (id){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/box/"+id;
+  strUrl = this.map_parent.serverUrl + "/box/"+id;
   console.log('API call delete: ' + strUrl);
   $.delete( strUrl )
     .done(function( data ) {

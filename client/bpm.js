@@ -12,7 +12,7 @@ function Mapa(divMap){
   this.attribution = 'Guifi FO <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
   // create a tileLayer with the tiles, attribution
   this.tiles = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  this.serverUrl = "";
+  this.serverUrl = "/api/v1";
 
   // Estatus
   this.status = "";
@@ -21,11 +21,18 @@ function Mapa(divMap){
   this.active_path = null;
   // Site actual
   this.active_site = null;
+
+  // Active project
+  this.active_project = null;
+
   // Llista de Trams fets al mapa.
   this.paths = new Array();
 
   // Llista de Site
   this.sites = new Array();
+
+  // Llista de Projectes de l'usuari
+  this.projects = new Array();
 
   // Dibuix del Mapa
   this.map = L.map(divMap, {
@@ -113,7 +120,7 @@ Mapa.prototype.load = function (){
   // Netejem les caixes existents al mapa?
 
   // Carreguem les caixes.
-  strUrl = that.serverUrl + "/api/v1/site";
+  strUrl = that.serverUrl + "/site";
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
@@ -123,7 +130,7 @@ Mapa.prototype.load = function (){
       that.sites.push(site);
     });
     // Carreguem els trams.
-    strUrl = that.serverUrl + "/api/v1/section";
+    strUrl = that.serverUrl + "/section";
     $.getJSON(strUrl, function (data) {
       // Iterem
       $.each(data, function (index, value) {

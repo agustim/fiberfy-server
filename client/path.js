@@ -71,7 +71,7 @@ Path.prototype.addPoint = function(point) {
 };
 Path.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/section";
+  strUrl = this.map_parent.serverUrl + "/section";
   console.log('API call: ' + strUrl);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");
@@ -99,7 +99,7 @@ Path.prototype.updateForm = function (){
   }
   this.observations = $('#path-observations').val();
 
-  strUrl = this.map_parent.serverUrl + "/api/v1/section/" + this.id;
+  strUrl = this.map_parent.serverUrl + "/section/" + this.id;
   console.log('API call: ' + strUrl);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");

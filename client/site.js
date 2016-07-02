@@ -18,7 +18,7 @@ var Site = function(id, name, latlng, m){
 
 Site.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/site";
+  strUrl = this.map_parent.serverUrl + "/site";
   console.log('API call: ' + strUrl);
   if (this.id == 0 || this.id == null) {
     $.post( strUrl, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat, "longitude": this.latlng.lng }))
@@ -101,7 +101,7 @@ Site.prototype.onSiteClick = function (e){
 // Carraguem els seus boxs
 Site.prototype.loadBoxes = function() {
   var that = this;
-  strUrl = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/boxes";
+  strUrl = that.map_parent.serverUrl + "/site/" + that.id + "/boxes";
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
@@ -201,10 +201,10 @@ Site.prototype.siteFusionPaint = function() {
 
   var global = $('<div>');
   // Carreguem les fusions
-  var strUrlMerger = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/merger";
+  var strUrlMerger = that.map_parent.serverUrl + "/site/" + that.id + "/merger";
   $.getJSON(strUrlMerger, function (dataMerger){
     // Carreguem les caixes.
-    var strUrlSection = that.map_parent.serverUrl + "/api/v1/site/" + that.id + "/section";
+    var strUrlSection = that.map_parent.serverUrl + "/site/" + that.id + "/section";
     $.getJSON(strUrlSection, function (dataSection) {
       // Insertem els boto per fusionar o la fusió que té.
       that.actualFusionSite = that.map_parent.buildSiteMerger(dataSection, dataMerger);
@@ -277,7 +277,7 @@ Site.prototype.onChangeSelect = function(e){
 
     // Mirar de grabar la fusió
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/merger";
+  strUrl = this.map_parent.serverUrl + "/merger";
   console.log('API call: ' + strUrl);
   $.post( strUrl, JSON.stringify({ "site_id": that.id , "fsection_id": ffiber[0], "fcolor": ffiber[1]+"."+ffiber[2], "lsection_id": lfiber[0], "lcolor": lfiber[1]+"."+lfiber[2] }))
     .done(function( data ) {
@@ -295,7 +295,7 @@ Site.prototype.removeFusion = function(e){
 
   // Esborrar merge
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/api/v1/merger";
+  strUrl = this.map_parent.serverUrl + "/merger";
   console.log('API call: ' + strUrl);
   $.delete( strUrl, JSON.stringify({ "site_id": that.id ,"fsection_id": ffiber[0], "fcolor": ffiber[1]+"."+ffiber[2], "lsection_id": lfiber[0], "lcolor": lfiber[1]+"."+lfiber[2] }))
     .done(function( data ) {
