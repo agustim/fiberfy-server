@@ -3,6 +3,8 @@ var Site = require('./site');
 var Box = require('./box');
 var Path = require('./path');
 var Pfusion = require('./pfusion');
+var Config = require('./config');
+
 //=====================
 // Mapa
 function Mapa(divMap){
@@ -87,6 +89,8 @@ function Mapa(divMap){
   $('#split_path').click(function(){ that.clickMenu(this); that.makeSplit(); });
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
+
+  $('#environment').click(function(){ that.clickMenu(this); that.configEnvironment(); });
 
   $('.back_map').click(function(){ that.clickMenu(this); that.backMap(); });
   $('.back_site').click(function(){ that.backSite(); });
@@ -191,6 +195,7 @@ Mapa.prototype.backMap = function(){
   $('#zoom-fusion-graph-group').addClass('hide');
   $('#zoom-site-group').addClass('hide');
   $('#zoom-path-group').addClass('hide');
+  Config.closeForm();
 
   this.changeStatus("","");
 };
@@ -237,6 +242,9 @@ Mapa.prototype.onClick = function(e) {
       //alert("status: '" + status + "' not exist!");
       break;
   }
+};
+Mapa.prototype.configEnvironment = function (){
+  Config.viewForm();
 };
 Mapa.prototype.makeSection = function (){
   this.changeStatus("path", "#make_section");

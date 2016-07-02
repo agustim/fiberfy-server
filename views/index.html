@@ -18,11 +18,47 @@
       <ul class="active">
           <li><a id='make_site'>Crea Lloc</a></li>
           <li><a id='make_section'>Crea Tram</a></li>
+          <li><a id='view_infrastructure'>Cablejat</a></li>
+          <li><a id='environment'>Config</a></li>
           <li><a id='load'>Load Xoc</a></li>
       </ul>
       <a id="nav_responsive" class="toggle-nav">&#9776;<label></label></a>
     </nav>
     <div id="map"></div>
+  </div>
+  <!-- config -->
+  <div id="form-config-group" class="form-config-group hide">
+    <div id="form-config">
+      <nav class="menu">
+        <ul class="active">
+            <li><a class='back_map'>Torna Mapa</a></li>
+        </ul>
+      </nav>
+      <div class="config">
+        <div class="row">
+          <div class="col-s-12">
+            <div class="notify"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-s-6">
+            <label for="config-username">Username</label>
+            <input id="config-username"/>
+
+            <label for="config-password">Password</label>
+            <input id="config-password" type="password"/>
+          </div>
+          <div class="col-s-6">
+            <h4>Projectes</h4>
+
+            <label for="project-name">Nom</label>
+            <input id="project-name"/>
+            <button id="project-add">Add</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
   <!-- site fusion-->
   <div id="zoom-site-fusion-group" class="zoom-fusion-group hide">
@@ -31,7 +67,6 @@
         <ul class="active">
             <li><a class='back_map'>Torna Mapa</a></li>
             <li><a class='back_site'>Torna Site</a></li>
-            <li><a id='fusion_graph'>Grafic Fusió</a></li>
         </ul>
       </nav>
       <div class="row">

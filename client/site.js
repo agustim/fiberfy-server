@@ -24,8 +24,7 @@ Site.prototype.save = function (){
     $.post( strUrl, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat, "longitude": this.latlng.lng }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
-        mySite = $.parseJSON( data );
-        that.id = mySite.id;
+        that.id = data.id;
       }, "json");
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat, "longitude": this.latlng.lng, "observations" : this.observations }))
