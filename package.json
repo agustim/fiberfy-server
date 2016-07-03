@@ -15,10 +15,13 @@
     "trailsjs"
   ],
   "dependencies": {
+    "express": "^4.14.0",
     "handlebars": "^4.0.5",
     "trailpack-core": "^1.0.0-beta-3",
+    "trailpack-express": "^1.0.8",
     "trailpack-footprints": "^1.0.1",
     "trailpack-hapi": "^1.0.2",
+    "trailpack-passport-auth": "0.0.6",
     "trailpack-repl": "^1.0.0-beta-3",
     "trailpack-router": "^1.0.0-beta-4",
     "trailpack-waterline": "^1.0.0-beta-1",
