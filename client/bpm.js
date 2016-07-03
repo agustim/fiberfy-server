@@ -3,6 +3,7 @@ var Site = require('./site');
 var Box = require('./box');
 var Path = require('./path');
 var Pfusion = require('./pfusion');
+var Project = require('./project');
 var Config = require('./config');
 
 //=====================
@@ -105,6 +106,7 @@ function Mapa(divMap){
   $('#back_fusion').click(function(){ that.backFusion(); });
 
   this.load();
+  this.loadProjects();
 }
 Mapa.prototype.tileLayer = function(){
   // add the tile layer to the map
@@ -113,6 +115,21 @@ Mapa.prototype.tileLayer = function(){
       attribution: this.attribution
     });
   this.layer.addTo(this.map);
+};
+
+Mapa.prototype.loadProjects = function (){
+  var that = this;
+
+  if (Config.user_id) {
+    strUrl = that.serverUrl + "/project?user="+Config.user_id;
+    $.getJSON(strUrl, function (data) {
+      // Iterem
+      $.each(data, function (index, value) {
+        project = new Project(value.id, value.name, value.user, that);
+        that.projects.push(project);
+      });
+    });
+  };
 };
 
 Mapa.prototype.load = function (){
@@ -130,7 +147,7 @@ Mapa.prototype.load = function (){
       that.sites.push(site);
     });
     // Carreguem els trams.
-    strUrl = that.serverUrl + "/section";
+    strUrl = that.serverUrl + "/path";
     $.getJSON(strUrl, function (data) {
       // Iterem
       $.each(data, function (index, value) {

@@ -10,7 +10,7 @@
 .input-close { background-color:#ddd }
 
 /*------ Site -------*/
-.site, .path {
+.site, .path, .config {
   margin: 10px;
 }
 /*------ Two Pages -----*/

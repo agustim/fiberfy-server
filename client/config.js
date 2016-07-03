@@ -17,6 +17,7 @@ if (typeof define === 'function' && define.amd) {
 })(this, function (root, Config, $) {
 
   exports.username;
+  exports.user_id;
   exports.project = [];
   exports.actual_project;
 
