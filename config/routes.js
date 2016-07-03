@@ -15,21 +15,21 @@ module.exports = [
     /**
      * Authcontroller route
      */
-    {
-      method: 'POST',
-      path: '/auth/login',
-      handler: 'AuthController.login'
-    },
-    {
-      method: 'POST',
-      path: '/auth/register',
-      handler: 'AuthController.register'
-    },
-    {
-      method: 'GET',
-      path: '/auth/logout',
-      handler: 'AuthController.logout'
-    },
+  {
+    method: 'POST',
+    path: '/auth/login',
+    handler: 'AuthController.login'
+  },
+  {
+    method: 'POST',
+    path: '/auth/register',
+    handler: 'AuthController.register'
+  },
+  {
+    method: 'GET',
+    path: '/auth/logout',
+    handler: 'AuthController.logout'
+  },
 
   /**
    * Render the HelloWorld view

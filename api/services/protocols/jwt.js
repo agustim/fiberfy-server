@@ -1,6 +1,7 @@
 'use strict'
 
 module.exports = (req, payload, next) => {
-  const user = payload.user
+  //const user = payload.user
+  payload.user
   return next(null, payload, {})
 }

@@ -64,13 +64,13 @@ module.exports = class PassportPolicy extends Policy {
     // Sockets
     if (req.isAuthenticated()) {
 
-      next();
+      next()
     }
     // User is not allowed
     // (default res.forbidden() behavior can be overridden in `config/403.js`)
 
     else {
-      res.json({flag: false, data: '', message: 'Please Login First', code: 1000});
+      res.json({flag: false, data: '', message: 'Please Login First', code: 1000})
     }
   }
 }

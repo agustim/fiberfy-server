@@ -11,7 +11,7 @@ const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
 const EXPIRES_IN_SECONDS = 60 * 60 * 24
-const SECRET = process.env.tokenSecret || 'mysupersecuretoken';
+const SECRET = process.env.tokenSecret || 'mysupersecuretoken'
 const ALGORITHM = 'HS256'
 const ISSUER = 'localhost'
 const AUDIENCE = 'localhost'

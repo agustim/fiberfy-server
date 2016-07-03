@@ -41,7 +41,7 @@ function Mapa(divMap){
   });
 // Declare new red Icon & blue icon.
 
-  L.Icon.Default.imagePath = 'public/images';
+  L.Icon.Default.imagePath = 'images';
   var RedIcon = L.Icon.extend({
      options: {
            iconUrl: L.Icon.Default.imagePath + '/red-marker-icon.png'

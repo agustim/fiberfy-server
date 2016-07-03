@@ -18,7 +18,7 @@ module.exports = class AuthController extends Controller {
     this.app.services.PassportService.callback(req, res, (err, user, challenges, statuses) => {
       if (err) {
         if (err.message === 'E_USER_NOT_FOUND') {
-          return res.json({flag: false, data: err.message, message: 'User not found!'});
+          return res.json({flag: false, data: err.message, message: 'User not found!'})
           //res.notFound(req, res)
         }
         else if (err === 'Not a valid BCrypt hash.' ||
@@ -66,35 +66,39 @@ module.exports = class AuthController extends Controller {
 
   login(req, res) {
 
-    let model = req.body;
+    const model = req.body
     if (!model
       || !model.username
       || !model.password) {
-      res.json({flag: false, data: '', message: 'Validation error!'});
+      res.json({flag: false, data: '', message: 'Validation error!'})
     }
     else {
       //convert password to string if not in string
       if (!_.isString(model.password)) {
-        model.password = model.password.toString();
+        model.password = model.password.toString()
       }
       const criteria = {}
-      criteria[_.get(this.app, 'config.session.strategies.local.options.usernameField') || 'username'] = model.username
+      criteria[_.get(this.app,
+        'config.session.strategies.local.options.usernameField')
+        || 'username'] = model.username
 
       this.app.orm
         .User.findOne(criteria)
         .then(user => {
           if (!user) {
-            res.json({flag: false, data: {}, message: 'User is not register ! Please register first'})
+            res.json({flag: false, data: {},
+              message: 'User is not register ! Please register first'})
           }
           else {
-            const onUserLogged = _.get(this.app, 'config.session.onUserLogged')
+            //const onUserLogged = _.get(this.app, 'config.session.onUserLogged')
+            _.get(this.app, 'config.session.onUserLogged')
 
             /**
              * Compare user password hash with unhashed password
              * @returns boolean indicating a match
              */
 
-            model.password = crypto.createHash('md5').update(model.password).digest('hex');
+            model.password = crypto.createHash('md5').update(model.password).digest('hex')
 
             if (model.password == user.password) {
               req.login(user, err => {
@@ -125,11 +129,11 @@ module.exports = class AuthController extends Controller {
 
   register(req, res) {
 
-    let model = req.body;
+    const model = req.body
     if (!model
       || !model.username
       || !model.password) {
-      res.json({flag: false, data: '', message: 'Validation error!'});
+      res.json({flag: false, data: '', message: 'Validation error!'})
     }
     else {
 
@@ -137,21 +141,22 @@ module.exports = class AuthController extends Controller {
 
       //convert password into md5
       if (model.password) {
-        model.password = crypto.createHash('md5').update(model.password).digest('hex');
+        model.password = crypto.createHash('md5').update(model.password).digest('hex')
       }
 
       this.app.orm.User
         .create(model).then(user => {
-        if (!user) {
-          res.json({flag: false, data: {}, message: 'No user registered'});
-        } else {
-          onUserLogged(this.app, user)
+          if (!user) {
+            res.json({flag: false, data: {}, message: 'No user registered'})
+          }
+          else {
+            onUserLogged(this.app, user)
           //never display password
-          res.json({flag: true, data: user, message: 'User registered successfully'});
-        }
-      }).catch(err => {
-        res.json({flag: false, data: {}, message: err.message});
-      })
+            res.json({flag: true, data: user, message: 'User registered successfully'})
+          }
+        }).catch(err => {
+          res.json({flag: false, data: {}, message: err.message})
+        })
       //   return this.app.orm.Passport.create({
       //     protocol: 'local',
       //     password: password,
@@ -185,7 +190,6 @@ module.exports = class AuthController extends Controller {
     if (req.session)
       req.session.authenticated = false
 
-    res.json({flag: true, data: '', message: 'Logout successfully'});
+    res.json({flag: true, data: '', message: 'Logout successfully'})
   }
 }
-
