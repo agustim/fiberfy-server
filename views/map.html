@@ -1,0 +1,154 @@
+doctype html
+html(lang="ca")
+  head
+    title= fiberfy
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel='stylesheet', href='css/leaflet.css')
+    //if lte IE 8
+      link(rel='stylesheet', href='css/leaflet.ie.css')
+    link(rel='stylesheet', href='css/responsive.min.css')
+    link(rel='stylesheet', href='css/style.css')
+
+  body
+    #map-group
+      nav.menu
+        ul.active
+          li
+            a#make_site Crea Lloc
+          li
+            a#make_section Crea Tram
+          li
+            a#view_infrastructure Cablejat
+          li
+            a#environment Config
+          li
+            a#load Load Xoc
+        a#nav_responsive.toggle-nav
+          | ☰
+          label
+      #map
+    // config
+    #form-config-group.form-config-group.hide
+      #form-config
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+        .config
+          .row
+            .col-s-12
+              .notify
+          .row
+            .col-s-6
+              label(for='config-username') Username
+              input#config-username
+              label(for='config-password') Password
+              input#config-password(type='password')
+            .col-s-6
+              h4 Projectes
+              label(for='project-name') Nom
+              input#project-name
+              button#project-add Add
+    // site fusion
+    #zoom-site-fusion-group.zoom-fusion-group.hide
+      #zoom-site-fusion
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+            li
+              a.back_site Torna Site
+        .row
+          .col-s-12
+            .notify
+        .site-fusion
+    // site
+    #zoom-site-group.zoom-group.hide
+      #zoom-site
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+        .site
+          .row
+            .col-s-12
+              .notify
+          .row
+            .col-s-6
+              label(for='site-name') Name
+              input#site-name
+              label(for='site-latitude') Latituded
+              input#site-latitude
+              label(for='site-longitude') Longitude
+              input#site-longitude
+            .col-s-6
+              label(for='site-observation') Observation
+              textarea#site-observation
+              button#site-update Update
+              button#site-fusion Fusions
+          .row
+            .col-s-12
+              h1 Elements
+              #box
+              #add-box
+                button#add-new-box Afegir element...
+    // site fusion
+    #zoom-fusion-graph-group.zoom-fusion-graph-group.hide
+      #zoom-fusion-graph
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+            li
+              a.back_site Torna Site
+            li
+              a#back_fusion Torna Fusions
+        .row
+          .col-s-12
+            .notify
+            canvas#fusionGraph(resize='')
+    // path
+    #zoom-path-group.zoom-group.hide
+      #zoom-path
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+        .path
+          .row
+            .col-s-12
+              .notify
+          .row
+            .col-s-6
+              #div-path-name.input
+                label Name :
+                input#path-name
+              #div-path-first-site.input
+                label First Box :
+                input#path-first-site
+              #div-path-end-site.input
+                label End Box :
+                input#path-end-site
+            .col-s-6
+              #div-path-intermedial.input
+                label Intermedial :
+                textarea#path-intermedial
+              #div-path-observation.input
+                label Observation :
+                textarea#path-observation
+          .row
+            .col-s-12
+              #div-path-colors.input
+                label Colors :
+                textarea#path-colors
+          .row
+            .col-s-12
+              #div-path-colors-gui.input
+          .row
+            .col-s-12
+              #div-path-save.button
+                button#path-update Update
+    script(src='js/bundle.js')
+    script(src='js/responsive.min.js')
