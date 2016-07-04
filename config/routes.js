@@ -73,6 +73,17 @@ module.exports = [
     path: '/api/v1/project/{id?}',
     handler: 'ProjectController.find'
   },
+  {
+    method: [ 'POST' ],
+    path: '/api/v1/project',
+    handler: 'ProjectController.create'
+  },
+  {
+    method: [ 'PUT', 'PATCH' ],
+    path: '/api/v1/project/{id?}',
+    handler: 'ProjectController.update'
+  },
+
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */

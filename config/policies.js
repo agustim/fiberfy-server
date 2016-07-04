@@ -21,7 +21,13 @@ module.exports = {
   ViewController: {
     map: ['Passport.isAuthenticated'],
     index: []
-  }
+  },
 
+  ProjectController: {
+    create: ['Passport.isAuthenticated'],
+    find: ['Passport.isAuthenticated'],
+    update: ['Passport.isAuthenticated']
+
+  }
 
 }
