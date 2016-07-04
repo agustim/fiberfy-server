@@ -90,8 +90,8 @@ module.exports = class AuthController extends Controller {
               message: 'User is not register ! Please register first'})
           }
           else {
-            //const onUserLogged = _.get(this.app, 'config.session.onUserLogged')
-            _.get(this.app, 'config.session.onUserLogged')
+            const onUserLogged = _.get(this.app, 'config.session.onUserLogged')
+            //_.get(this.app, 'config.session.onUserLogged')
 
             /**
              * Compare user password hash with unhashed password

@@ -32,7 +32,7 @@ module.exports = [
   },
 
   /**
-   * Render the HelloWorld view
+   * Render the view Controller
    */
   {
     method: 'GET',
@@ -45,6 +45,28 @@ module.exports = [
     path: '/map',
     handler: 'ViewController.map'
   },
+
+
+  /**
+   * Constrain the DefaultController.info handler to accept only GET requests.
+   */
+  /*
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/site',
+    handler: 'SiteController.list'
+  },
+  {
+    method: [ 'POST' ],
+    path: '/api/v1/site',
+    handler: 'SiteController.post'
+  },
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/site/{id}',
+    handler: 'SiteController.get'
+  },
+  */
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */

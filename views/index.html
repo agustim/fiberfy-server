@@ -14,23 +14,38 @@ html(lang='ca')
         .row
           .col-s-2
           .col-s-8
+            #message.hide
+          .col-s-2
+        .row
+          .col-s-2
+          .col-s-8
+            h1 fiberfy
             label(for='username') Username
-            input#username
+            input#username(name='username')
             label(for='password') Password
-            input#password(type='password')
+            input#password(name='password', type='password')
             button#submit(value='Login') Login
           .col-s-2
     script.
       $('form[name=form-login]').submit( function(e) {
-      var formData = JSON.stringify($(this).serializeArray());
-      alert(formData);
-      $.ajax({
-      type: "POST",
-      url: "/auth/login",
-      data: formData,
-      success: function(d){alert(d);},
-      dataType: "json",
-      contentType : "application/json"
-      });
-      e.preventDefault();
+        var username = $('input[name=username]').val()
+        var password = $('input[name=password]').val()
+        $.ajax({
+          type: "POST",
+          url: "/auth/login",
+          data: JSON.stringify({'username':username, 'password': password}),
+          success: function(d){
+            if (d.flag) {
+              // Redirect map
+              window.location.replace("/map");
+            } else {
+              var msg = $('#message')
+              msg.text(d.message);
+              msg.show()
+            }
+          },
+          dataType: "json",
+          contentType : "application/json"
+        });
+        e.preventDefault();
       });
