@@ -67,6 +67,12 @@ module.exports = [
     handler: 'SiteController.get'
   },
   */
+
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/project/{id?}',
+    handler: 'ProjectController.find'
+  },
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */

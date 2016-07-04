@@ -25,7 +25,7 @@ module.exports = class Site extends Model {
       },
       type: {
         type: 'string',
-        enum: ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt']
+        sEnum: ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt']
       },
       observations: {
         type: 'string'

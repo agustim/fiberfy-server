@@ -27,7 +27,7 @@ module.exports = class Path extends Model {
       },
       type: {
         type: 'string',
-        enum: ['Aeri', 'Façana', 'Soterrat']
+        sEnum: ['Aeri', 'Façana', 'Soterrat']
       },
       observations: {
         type: 'string'
