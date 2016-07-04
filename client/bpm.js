@@ -120,16 +120,17 @@ Mapa.prototype.tileLayer = function(){
 Mapa.prototype.loadProjects = function (){
   var that = this;
 
-  if (Config.user_id) {
-    strUrl = that.serverUrl + "/project?user="+Config.user_id;
-    $.getJSON(strUrl, function (data) {
-      // Iterem
-      $.each(data, function (index, value) {
-        project = new Project(value.id, value.name, value.user, that);
-        that.projects.push(project);
-      });
+  var llista = $("<ul>");
+  $("#list-projects").html(llista);
+  strUrl = that.serverUrl + "/project";
+  $.getJSON(strUrl, function (data) {
+    // Iterem
+    $.each(data, function (index, value) {
+      project = new Project(value.id, value.name, that);
+      that.projects.push(project);
+      llista.append('<li>' + value.name+'</li>');
     });
-  };
+  });
 };
 
 Mapa.prototype.load = function (){
@@ -268,7 +269,8 @@ Mapa.prototype.onClick = function(e) {
   }
 };
 Mapa.prototype.configEnvironment = function (){
-  Config.viewForm();
+  $('#map-group').hide();
+  $('#form-config-group').removeClass('hide');
 };
 Mapa.prototype.makeSection = function (){
   this.changeStatus("path", "#make_section");

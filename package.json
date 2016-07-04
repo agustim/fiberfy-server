@@ -51,7 +51,7 @@
     "uglifyjs": "^2.4.10"
   },
   "scripts": {
-    "test": "eslint --ignore-pattern '/client/' --ignore-pattern '/public/' . && eslint --no-eslintrc -c client/eslintrc.json client/. && mocha",
+    "test": "eslint --ignore-pattern '/client/' --ignore-pattern '/public/' --fix . && eslint --no-eslintrc -c client/eslintrc.json client/. && mocha",
     "build": "cd client && browserify app.js -o ../public/js/bundle.js"
   },
   "engines": {
