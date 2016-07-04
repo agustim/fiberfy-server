@@ -7,9 +7,10 @@ html(lang='ca')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', href='css/responsive.min.css')
     link(rel='stylesheet', href='css/style.css')
+    script(src='https://code.jquery.com/jquery-3.0.0.min.js', integrity='sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=', crossorigin='anonymous')
   body
     #form-login-group.form-login-group
-      form#form-login(method='post')
+      form(name='form-login')
         .row
           .col-s-2
           .col-s-8
@@ -17,5 +18,19 @@ html(lang='ca')
             input#username
             label(for='password') Password
             input#password(type='password')
-            button(type='sumbit', value='Login') Login
+            button#submit(value='Login') Login
           .col-s-2
+    script.
+      $('form[name=form-login]').submit( function(e) {
+      var formData = JSON.stringify($(this).serializeArray());
+      alert(formData);
+      $.ajax({
+      type: "POST",
+      url: "/auth/login",
+      data: formData,
+      success: function(d){alert(d);},
+      dataType: "json",
+      contentType : "application/json"
+      });
+      e.preventDefault();
+      });

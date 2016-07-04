@@ -16,6 +16,12 @@ module.exports = {
 
   DefaultController: {
     info: [ ]
+  },
+
+  ViewController: {
+    map: ['Passport.isAuthenticated'],
+    index: []
   }
+
 
 }

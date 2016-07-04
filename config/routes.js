@@ -40,6 +40,11 @@ module.exports = [
     handler: 'ViewController.index'
   },
 
+  {
+    method: 'GET',
+    path: '/map',
+    handler: 'ViewController.map'
+  },
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */
