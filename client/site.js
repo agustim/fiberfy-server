@@ -25,7 +25,8 @@ Site.prototype.save = function (){
   if (this.id == 0 || this.id == null) {
     $.post( strUrl, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
         "longitude": this.latlng.lng, "project": this.map_parent.active_project.id,
-        "type": this.type, "status": this.status}))
+        "type" :this.type,
+        "status": this.status}))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.id = data.id;
@@ -33,7 +34,8 @@ Site.prototype.save = function (){
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
         "longitude": this.latlng.lng, "project": this.map_parent.active_project.id ,
-        "type": this.type, "status": this.status,
+        "type": this.type,
+        "status": this.status,
         "observations" : this.observations }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
@@ -105,30 +107,6 @@ Site.prototype.onSiteClick = function (e){
       break;
     }
 };
-// Carraguem els seus boxs
-Site.prototype.loadBoxes = function() {
-  var that = this;
-  strUrl = that.map_parent.serverUrl + "/site/" + that.id + "/boxes";
-  $.getJSON(strUrl, function (data) {
-    // Iterem
-    $.each(data, function (index, value) {
-      box = new Box(value.id, value.uuid, value.name, value.type, that, that.map_parent);
-      box.observations = value.observations;
-      that.boxs[box.uuid] = box;
-    });
-    that.siteCallbackBoxes();
-  });
-};
-Site.prototype.siteCallbackBoxes = function() {
-  var that = this;
-
-  // Mostrar els elements d'un site.
-  for(idx_box in this.boxs){
-    actual_box = this.boxs[idx_box];
-    actual_box.addHtmlBox();
-  }
-
-};
 // Pagina de Site
 Site.prototype.siteDefine = function() {
   var that = this;
@@ -157,21 +135,6 @@ Site.prototype.siteDefine = function() {
     that.save();
   });
 
-  // Neteja el que ja tenia
-  $('#box').html("");
-  $('#add-new-box').unbind("click");
-  // Si els elements d'aquest site esta buit, mirem si n'hi han per carregar-ne.
-  if (this.boxs.length == 0) {
-    that.loadBoxes();
-  } else {
-
-    that.siteCallbackBoxes();
-  }
-  $('#add-new-box').on('click', function (e){
-      box = new Box(0,gUUID(),'','',that,that.map_parent);
-      that.boxs[box.uuid] = box;
-      box.addHtmlBox();
-  });
   // Posem el ID d'aquest site al
   that.map_parent.active_site = that;
   // Amagar mapa.
@@ -181,7 +144,7 @@ Site.prototype.siteDefine = function() {
 Site.prototype.loadTypes = function(SelectField){
   var that = this;
 
-  // FALTA netejar les opcions!!!
+  SelectField.find('option').remove().end();
   $.each(this.map_parent.type_site, function(key, value) {
     var option = $("<option></option>")
                     .attr("value",value)

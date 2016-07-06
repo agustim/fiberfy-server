@@ -50,6 +50,7 @@ module.exports = [
   /**
    * Projects.
    */
+
   {
     method: [ 'GET' ],
     path: '/api/v1/project/{id?}',
@@ -70,8 +71,7 @@ module.exports = [
     path: '/api/v1/project/{id?}',
     handler: 'ProjectController.destroy'
   },
-
-  /**
+ /**
    * Site.
    */
   {
@@ -94,7 +94,6 @@ module.exports = [
     path: '/api/v1/site/{id?}',
     handler: 'SiteController.destroy'
   },
-
 
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.

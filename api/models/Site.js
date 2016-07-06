@@ -24,8 +24,7 @@ module.exports = class Site extends Model {
         type: 'float'
       },
       type: {
-        type: 'string',
-        sEnum: ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt']
+        type: 'string'
       },
       observations: {
         type: 'string'
