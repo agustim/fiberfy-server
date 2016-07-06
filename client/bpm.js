@@ -18,6 +18,8 @@ function Mapa(divMap){
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
   this.type_site = ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
+  this.type_site_icon = [];
+  this.type_site_default = this.type_site[0];
 
   // Estatus
   this.status = "";
@@ -66,6 +68,15 @@ function Mapa(divMap){
   this.blueMarker = new BlueIcon();
   this.greenMarker = new GreenIcon();
 
+
+  // Carregar Icons dels sites.
+  for(idx in this.type_site){
+    var name = this.type_site[idx];
+    name = name.toLowerCase();
+    eval ("var " +  name + "Icon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".png'}});");
+    eval ("this.type_site_icon['" + name +"'] = new " + name +"Icon();");
+  }
+  console.log(this);
   // Posicio inicial i zoom.
   this.map.setView([41.412, 2.15353], 17);
 
@@ -233,8 +244,7 @@ Mapa.prototype.load = function (){
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
-      site = new Site(value.id, value.name, L.latLng(value.latitude, value.longitude),that);
-      site.type = value.type;
+      site = new Site(value.id, value.name, L.latLng(value.latitude, value.longitude), value.type, that);
       site.observations = value.observations;
       that.sites.push(site);
     });
@@ -351,7 +361,7 @@ Mapa.prototype.onClick = function(e) {
       this.active_path.addPoint(e.latlng);
       break;
     case "site":
-      var mysite = new Site(null,'site' + Math.floor(Math.random() * 1000), e.latlng, this);
+      var mysite = new Site(null,'site' + Math.floor(Math.random() * 1000), e.latlng, this.type_site_default, this);
       this.sites.push(mysite);
       mysite.draw();
       break;

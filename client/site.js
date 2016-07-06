@@ -4,11 +4,11 @@ var Path = require('./path');
 //=====================
 // Site
 
-var Site = function(id, name, latlng, m){
+var Site = function(id, name, latlng, type, m){
   this.name = name;  // Nom del Lloc
   this.latlng = latlng; // Posició del Lloc
   this.id = id;  // Identificador
-  this.type = null;  // Tipus de lloc
+  this.type = type;  // Tipus de lloc
   this.status = 'create';
   this.observations = null;  // Observacions
   this.marker = null;  // Marcador en el mapa
@@ -50,9 +50,17 @@ Site.prototype.draw = function (){
                   .on('mouseover', function() { return that.onSiteMouseOver(); })
                   .on('mouseout', function() { return that.onSiteMouseOut(); })
                   .addTo(this.map_parent.map);
+  this.changeTypeIcon(this.type);
   if (!this.id)
     this.save();
 };
+
+Site.prototype.changeTypeIcon = function (type){
+  type = type.toLowerCase();
+  console.log(this.map_parent.type_site_icon[type]);
+  this.map_parent.setIconInSiteById(this.id, this.map_parent.type_site_icon[type]);
+};
+
 Site.prototype.onSiteMouseOver = function (e){
   switch(this.map_parent.status) {
     case 'path':
