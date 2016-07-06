@@ -117,7 +117,7 @@ Mapa.prototype.tileLayer = function(){
   this.layer.addTo(this.map);
 };
 
-Mapa.prototype.loadProjects = function (){
+Mapa.prototype.loadProjects = function (arr, callback){
   var that = this;
 
   strUrl = that.serverUrl + "/project";
@@ -127,10 +127,49 @@ Mapa.prototype.loadProjects = function (){
       project = new Project(value.id, value.name, that);
       that.projects.push(project);
     });
-    if (that.projects.length > 0) {
-      that.projects[0].drawProjects("#list-projects","#project-add", "input[name=project-name]");
-    }
+    that.drawProjects();
   });
+};
+
+Mapa.prototype.drawProjects = function (){
+  var that = this;
+  var addbutton = "#project-add";
+  var addinput = "input[name=project-name]";
+  var listprojects = "#list-projects";
+
+  // Clean events
+  $('.active-project-button').unbind("click");
+  $('.delete-project-button').unbind("click");
+  $(addbutton).unbind('click');
+  // Print List
+  var llista = $("<div id='project-list'>");
+  $(listprojects).html(llista);
+  $.each(that.projects, function(index,value){
+    var row = '<div class="row">' +
+              ' <div class="col-s-6">' +
+              '   <div class="project-item" id="project-' + value.id + '">' +
+                    value.name +
+              '   </div>' +
+              ' </div>' +
+              ' <div class="col-s-6">' +
+              '   <button class="active-project-button" id="active-project-' + value.id + '" data-id="' + value.id + '">Active</button>' +
+              '   <button class="delete-project-button" id="delete-project-' + value.id + '" data-id="' + value.id + '">Delete</button>' +
+              ' </div>' +
+              '</div>';
+    llista.append(row);
+  });
+  $(addbutton).on('click', function(e) {
+    var name = $(addinput).val();
+    if (name != "") {
+      var project = new Project(0, name, that);
+      project.save();
+      that.projects.push(project);
+      $(addinput).val("");
+      that.drawProjects();
+    } else {
+      that.notify("Has de posar un nom de projecte!");
+    }
+  })
 };
 
 Mapa.prototype.load = function (){

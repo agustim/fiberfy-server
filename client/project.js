@@ -8,42 +8,6 @@ var Project = function(id, name, m){
   this.status = "define";
   this.map_parent = m;
 };
-Project.prototype.drawProjects = function(dv, addbutton, addinput){
-  var that = this;
-
-  // Clean events
-  $('.active-project-button').unbind("click");
-  $('.delete-project-button').unbind("click");
-  $(addbutton).unbind('click');  
-  // Print List
-  var llista = $("<div id='project-list'>");
-  $(dv).html(llista);
-  $.each(that.map_parent.projects, function(index,value){
-    var row = '<div class="row">' +
-              ' <div class="col-s-6">' +
-              '   <div class="project-item" id="project-' + value.id + '">' +
-                    value.name +
-              '   </div>' +
-              ' </div>' +
-              ' <div class="col-s-6">' +
-              '   <button class="active-project-button" id="active-project-' + value.id + '" data-id="' + value.id + '">Active</button>' +
-              '   <button class="delete-project-button" id="delete-project-' + value.id + '" data-id="' + value.id + '">Delete</button>' +
-              ' </div>' +
-              '</div>';
-    llista.append(row);
-  });
-  $(addbutton).on('click', function(e) {
-    var name = $(addinput).val();
-    if (name != "") {
-      var project = new Project(0, name, that.map_parent);
-      project.save();
-      that.map_parent.projects.push(project);
-      project.drawProjects();
-    } else {
-      that.map_parent.notify("Has de posar un nom de projecte!");
-    }
-  })
-}
 
 Project.prototype.save = function (){
   var that = this;
