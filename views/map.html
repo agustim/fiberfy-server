@@ -44,8 +44,12 @@ html(lang="ca")
             .col-s-12
               h4 Projectes
               #list-projects
-              label(for='project-name') Nom
-              input#project-name
+          .row
+            .col-s-1
+              label(for='project-name') Nou Projecte
+            .col-s-8
+              input#project-name(name='project-name')
+            .col-s-2
               button#project-add Add
     // site fusion
     #zoom-site-fusion-group.zoom-fusion-group.hide

@@ -9,6 +9,9 @@
 .input-close a { cursor:pointer;color:red; text-decoration:none }
 .input-close { background-color:#ddd }
 
+/*------ Config ------*/
+#list-projects { padding: 10px }
+
 /*------ Site -------*/
 .site, .path, .config {
   margin: 10px;

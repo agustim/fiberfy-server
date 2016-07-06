@@ -83,7 +83,11 @@ module.exports = [
     path: '/api/v1/project/{id?}',
     handler: 'ProjectController.update'
   },
-
+  {
+    method: [ 'DELETE' ],
+    path: '/api/v1/project/{id?}',
+    handler: 'ProjectController.destroy'
+  },
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */

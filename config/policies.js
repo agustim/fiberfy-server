@@ -26,7 +26,8 @@ module.exports = {
   ProjectController: {
     create: ['Passport.isAuthenticated'],
     find: ['Passport.isAuthenticated'],
-    update: ['Passport.isAuthenticated']
+    update: ['Passport.isAuthenticated'],
+    destroy: ['Passport.isAuthenticated']
 
   }
 

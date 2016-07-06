@@ -105,7 +105,7 @@ function Mapa(divMap){
   $('#fusion_graph').click(function(){ that.fusionSite(); });
   $('#back_fusion').click(function(){ that.backFusion(); });
 
-  this.load();
+  //this.load();
   this.loadProjects();
 }
 Mapa.prototype.tileLayer = function(){
@@ -120,16 +120,16 @@ Mapa.prototype.tileLayer = function(){
 Mapa.prototype.loadProjects = function (){
   var that = this;
 
-  var llista = $("<ul>");
-  $("#list-projects").html(llista);
   strUrl = that.serverUrl + "/project";
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
       project = new Project(value.id, value.name, that);
       that.projects.push(project);
-      llista.append('<li>' + value.name+'</li>');
     });
+    if (that.projects.length > 0) {
+      that.projects[0].drawProjects("#list-projects","#project-add", "input[name=project-name]");
+    }
   });
 };
 
