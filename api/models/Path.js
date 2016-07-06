@@ -22,12 +22,11 @@ module.exports = class Path extends Model {
       last: {
         model: 'Site'
       },
-      path: {
+      intermedial: {
         type: 'string'
       },
       type: {
-        type: 'string',
-        sEnum: ['Aeri', 'Façana', 'Soterrat']
+        type: 'string'
       },
       observations: {
         type: 'string'

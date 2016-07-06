@@ -5,12 +5,12 @@ function Path(id, name, first_site, end_site, dots, m){
   this.name = name;
   this.first_site = first_site;
   this.end_site = end_site;
+  this.type = null
   this.polyline = null;
   this.dots = dots;
   this.color_building = "red";
   this.color_did = "blue";
   this.color_mouseover = "green";
-  this.colors = null;
   this.observations = null;
 
   this.map_parent = m;
@@ -71,17 +71,16 @@ Path.prototype.addPoint = function(point) {
 };
 Path.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/section";
+  strUrl = this.map_parent.serverUrl + "/path";
   console.log('API call: ' + strUrl);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");
     return;
   }
-  $.post( strUrl, JSON.stringify({ "fsite_id": this.first_site, "lsite_id": this.end_site, "intermedial": this.dots }))
+  $.post( strUrl, JSON.stringify({ "first": this.first_site, "last": this.end_site,
+              "intermedial": JSON.stringify(this.dots), "project": this.map_parent.active_project.id }))
     .done(function( data ) {
-      console.log( data );
-      myPath = $.parseJSON( data );
-      that.id = myPath.id;
+      that.id = data.id;
     }, "json");
 };
 Path.prototype.updateForm = function (){
@@ -99,15 +98,15 @@ Path.prototype.updateForm = function (){
   }
   this.observations = $('#path-observations').val();
 
-  strUrl = this.map_parent.serverUrl + "/section/" + this.id;
+  strUrl = this.map_parent.serverUrl + "/path/" + this.id;
   console.log('API call: ' + strUrl);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");
     return;
   }
   // Not exist $.put need use $.ajax
-  $.put( strUrl, JSON.stringify({ "name": this.name, "fsite_id": this.first_site, "lsite_id": this.end_site, "intermedial": this.dots ,
-                                  "colors": this.colors, "observations": this.observations }))
+  $.put( strUrl, JSON.stringify({ "name": this.name, "first": this.first_site, "last": this.end_site, "intermedial": this.dots ,
+                                  "colors": this.colors, "project": this.map_parent.active_project, "observations": this.observations }))
     .done(function( data ) {
       that.map_parent.notify("Updated!");
     }, "json");
@@ -122,13 +121,7 @@ Path.prototype.editForm = function() {
   $('#path-first-site').val(this.first_site);
   $('#path-end-site').val(this.end_site);
   $('#path-intermedial').val(JSON.stringify(this.dots));
-  if (this.colors == null || this.colors == "") {
-    $('#path-colors').val("");
-  } else {
-    $('#path-colors').val(JSON.stringify(this.colors));
-  }
-  // GUI Colors
-  this.drawColors();
+
   $('#path-observations').val(this.observations);
   $('#path-update').click(function(){ that.updateForm();});
 
@@ -190,117 +183,5 @@ Path.prototype.getSegment = function (e){
   }
 */
 console.log("");
-};
-Path.prototype.drawColors = function (e) {
-  var that = this;
-  $('#div-path-colors').hide();
-
-  $('#div-path-colors-gui').html("");
-
-  if (this.colors) {
-    $.each(this.colors, function (itub,tub){
-        var label_tub = $('<label>').text("Tub");
-        var label_colors = $('<label>').text("Fibres");
-        var input_tub = $('<input class="tub-name" type="text" class="readonly">').attr('value',tub.name);
-        var this_tub = $('<div class="row">')
-                      .append($('<div class="col-s-12">')
-                        .append($('<div class="row">')
-                          .append($('<div class="col-s-1">')
-                            .append(label_tub)
-                          )
-                          .append($('<div class="col-s-11">')
-                            .append(input_tub)
-                          )
-                        )
-                        .append($('<div class="row">')
-                          .append($('<div class="col-s-1">')
-                            .append(label_colors)
-                          )
-                        )
-                      );
-        var this_fibers = $('<div class="row">');
-
-        input_tub.on('change', function(e) { that.onChangeTub(e, itub); } );
-
-        $.each(tub.fibers, function (ifiber, fiber){
-          var this_remove_link = $('<a>')
-                              .html("X");
-          var input_fiber = $('<input class="fiber-name" type="text" class="readonly">').attr('value',fiber.color);
-          var col_line_Name = $('<div class="col-s-3">')
-              .append($('<div class="input-group">')
-                .append( input_fiber )
-                .append($('<span class="input-group-addon supplement input-close">')
-                  .append( this_remove_link )
-                )
-              );
-          this_remove_link.on('click', function(e) { that.onRemoveFiber(e, itub, ifiber); } );
-          input_fiber.on('change', function(e) { that.onChangeFiber(e, itub, ifiber); } );
-
-          this_fibers.append(col_line_Name);
-        });
-        var add_fiber = $('<div class="col-s-3">')
-                        .append($('<button>')
-                          .text('Afegir fibra...')
-                        );
-        add_fiber.on('click', function(e){ that.onAddFiber(e,itub);});
-
-        this_fibers.append(add_fiber);
-
-        $('#div-path-colors-gui').append(this_tub).append(this_fibers);
-    });
-  }
-  var add_tub = $('<div class="row">')
-                .append($('<div class="col-s-12">')
-                  .append($('<button>')
-                    .text('Afegir tub...')
-                  )
-                );
-  add_tub.on('click', function(e){ that.onAddTub(e); });
-  $('#div-path-colors-gui').append(add_tub);
-
-};
-Path.prototype.onRemoveFiber = function(e, itub, ifiber) {
-    var that = this;
-    delete that.colors[itub].fibers[ifiber];
-    // delete mark item like "undefined", need clear array.
-    that.colors[itub].fibers = $.grep(that.colors[itub].fibers,function(n){ return n == 0 || n; });
-    $('#path-colors').val(JSON.stringify(that.colors));
-    that.drawColors();
-    e.stopPropagation();
-    return false;
-};
-Path.prototype.onChangeFiber = function(e, itub, ifiber) {
-    var that = this;
-    that.colors[itub].fibers[ifiber].color =  $(e.currentTarget).val();
-    $('#path-colors').val(JSON.stringify(that.colors));
-    e.stopPropagation();
-    return false;
-};
-Path.prototype.onChangeTub = function(e, itub) {
-    var that = this;
-    that.colors[itub].name =  $(e.currentTarget).val();
-    $('#path-colors').val(JSON.stringify(that.colors));
-    e.stopPropagation();
-    return false;
-};
-Path.prototype.onAddTub = function(e) {
-  var that = this;
-  if (that.colors == null || that.colors == "") {
-    that.colors = new Array({"name":"", "fibers":[]});
-  } else {
-    that.colors.push({"name":"", "fibers":[]});
-  }
-  $('#path-colors').val(JSON.stringify(that.colors));
-  that.drawColors();
-  e.stopPropagation();
-  return false;
-};
-Path.prototype.onAddFiber = function(e, itub) {
-  var that = this;
-  that.colors[itub].fibers.push({"color":""});
-  $('#path-colors').val(JSON.stringify(that.colors));
-  that.drawColors();
-  e.stopPropagation();
-  return false;
 };
 module.exports = exports = Path;

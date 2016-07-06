@@ -20,7 +20,11 @@ function Mapa(divMap){
   this.type_site = ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
   this.type_site_icon = [];
   this.type_site_icon_over = [];
+  this.type_site_icon_active = [];
   this.type_site_default = this.type_site[0];
+
+  // Llistat tancat? (TODO: Passar-ho a una taula.)
+  this.type_path = ['Aeri', 'Façana', 'Soterrat'];
 
   // Estatus
   this.status = "";
@@ -80,6 +84,9 @@ function Mapa(divMap){
     // Icon Over
     eval ("var " +  name + "OverIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".over.png'}});");
     eval ("this.type_site_icon_over['" + name +"'] = new " + name +"OverIcon();");
+    // Icon Active
+    eval ("var " +  name + "ActiveIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".active.png'}});");
+    eval ("this.type_site_icon_active['" + name +"'] = new " + name +"ActiveIcon();");
   }
   console.log(this);
   // Posicio inicial i zoom.
@@ -258,7 +265,7 @@ Mapa.prototype.load = function (){
     $.getJSON(strUrl, function (data) {
       // Iterem
       $.each(data, function (index, value) {
-        path = new Path(value.id, value.name, value.fsiteId, value.lsiteId, $.parseJSON(value.intermedial), that);
+        path = new Path(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), that);
         path.colors = null;
         try {
           path.colors = $.parseJSON(value.colors);
