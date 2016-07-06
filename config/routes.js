@@ -96,6 +96,30 @@ module.exports = [
   },
 
   /**
+    * Path.
+    */
+   {
+     method: [ 'GET' ],
+     path: '/api/v1/path/{id?}',
+     handler: 'PathController.find'
+   },
+   {
+     method: [ 'POST' ],
+     path: '/api/v1/path',
+     handler: 'PathController.create'
+   },
+   {
+     method: [ 'PUT', 'PATCH' ],
+     path: '/api/v1/path/{id?}',
+     handler: 'PathController.update'
+   },
+   {
+     method: [ 'DELETE' ],
+     path: '/api/v1/path/{id?}',
+     handler: 'PathController.destroy'
+   },
+
+  /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */
   {
