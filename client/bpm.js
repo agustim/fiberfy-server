@@ -14,6 +14,7 @@ function Mapa(divMap){
   // create a tileLayer with the tiles, attribution
   this.tiles = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   this.serverUrl = "/api/v1";
+  this.project_default_name = "default";
 
   // Estatus
   this.status = "";
@@ -98,14 +99,13 @@ function Mapa(divMap){
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
 
-  $('#environment').click(function(){ that.clickMenu(this); that.configEnvironment(); });
+  $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
 
   $('.back_map').click(function(){ that.clickMenu(this); that.backMap(); });
   $('.back_site').click(function(){ that.backSite(); });
   $('#fusion_graph').click(function(){ that.fusionSite(); });
   $('#back_fusion').click(function(){ that.backFusion(); });
 
-  //this.load();
   this.loadProjects();
 }
 Mapa.prototype.tileLayer = function(){
@@ -117,9 +117,12 @@ Mapa.prototype.tileLayer = function(){
   this.layer.addTo(this.map);
 };
 
-Mapa.prototype.loadProjects = function (arr, callback){
+/* Project resouces */
+Mapa.prototype.loadProjects = function (){
   var that = this;
 
+  // Netejem l'array en cas de que hi hagi algo.
+  this.projects = [];
   strUrl = that.serverUrl + "/project";
   $.getJSON(strUrl, function (data) {
     // Iterem
@@ -127,9 +130,35 @@ Mapa.prototype.loadProjects = function (arr, callback){
       project = new Project(value.id, value.name, that);
       that.projects.push(project);
     });
+    // Hi ha projecte actiu?
+    if (!that.active_project){
+      // No hi ha cap actiu, però tampoc té cap projecte, creem un per defecte.
+      if (that.projects.length == 0){
+        project = new Project(0, that.project_default_name , that);
+        project.save();
+        that.projects.push(project);
+      }
+      that.active_project = that.projects[0];
+    }
     that.drawProjects();
+    // Ara fem un "load", per què quan arribem aquí ja tenim projecte.
+    if (that.active_project.id != 0){
+      that.load();
+    }
   });
 };
+
+Mapa.prototype.findProject = function(id) {
+  var that = this;
+
+  for(idx_project in that.projects){
+    var value = that.projects[idx_project];
+    if (value.id == id) {
+      return value;
+    }
+  }
+  return null;
+}
 
 Mapa.prototype.drawProjects = function (){
   var that = this;
@@ -145,15 +174,24 @@ Mapa.prototype.drawProjects = function (){
   var llista = $("<div id='project-list'>");
   $(listprojects).html(llista);
   $.each(that.projects, function(index,value){
+    // És l'Actiu?
+    var projectName = value.name;
+    var buttonActiveProject = '';
+    if (value.id == that.active_project.id) {
+      projectName = "<label class='active'>" + projectName + "</label>";
+      buttonActiveProject = "<label class='active'>Project Actived</label>";
+    } else {
+      buttonActiveProject = '<button class="active-project-button" id="active-project-' + value.id + '" data-id="' + value.id + '">Active</button>' +
+                    '   <button class="delete-project-button" id="delete-project-' + value.id + '" data-id="' + value.id + '">Delete</button>' ;
+    }
     var row = '<div class="row">' +
               ' <div class="col-s-6">' +
               '   <div class="project-item" id="project-' + value.id + '">' +
-                    value.name +
+                    projectName +
               '   </div>' +
               ' </div>' +
               ' <div class="col-s-6">' +
-              '   <button class="active-project-button" id="active-project-' + value.id + '" data-id="' + value.id + '">Active</button>' +
-              '   <button class="delete-project-button" id="delete-project-' + value.id + '" data-id="' + value.id + '">Delete</button>' +
+              buttonActiveProject +
               ' </div>' +
               '</div>';
     llista.append(row);
@@ -170,7 +208,18 @@ Mapa.prototype.drawProjects = function (){
       that.notify("Has de posar un nom de projecte!");
     }
   })
+  $('.delete-project-button').on('click', function(e) {
+    var project = that.findProject($('#'+e.target.id).data("id"));
+    project.delete();
+    that.loadProjects();
+  })
+  $('.active-project-button').on('click', function(e) {
+    var project = that.findProject($('#'+e.target.id).data("id"));
+    that.active_project = project;
+    that.loadProjects();
+  })
 };
+/* End of Project resources */
 
 Mapa.prototype.load = function (){
   var that =  this;
@@ -259,6 +308,7 @@ Mapa.prototype.backMap = function(){
   $('#zoom-fusion-graph-group').addClass('hide');
   $('#zoom-site-group').addClass('hide');
   $('#zoom-path-group').addClass('hide');
+  $('#form-project-group').addClass('hide');
   Config.closeForm();
 
   this.changeStatus("","");
@@ -268,6 +318,7 @@ Mapa.prototype.backSite = function(){
   $('#zoom-site-fusion-group').addClass('hide');
   $('#zoom-fusion-graph-group').addClass('hide');
   $('#zoom-site-group').removeClass('hide');
+  $('#form-project-group').addClass('hide');
   this.changeStatus("","");
 };
 Mapa.prototype.fusionSite = function(){
@@ -276,6 +327,7 @@ Mapa.prototype.fusionSite = function(){
   $('#zoom-site-fusion-group').addClass('hide');
   $('#zoom-fusion-graph-group').removeClass('hide');
   $('#zoom-site-group').addClass('hide');
+  $('#form-project-group').addClass('hide');
   this.changeStatus("","");
   var graph = new Pfusion($('#fusionGraph')[0],this.active_site);
   graph.draw();
@@ -286,6 +338,7 @@ Mapa.prototype.backFusion = function(){
   $('#zoom-site-fusion-group').removeClass('hide');
   $('#zoom-fusion-graph-group').addClass('hide');
   $('#zoom-site-group').addClass('hide');
+  $('#form-project-group').addClass('hide');
   this.changeStatus("","");
 };
 
@@ -307,9 +360,9 @@ Mapa.prototype.onClick = function(e) {
       break;
   }
 };
-Mapa.prototype.configEnvironment = function (){
+Mapa.prototype.projectManager = function (){
   $('#map-group').hide();
-  $('#form-config-group').removeClass('hide');
+  $('#form-project-group').removeClass('hide');
 };
 Mapa.prototype.makeSection = function (){
   this.changeStatus("path", "#make_section");

@@ -36,9 +36,6 @@ Project.prototype.delete = function(){
     $.delete( strUrl+"/"+this.id, JSON.stringify({ "id": this.id }))
       .done(function( data ) {
         that.map_parent.notify("Delete!");
-        that.map_parent.projects = $.grep(that.map_parent_project, function(value){
-          return value.id != that.id;
-        })
       }, "json");
   }
 };
