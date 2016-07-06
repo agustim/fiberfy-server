@@ -22,7 +22,8 @@ module.exports = {
     require('trailpack-express'),
     require('trailpack-waterline'),
     require('trailpack-footprints'),
-    require('trailpack-passport-auth')
+    require('trailpack-passport-auth-generic')
+
   ],
 
   /**

@@ -9,9 +9,11 @@ var Site = function(id, name, latlng, m){
   this.latlng = latlng; // Posició del Lloc
   this.id = id;  // Identificador
   this.type = null;  // Tipus de lloc
+  this.status = 'create';
   this.observations = null;  // Observacions
   this.marker = null;  // Marcador en el mapa
   this.map_parent = m;  // referencia al mapa on està
+
   this.boxs = new Array(); // Coses que hi ha al site
   this.actualFusionSite = null;  // L'última grup de dades d'una fusió
 };
@@ -21,13 +23,18 @@ Site.prototype.save = function (){
   strUrl = this.map_parent.serverUrl + "/site";
   console.log('API call: ' + strUrl);
   if (this.id == 0 || this.id == null) {
-    $.post( strUrl, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat, "longitude": this.latlng.lng }))
+    $.post( strUrl, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
+        "longitude": this.latlng.lng, "project": this.map_parent.active_project.id,
+        "type": this.type, "status": this.status}))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.id = data.id;
       }, "json");
   } else {
-    $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat, "longitude": this.latlng.lng, "observations" : this.observations }))
+    $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
+        "longitude": this.latlng.lng, "project": this.map_parent.active_project.id ,
+        "type": this.type, "status": this.status,
+        "observations" : this.observations }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
       }, "json");
@@ -132,24 +139,22 @@ Site.prototype.siteDefine = function() {
   }
   // Netejem events anteriors:
   $('#site-update').unbind("click");
-  $('#site-fusion').unbind("click");
 
   // Load formulari
   $('#site-name').val(this.name);
   $('#site-latitude').val(this.latlng.lat);
   $('#site-longitude').val(this.latlng.lng);
+  $('#site-status').val(this.status);
   $('#site-observation').val(this.observations);
+  this.loadTypes($('#site-type'));
   // El declarem events
   $('#site-update').on('click', function(e){
     that.name = $('#site-name').val();
     that.latlng = L.latLng($('#site-latitude').val(), $('#site-longitude').val());
+    that.type = $('#site-type').val();
+    that.status = $('#site-status').val();
     that.observations = $('#site-observation').val();
     that.save();
-  });
-
-  $('#site-fusion').on('click', function(e){
-    that.siteFusion();
-    $('#zoom-site-group').toggleClass('hide');
   });
 
   // Neteja el que ja tenia
@@ -173,6 +178,20 @@ Site.prototype.siteDefine = function() {
   $('#map-group').hide();
   $('#zoom-site-group').toggleClass('hide');
 };
+Site.prototype.loadTypes = function(SelectField){
+  var that = this;
+
+  // FALTA netejar les opcions!!!
+  $.each(this.map_parent.type_site, function(key, value) {
+    var option = $("<option></option>")
+                    .attr("value",value)
+                    .text(value);
+    if (that.type == value) {
+      option.attr("selected","selected");
+    }
+    SelectField.append(option);
+});
+}
 Site.prototype.deleteBox = function(uuid){
     //Buscar el box, i esborrar-lo
     box = this.boxs[uuid];

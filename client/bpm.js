@@ -16,6 +16,9 @@ function Mapa(divMap){
   this.serverUrl = "/api/v1";
   this.project_default_name = "default";
 
+  // Llistat tancat? (TODO: Passar-ho a una taula.)
+  this.type_site = ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
+
   // Estatus
   this.status = "";
   // Trams

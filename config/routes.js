@@ -48,26 +48,8 @@ module.exports = [
 
 
   /**
-   * Constrain the DefaultController.info handler to accept only GET requests.
+   * Projects.
    */
-  /*
-  {
-    method: [ 'GET' ],
-    path: '/api/v1/site',
-    handler: 'SiteController.list'
-  },
-  {
-    method: [ 'POST' ],
-    path: '/api/v1/site',
-    handler: 'SiteController.post'
-  },
-  {
-    method: [ 'GET' ],
-    path: '/api/v1/site/{id}',
-    handler: 'SiteController.get'
-  },
-  */
-
   {
     method: [ 'GET' ],
     path: '/api/v1/project/{id?}',
@@ -88,6 +70,32 @@ module.exports = [
     path: '/api/v1/project/{id?}',
     handler: 'ProjectController.destroy'
   },
+
+  /**
+   * Site.
+   */
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/site/{id?}',
+    handler: 'SiteController.find'
+  },
+  {
+    method: [ 'POST' ],
+    path: '/api/v1/site',
+    handler: 'SiteController.create'
+  },
+  {
+    method: [ 'PUT', 'PATCH' ],
+    path: '/api/v1/site/{id?}',
+    handler: 'SiteController.update'
+  },
+  {
+    method: [ 'DELETE' ],
+    path: '/api/v1/site/{id?}',
+    handler: 'SiteController.destroy'
+  },
+
+
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */

@@ -12,7 +12,7 @@ module.exports = class ProjectController extends Controller{
     return('Project')
   }
 
-  create(request, reply, res) {
+  create(request, reply) {
     const FootprintService = this.app.services.FootprintService
 
     request.body.user = request.user.id
