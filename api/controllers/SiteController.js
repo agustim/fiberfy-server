@@ -20,7 +20,7 @@ module.exports = class SiteController extends Controller{
     if (!request.body
       || !request.body.user
       || !request.body.project) {
-      res.json({flag: false, data: '', message: 'Error!'})
+      reply.json({flag: false, data: '', message: 'Error!'})
     }
 
     FootprintService.create(this._Model(), request.body)
