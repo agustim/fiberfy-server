@@ -30,6 +30,7 @@ Site.prototype.save = function (){
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.id = data.id;
+        that.changeTypeIcon(that.type);
       }, "json");
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
@@ -39,6 +40,7 @@ Site.prototype.save = function (){
         "observations" : this.observations }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
+        that.changeTypeIcon(that.type);
       }, "json");
   }
 };
@@ -55,10 +57,13 @@ Site.prototype.draw = function (){
     this.save();
 };
 
-Site.prototype.changeTypeIcon = function (type){
+Site.prototype.changeTypeIcon = function (type, status){
   type = type.toLowerCase();
-  console.log(this.map_parent.type_site_icon[type]);
-  this.map_parent.setIconInSiteById(this.id, this.map_parent.type_site_icon[type]);
+  var icon = this.map_parent.type_site_icon[type];
+  if (status == 'over'){
+    icon = this.map_parent.type_site_icon_over[type];
+  }
+  this.map_parent.setIconInSiteById(this.id, icon);
 };
 
 Site.prototype.onSiteMouseOver = function (e){
@@ -70,7 +75,7 @@ Site.prototype.onSiteMouseOver = function (e){
       break;
     default :
       this.map_parent.info.update('Site ' + this.name + '(' + this.id + ')');
-      this.map_parent.setIconInSiteById(this.id, this.map_parent.greenMarker);
+      this.changeTypeIcon(this.type,'over');
       $('#make_site').text('Edita Lloc');
       break;
   }
@@ -84,7 +89,7 @@ Site.prototype.onSiteMouseOut = function (e){
       break;
     default :
       this.map_parent.info.update('');
-      this.map_parent.setIconInSiteById(this.id, this.map_parent.blueMarker);
+      this.changeTypeIcon(this.type);
       $('#make_site').text('Crea Lloc');
       break;
   }

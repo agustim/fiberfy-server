@@ -19,6 +19,7 @@ function Mapa(divMap){
   // Llistat tancat? (TODO: Passar-ho a una taula.)
   this.type_site = ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
   this.type_site_icon = [];
+  this.type_site_icon_over = [];
   this.type_site_default = this.type_site[0];
 
   // Estatus
@@ -73,8 +74,12 @@ function Mapa(divMap){
   for(idx in this.type_site){
     var name = this.type_site[idx];
     name = name.toLowerCase();
+    // Icon Base
     eval ("var " +  name + "Icon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".png'}});");
     eval ("this.type_site_icon['" + name +"'] = new " + name +"Icon();");
+    // Icon Over
+    eval ("var " +  name + "OverIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".over.png'}});");
+    eval ("this.type_site_icon_over['" + name +"'] = new " + name +"OverIcon();");
   }
   console.log(this);
   // Posicio inicial i zoom.
