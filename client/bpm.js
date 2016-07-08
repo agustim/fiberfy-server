@@ -283,14 +283,7 @@ Mapa.prototype.load = function (){
     $.getJSON(strUrl, function (data) {
       // Iterem
       $.each(data, function (index, value) {
-        path = new Path(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), that);
-        path.colors = null;
-        try {
-          path.colors = $.parseJSON(value.colors);
-        } catch (e) {
-          console.log(e);
-          console.log(value.colors);
-        }
+        path = new Path(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), value.type, that);
         path.observations = value.observations;
         that.paths.push(path);
       });

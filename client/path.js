@@ -1,11 +1,11 @@
 //=====================
 // Tram
-function Path(id, name, first_site, end_site, dots, m){
+function Path(id, name, first_site, end_site, dots, type, m){
   this.id = id;
   this.name = name;
   this.first_site = first_site;
   this.end_site = end_site;
-  this.type = m.type_path_default;
+  this.type = (!type) ? m.type_path_default : type;
   this.polyline = null;
   this.dots = dots;
   this.color_building = "red";
@@ -66,7 +66,7 @@ Path.prototype.draw = function() {
 
   this.polyline = new L.Polyline(this.dots, {
       color: color,
-      weight: 3,
+      weight: 5,
       opacity: 0.5,
       smoothFactor: 1
   }).on('click', function(e) { return that.onPathClick(e); })
@@ -145,6 +145,7 @@ Path.prototype.updateForm = function (){
                                   "observations": this.observations }))
     .done(function( data ) {
       that.map_parent.notify("Updated!");
+      that.draw();
     }, "json");
 };
 Path.prototype.editForm = function() {

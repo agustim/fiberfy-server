@@ -118,7 +118,7 @@ Site.prototype.onSiteClick = function (e){
         // No n'hi ha cap actiu, el creem.
         console.log('inici tram.');
         this.changeTypeIcon('acitve');
-        this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent);
+        this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent);
         this.map_parent.active_path.setFirstSite(this);
       }
       break;
