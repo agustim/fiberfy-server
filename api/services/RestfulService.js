@@ -14,7 +14,7 @@ module.exports = class RestfulService extends Service {
     const FootprintService = this.app.services.FootprintService
 
     this.log.debug('[',this.constructor.name,'] (create) model =',
-      model, ', criteria =', request.query, id,
+      model, ', criteria =', request.query,
       ', values = ', request.body)
 
     request.body.user = request.user.id

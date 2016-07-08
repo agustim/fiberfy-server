@@ -30,7 +30,7 @@ Site.prototype.save = function (){
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.id = data.id;
-        that.changeTypeIcon(that.type);
+        that.changeTypeIcon();
       }, "json");
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
@@ -40,7 +40,7 @@ Site.prototype.save = function (){
         "observations" : this.observations }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
-        that.changeTypeIcon(that.type);
+        that.changeTypeIcon();
       }, "json");
   }
 };
@@ -56,30 +56,38 @@ Site.prototype.draw = function (){
                   .on('mouseover', function() { return that.onSiteMouseOver(); })
                   .on('mouseout', function() { return that.onSiteMouseOut(); })
                   .addTo(this.map_parent.map);
-  this.changeTypeIcon(this.type);
+  this.changeTypeIcon();
   if (!this.id)
     this.save();
 };
 
-Site.prototype.changeTypeIcon = function (type, status){
+Site.prototype.changeTypeIcon = function (status, type){
+  if (!type) { type = this.type; }
   type = type.toLowerCase();
-  var icon = this.map_parent.type_site_icon[type];
-  if (status == 'over'){
-    icon = this.map_parent.type_site_icon_over[type];
+  var icon;
+  switch( status ){
+    case "over":
+      icon = this.map_parent.type_site_icon_over[type];
+      break;
+    case "active":
+      icon = this.map_parent.type_site_icon_active[type];
+      break;
+    default:
+      icon = this.map_parent.type_site_icon[type];
   }
-  this.map_parent.setIconInSiteById(this.id, icon);
+  this.marker.setIcon(icon);
 };
 
 Site.prototype.onSiteMouseOver = function (e){
   switch(this.map_parent.status) {
     case 'path':
       if ((this.map_parent.active_path) && (this.map_parent.active_path.first_site)){
-        this.map_parent.setIconInSiteById(this.id, this.map_parent.redMarker);
+        this.changeTypeIcon('active');
       }
       break;
     default :
       this.map_parent.info.update('Site ' + this.name + '(' + this.id + ')');
-      this.changeTypeIcon(this.type,'over');
+      this.changeTypeIcon('over');
       $('#make_site').text('Edita Lloc');
       break;
   }
@@ -88,12 +96,12 @@ Site.prototype.onSiteMouseOut = function (e){
   switch(this.map_parent.status) {
     case 'path':
       if ((this.map_parent.active_path) && (this.map_parent.active_path.first_site) && (this.map_parent.active_path.first_site != this.id)){
-        this.map_parent.setIconInSiteById(this.id, this.map_parent.blueMarker);
+        this.changeTypeIcon();
       }
       break;
     default :
       this.map_parent.info.update('');
-      this.changeTypeIcon(this.type);
+      this.changeTypeIcon();
       $('#make_site').text('Crea Lloc');
       break;
   }
@@ -109,7 +117,7 @@ Site.prototype.onSiteClick = function (e){
       } else {
         // No n'hi ha cap actiu, el creem.
         console.log('inici tram.');
-        this.marker.setIcon(this.map_parent.redMarker);
+        this.changeTypeIcon('acitve');
         this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent);
         this.map_parent.active_path.setFirstSite(this);
       }
@@ -170,7 +178,7 @@ Site.prototype.loadTypes = function(SelectField){
       option.attr("selected","selected");
     }
     SelectField.append(option);
-});
+  });
 }
 Site.prototype.deleteBox = function(uuid){
     //Buscar el box, i esborrar-lo

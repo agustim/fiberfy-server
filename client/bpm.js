@@ -25,6 +25,12 @@ function Mapa(divMap){
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
   this.type_path = ['Aeri', 'Façana', 'Soterrat'];
+  this.type_path_colors = [];
+  this.type_path_colors['normal'] = [ "#000080", "#254117", "#806517"  ];
+  this.type_path_colors['over']   = [ '#95b9c7','#99C68E', '#AF9B60' ];
+  this.type_path_colors['active'] = [ '#357ec7','#7FE817', '#E8A317' ];
+  this.type_path_default = this.type_path[0];
+
 
   // Estatus
   this.status = "";
@@ -480,11 +486,11 @@ function existMerger(tram, tub, color, mergers){
   }
   return "";
 }
-Mapa.prototype.setIconInSiteById = function (id, Icon){
+Mapa.prototype.setIconInSiteById = function (id, status, type){
   for(idx_site in this.sites){
     site = this.sites[idx_site];
     if (site.id == id){
-      site.marker.setIcon(Icon);
+      site.changeTypeIcon(status, type);
       break;
     }
   }

@@ -5,7 +5,7 @@ function Path(id, name, first_site, end_site, dots, m){
   this.name = name;
   this.first_site = first_site;
   this.end_site = end_site;
-  this.type = null
+  this.type = m.type_path_default;
   this.polyline = null;
   this.dots = dots;
   this.color_building = "red";
@@ -23,8 +23,8 @@ Path.prototype.setEndSite = function(b){
   this.end_site = b.id;
   this.dots.push(b.latlng);
   this.draw();
-  this.map_parent.setIconInSiteById(this.first_site, this.map_parent.blueMarker);
-  this.map_parent.setIconInSiteById(this.end_site, this.map_parent.blueMarker);
+  this.map_parent.setIconInSiteById(this.first_site);
+  this.map_parent.setIconInSiteById(this.end_site);
   this.map_parent.paths.push(this);
   this.map_parent.active_path = "";
   if (this.end_site != this.first_site) {
@@ -34,6 +34,21 @@ Path.prototype.setEndSite = function(b){
     this.clear();
   }
 };
+Path.prototype.changeTypePath = function(status, type) {
+  if (!type) type = this.type;
+  if (!type) type = this.map_parent.type_path_default;
+  type_idx = this.map_parent.type_path.indexOf(type);
+  var color;
+  switch( status ){
+    case "over":
+    case "active":
+      color = this.map_parent.type_path_colors[status][type_idx];
+      break;
+    default:
+      color = this.map_parent.type_path_colors['normal'][type_idx];
+  }
+  return color;
+}
 Path.prototype.clear = function() {
   this.map_parent.map.removeLayer(this.polyline);
 };
@@ -45,7 +60,9 @@ Path.prototype.draw = function() {
     this.clear();
   }
 
-  var color = (this.end_site) ? this.color_did : this.color_building;
+  console.log(this);
+  var color = (this.end_site) ? this.changeTypePath() : this.changeTypePath('active');
+  console.log(color);
 
   this.polyline = new L.Polyline(this.dots, {
       color: color,
@@ -78,11 +95,26 @@ Path.prototype.save = function (){
     return;
   }
   $.post( strUrl, JSON.stringify({ "first": this.first_site, "last": this.end_site,
-              "intermedial": JSON.stringify(this.dots), "project": this.map_parent.active_project.id }))
+              "intermedial": JSON.stringify(this.dots), "project": this.map_parent.active_project.id,
+              "type": this.type}))
     .done(function( data ) {
       that.id = data.id;
     }, "json");
 };
+Path.prototype.loadTypes = function(SelectField){
+  var that = this;
+
+  SelectField.find('option').remove().end();
+  $.each(this.map_parent.type_path, function(key, value) {
+    var option = $("<option></option>")
+                    .attr("value",value)
+                    .text(value);
+    if (that.type == value) {
+      option.attr("selected","selected");
+    }
+    SelectField.append(option);
+  });
+}
 Path.prototype.updateForm = function (){
   var that = this;
   // Carraguem els caps del formulari al objecte
@@ -91,6 +123,7 @@ Path.prototype.updateForm = function (){
   this.first_site = $('#path-first-site').val();
   this.end_site = $('#path-end-site').val();
   this.dots = $.parseJSON($('#path-intermedial').val());
+  this.type = $('#path-type').val();
   try {
     this.colors = $.parseJSON($('#path-colors').val());
   } catch(err) {
@@ -105,8 +138,11 @@ Path.prototype.updateForm = function (){
     return;
   }
   // Not exist $.put need use $.ajax
-  $.put( strUrl, JSON.stringify({ "name": this.name, "first": this.first_site, "last": this.end_site, "intermedial": this.dots ,
-                                  "colors": this.colors, "project": this.map_parent.active_project, "observations": this.observations }))
+  $.put( strUrl, JSON.stringify({ "name": this.name, "first": this.first_site, "last": this.end_site,
+                                  "intermedial": JSON.stringify(this.dots) ,
+                                  "colors": this.colors, "project": this.map_parent.active_project.id,
+                                  "type": this.type,
+                                  "observations": this.observations }))
     .done(function( data ) {
       that.map_parent.notify("Updated!");
     }, "json");
@@ -125,6 +161,7 @@ Path.prototype.editForm = function() {
   $('#path-observations').val(this.observations);
   $('#path-update').click(function(){ that.updateForm();});
 
+  this.loadTypes($('#path-type'));
   // Canviem de pàgina
   $('#map-group').hide();
   $('#zoom-path-group').toggleClass('hide');
@@ -145,11 +182,11 @@ Path.prototype.onPathClick = function(e){
 };
 Path.prototype.onPathMouseOver = function(e) {
   this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')');
-  this.polyline.setStyle( { color: this.color_mouseover });
+  this.polyline.setStyle( { color: this.changeTypePath('over') });
 };
 Path.prototype.onPathMouseOut = function(e) {
   this.map_parent.info.update('');
-  this.polyline.setStyle( { color: this.color_did });
+  this.polyline.setStyle( { color: this.changeTypePath() });
 };
 
 Path.prototype.distance = function (){
