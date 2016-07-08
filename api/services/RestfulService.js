@@ -1,23 +1,31 @@
 'use strict'
 
-const Controller = require('trails-controller')
+const Service = require('trails-service')
 
 /**
- * @module ProjectController
- * @description Controller for projects.
+ * @module RestfulService
+ *
+ * @description "Special" object to restfulService with user and project.
+ * @this
  */
-module.exports = class ProjectController extends Controller{
+module.exports = class RestfulService extends Service {
 
-  _Model() {
-    return('Project')
-  }
-
-  create(request, reply) {
+  create(model, request, reply) {
     const FootprintService = this.app.services.FootprintService
+
+    this.log.debug('[',this.constructor.name,'] (create) model =',
+      model, ', criteria =', request.query, id,
+      ', values = ', request.body)
 
     request.body.user = request.user.id
 
-    FootprintService.create(this._Model(), request.body)
+    if (!request.body
+      || !request.body.user
+      || !request.body.project) {
+      reply.json({flag: false, data: '', message: 'Error!'})
+    }
+
+    FootprintService.create(model, request.body)
       .then(elements => {
         reply.status(200).json(elements || {})
       }).catch(error => {
@@ -33,18 +41,23 @@ module.exports = class ProjectController extends Controller{
       })
   }
 
-  find(request, reply) {
+  find(model, request, reply) {
     const FootprintService = this.app.services.FootprintService
 
+    const project = parseInt(request.query.project);
     const id = request.params.id
+
+    this.log.debug('[',this.constructor.name,'] (find) model =',
+      model, ', criteria =', request.query, id,
+      ', values = ', request.body)
 
     let response
 
     let where =  { user: request.user.id }
     if (id) where.id = id
+    if (project) where.project = project
 
-    response = FootprintService.find(this._Model(), where)
-
+    response = FootprintService.find(model, where)
 
     response.then(elements => {
       reply.status(elements ? 200 : 404).json(elements || {})
@@ -61,17 +74,17 @@ module.exports = class ProjectController extends Controller{
     })
   }
 
-  update(request, reply) {
+  update(model, request, reply) {
     const FootprintService = this.app.services.FootprintService
     const id = request.params.id
-    this.log.debug('[ProjectController] (update) model =',
-      this._Model(), ', criteria =', request.query, id,
+    this.log.debug('[',this.constructor.name,'] (update) model =',
+      model, ', criteria =', request.query, id,
       ', values = ', request.body)
+    let response
 
     let where =  { user: request.user.id }
     if (id) where.id = id
-    response = FootprintService.update(this._Model(), where , request.body)
-
+    response = FootprintService.update(model, where , request.body)
 
     response.then(elements => {
       reply.status(200).json(elements || {})
@@ -89,17 +102,17 @@ module.exports = class ProjectController extends Controller{
 
   }
 
-  destroy(request, reply) {
+  destroy(model, request, reply) {
     const FootprintService = this.app.services.FootprintService
     const id = request.params.id
-    this.log.debug('[FootprintController] (destroy) model =',
-      this._Model(), ', criteria =', request.query, id, request.user.username, request.user.id)
+    this.log.debug('[',this.constructor.name,'] (destroy) model =',
+      model, ', criteria =', request.query, id, request.user.username, request.user.id)
 
     let response
 
     let where =  { user: request.user.id }
     if (id) where.id = id
-    response = FootprintService.destroy(this._Model(), where)
+    response = FootprintService.destroy(model, where)
 
     this.log.debug(response)
     response.then(elements => {
@@ -116,4 +129,5 @@ module.exports = class ProjectController extends Controller{
       }
     })
   }
+
 }
