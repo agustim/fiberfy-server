@@ -44,6 +44,10 @@ Site.prototype.save = function (){
       }, "json");
   }
 };
+Site.prototype.clear = function(){
+  var that = this;
+  this.map_parent.map.removeLayer(this.marker);
+}
 
 Site.prototype.draw = function (){
   var that = this;

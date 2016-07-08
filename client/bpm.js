@@ -249,10 +249,22 @@ Mapa.prototype.drawProjects = function (){
 
 Mapa.prototype.load = function (){
   var that =  this;
-  // Netejem les caixes existents al mapa?
+  // Netejem les caixes existents al mapa
+  for(var idx_site in this.sites){
+    var s = this.sites[idx_site];
+    s.clear();
+  }
+  this.sites = [];
+
+  // Netejem els paths existents al mapa
+  for(var idx_paths in this.paths){
+    var p = this.paths[idx_paths];
+    p.clear();
+  }
+  this.paths = [];
 
   // Carreguem les caixes.
-  strUrl = that.serverUrl + "/site?project="+this.active_project.id;
+  strUrl = that.serverUrl + "/site?project="+that.active_project.id;
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
@@ -261,7 +273,7 @@ Mapa.prototype.load = function (){
       that.sites.push(site);
     });
     // Carreguem els trams.
-    strUrl = that.serverUrl + "/path";
+    strUrl = that.serverUrl + "/path?project="+that.active_project.id;
     $.getJSON(strUrl, function (data) {
       // Iterem
       $.each(data, function (index, value) {

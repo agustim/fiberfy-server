@@ -46,16 +46,16 @@ module.exports = class PathController extends Controller{
     find(request, reply) {
       const FootprintService = this.app.services.FootprintService
 
+      const project = parseInt(request.query.project);
       const id = request.params.id
 
       let response
-      if (id) {
-        response = FootprintService.find(this._Model(), { id,  user: request.user.id })
-      }
-      else {
-        response = FootprintService.find(this._Model(), { user: request.user.id })
-      }
 
+      let where =  { user: request.user.id }
+      if (id) where.id = id
+      if (project) where.project = project
+
+      response = FootprintService.find(this._Model(), where)
 
       response.then(elements => {
         reply.status(elements ? 200 : 404).json(elements || {})
