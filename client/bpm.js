@@ -252,7 +252,7 @@ Mapa.prototype.load = function (){
   // Netejem les caixes existents al mapa?
 
   // Carreguem les caixes.
-  strUrl = that.serverUrl + "/site";
+  strUrl = that.serverUrl + "/site?project="+this.active_project.id;
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
