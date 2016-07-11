@@ -55,7 +55,7 @@ Site.prototype.draw = function (){
                   .on('click', function() { return that.onSiteClick(); })
                   .on('mouseover', function() { return that.onSiteMouseOver(); })
                   .on('mouseout', function() { return that.onSiteMouseOut(); })
-                  .addTo(this.map_parent.map);
+                  .addTo(that.map_parent.map);
   this.changeTypeIcon();
   if (!this.id)
     this.save();
@@ -64,6 +64,7 @@ Site.prototype.draw = function (){
 Site.prototype.changeTypeIcon = function (status, type){
   if (!type) { type = this.type; }
   type = type.toLowerCase();
+
   var icon;
   switch( status ){
     case "over":
@@ -72,8 +73,11 @@ Site.prototype.changeTypeIcon = function (status, type){
     case "active":
       icon = this.map_parent.type_site_icon_active[type];
       break;
+    case "grey":
+      icon = this.map_parent.type_site_icon_grey[type];
+      break;
     default:
-      icon = this.map_parent.type_site_icon[type];
+      icon = (this.map_parent.layerActive == "civil") ? this.map_parent.type_site_icon[type] : this.map_parent.type_site_icon_grey[type];
   }
   this.marker.setIcon(icon);
 };

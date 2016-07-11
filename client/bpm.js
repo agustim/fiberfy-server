@@ -21,6 +21,7 @@ function Mapa(divMap){
   this.type_site_icon = [];
   this.type_site_icon_over = [];
   this.type_site_icon_active = [];
+  this.type_site_icon_grey = [];
   this.type_site_default = this.type_site[0];
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
@@ -29,11 +30,14 @@ function Mapa(divMap){
   this.type_path_colors['normal'] = [ "#000080", "#254117", "#806517"  ];
   this.type_path_colors['over']   = [ '#95b9c7','#99C68E', '#AF9B60' ];
   this.type_path_colors['active'] = [ '#357ec7','#7FE817', '#E8A317' ];
+  this.type_path_colors['grey'] = [ '#2f2f2f', '#2f2f2f', '#2f2f2f' ]
   this.type_path_default = this.type_path[0];
-
 
   // Estatus
   this.status = "";
+
+  // Layer Active (civil, infra)
+  this.layerActive = "civil";
   // Trams
   // Dibuixant en aquest moment.
   this.active_path = null;
@@ -56,6 +60,8 @@ function Mapa(divMap){
   this.map = L.map(divMap, {
     scrollWheelZoom: false
   });
+
+
 // Declare new red Icon & blue icon.
 
   L.Icon.Default.imagePath = 'images';
@@ -93,6 +99,9 @@ function Mapa(divMap){
     // Icon Active
     eval ("var " +  name + "ActiveIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".active.png'}});");
     eval ("this.type_site_icon_active['" + name +"'] = new " + name +"ActiveIcon();");
+    // Icon Grey
+    eval ("var " +  name + "GreyIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".grey.png'}});");
+    eval ("this.type_site_icon_grey['" + name +"'] = new " + name +"GreyIcon();");
   }
   console.log(this);
   // Posicio inicial i zoom.
@@ -132,11 +141,18 @@ function Mapa(divMap){
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
+  $('#view_infrastructure').click(function() { that.changeMenu('infra'); })
 
   $('.back_map').click(function(){ that.clickMenu(this); that.backMap(); });
   $('.back_site').click(function(){ that.backSite(); });
   $('#fusion_graph').click(function(){ that.fusionSite(); });
   $('#back_fusion').click(function(){ that.backFusion(); });
+
+  /* Menu d'infraestructura */
+  $('#make_box').click(function(){ that.clickMenu(this); that.makeSection(); });
+  $('#make_fiber').click(function(){ that.clickMenu(this); that.makeSite(); });
+  $('#view_obracivil').click(function() { that.changeMenu('civil'); })
+
 
   this.loadProjects();
 }
@@ -311,6 +327,39 @@ Mapa.prototype.clearLayers = function() {
     that.map.removeLayer(layer);
   });
 };
+
+/* Canvi de menú entre infraestructura i obra civil */
+Mapa.prototype.changeMenu = function(option) {
+  switch (option){
+    case 'infra':
+      $('nav#civil').hide();
+      $('nav#infra').removeClass('hide');
+      break;
+    case 'civil':
+      $('nav#civil').show();
+      $('nav#infra').addClass('hide');
+      break;
+  }
+  this.layerActive = option;
+  this.changeColor(option);
+}
+
+Mapa.prototype.changeColor = function(option) {
+  var status = (option == "infra") ? "grey":"normal";
+  // Canviem els color a tots els llocs.
+  for(var idx_site in this.sites){
+    var s = this.sites[idx_site];
+    s.changeTypeIcon(status);
+  }
+  // Canviem els colors a tots els trams.
+  for(var idx_paths in this.paths){
+    var p = this.paths[idx_paths];
+    p.changeTypePath(status);
+  }
+}
+
+/* --- */
+
 Mapa.prototype.clickMenu = function(divActive) {
   $('nav.menu li a').removeClass('active');
   divSelect = $(divActive);

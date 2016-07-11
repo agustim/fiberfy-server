@@ -13,7 +13,7 @@ html(lang="ca")
 
   body
     #map-group
-      nav.menu
+      nav#civil.menu
         ul.active
           li
             a#make_site Crea Lloc
@@ -25,6 +25,17 @@ html(lang="ca")
             a#projects_manager Projectes
           li
             a#load Load Xoc
+        a#nav_responsive.toggle-nav
+          | ☰
+          label
+      nav#infra.menu.hide
+        ul.active
+          li
+            a#make_box Crea Caixa
+          li
+            a#make_fiber Tira fibra
+          li
+            a#view_obracivil Obra Civil
         a#nav_responsive.toggle-nav
           | ☰
           label

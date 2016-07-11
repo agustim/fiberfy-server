@@ -35,17 +35,22 @@ Path.prototype.setEndSite = function(b){
   }
 };
 Path.prototype.changeTypePath = function(status, type) {
+  this.polyline.setStyle( { color: this.findPathColor(status, type) });
+}
+Path.prototype.findPathColor = function(status, type) {
   if (!type) type = this.type;
   if (!type) type = this.map_parent.type_path_default;
   type_idx = this.map_parent.type_path.indexOf(type);
+
   var color;
   switch( status ){
     case "over":
     case "active":
+    case "grey":
       color = this.map_parent.type_path_colors[status][type_idx];
       break;
     default:
-      color = this.map_parent.type_path_colors['normal'][type_idx];
+      color = (this.map_parent.layerActive == 'civil') ? this.map_parent.type_path_colors['normal'][type_idx] : this.map_parent.type_path_colors['grey'][type_idx];
   }
   return color;
 }
@@ -60,7 +65,7 @@ Path.prototype.draw = function() {
     this.clear();
   }
 
-  var color = (this.end_site) ? this.changeTypePath() : this.changeTypePath('active');
+  var color = (this.end_site) ? this.findPathColor() : this.findPathColor('active');
 
   this.polyline = new L.Polyline(this.dots, {
       color: color,
@@ -71,6 +76,7 @@ Path.prototype.draw = function() {
     .on('mouseover', function(e) { return that.onPathMouseOver(e); })
     .on('mouseout', function(e) { return that.onPathMouseOut(e); })
     .addTo(this.map_parent.map);
+
 };
 Path.prototype.addPoint = function(point) {
   if (!this.end_site){
@@ -181,11 +187,11 @@ Path.prototype.onPathClick = function(e){
 };
 Path.prototype.onPathMouseOver = function(e) {
   this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')');
-  this.polyline.setStyle( { color: this.changeTypePath('over') });
+  this.changeTypePath('over');
 };
 Path.prototype.onPathMouseOut = function(e) {
   this.map_parent.info.update('');
-  this.polyline.setStyle( { color: this.changeTypePath() });
+  this.changeTypePath();
 };
 
 Path.prototype.distance = function (){
