@@ -60,9 +60,7 @@ Path.prototype.draw = function() {
     this.clear();
   }
 
-  console.log(this);
   var color = (this.end_site) ? this.changeTypePath() : this.changeTypePath('active');
-  console.log(color);
 
   this.polyline = new L.Polyline(this.dots, {
       color: color,
