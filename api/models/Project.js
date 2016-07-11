@@ -21,6 +21,15 @@ module.exports = class Project extends Model {
       },
       user: {
         model: 'User'
+      },
+      latitude: {
+        type: 'float'
+      },
+      longitude: {
+        type: 'float'
+      },
+      zoom: {
+        type: 'integer'
       }
     }
   }
