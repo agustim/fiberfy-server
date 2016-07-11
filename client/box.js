@@ -9,7 +9,7 @@ function Box(id, uuid, name, type, site, m) {
   this.observations = "";
   this.site_parent = site;
   this.map_parent = m;
-  this.type_box = [ "caixa", "poster", "punt final" ];
+  this.type_box = [ "caixa", "switch" ];
 }
 
 Box.prototype.addHtmlBox = function(){
