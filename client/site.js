@@ -81,10 +81,8 @@ Site.prototype.changeTypeIcon = function (status, type){
 Site.prototype.onSiteMouseOver = function (e){
   switch(this.map_parent.status) {
     case 'path':
-      if ((this.map_parent.active_path) && (this.map_parent.active_path.first_site)){
-        this.changeTypeIcon('active');
-      }
-      break;
+      this.changeTypeIcon('active');
+        break;
     default :
       this.map_parent.info.update('Site ' + this.name + '(' + this.id + ')');
       this.changeTypeIcon('over');
@@ -95,7 +93,8 @@ Site.prototype.onSiteMouseOver = function (e){
 Site.prototype.onSiteMouseOut = function (e){
   switch(this.map_parent.status) {
     case 'path':
-      if ((this.map_parent.active_path) && (this.map_parent.active_path.first_site) && (this.map_parent.active_path.first_site != this.id)){
+      if (((this.map_parent.active_path) && (this.map_parent.active_path.first_site) && (this.map_parent.active_path.first_site != this.id))
+          || (!this.map_parent.active_path)){
         this.changeTypeIcon();
       }
       break;
