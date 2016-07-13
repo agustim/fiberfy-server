@@ -350,6 +350,7 @@ Mapa.prototype.changeMenu = function(option) {
       break;
   }
   this.layerActive = option;
+  this.status = "";
   this.changeColor(option);
 }
 

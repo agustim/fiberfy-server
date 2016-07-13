@@ -133,8 +133,11 @@ Site.prototype.onSiteClick = function (e){
       this.siteDefine();
       break;
     case "box":
-      this.addBox();
+      this.boxDefine();
       break;
+    case "":
+      if (this.map_parent.layerActive == 'civil') this.siteDefine();
+      else this.boxDefine();
     }
 };
 // Pagina de Site
@@ -185,13 +188,51 @@ Site.prototype.loadTypes = function(SelectField){
     SelectField.append(option);
   });
 };
+Site.prototype.boxDefine = function(){
+  var that = this;
+  // Remove click event.
+  $('#box-new').unbind("click");
+  // Frist clear box form.
+  $(".box").html("");
+  // Load existen boxes.
+  this.boxes = [];
+  this.loadBoxes();
+  // Add click of add Button.
+  $('#box-new').on("click", function(){
+    that.addBox();
+  })
+  // Hidden and Show div's
+  $('#map-group').hide();
+  $('#zoom-box-group').toggleClass('hide');
+}
+// Carraguem els seus boxs
+Site.prototype.loadBoxes = function() {
+  var that = this;
+  strUrl = that.map_parent.serverUrl + "/site/" + that.id + "/boxes";
+  $.getJSON(strUrl, function (data) {
+    // Iterem
+    $.each(data, function (index, value) {
+      box = new Box(value.id, value.uuid, value.name, value.type, that, that.map_parent);
+      box.observations = value.observations;
+      that.boxs[box.uuid] = box;
+    });
+    that.siteCallbackBoxes();
+  });
+};
+Site.prototype.siteCallbackBoxes = function() {
+  var that = this;
+
+  // Mostrar els elements d'un site.
+  for(idx_box in this.boxs){
+    actual_box = this.boxs[idx_box];
+    actual_box.addHtmlBox();
+  }
+};
 Site.prototype.addBox = function(){
+  // Add new
   var box = new Box(0,gUUID(),'',this.map_parent.type_box_default,this,this.map_parent);
   this.boxs[box.uuid] = box;
   box.addHtmlBox();
-  // Amagar mapa i mostrar box
-  $('#map-group').hide();
-  $('#zoom-box-group').toggleClass('hide');
 };
 Site.prototype.deleteBox = function(uuid){
   //Buscar el box, i esborrar-lo

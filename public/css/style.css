@@ -13,7 +13,7 @@
 #list-projects { padding: 10px }
 
 /*------ Site -------*/
-.site, .path, .config, .box {
+.site, .path, .config, .box, #box-add {
   margin: 10px;
 }
 /*------ Two Pages -----*/
