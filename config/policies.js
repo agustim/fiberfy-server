@@ -28,7 +28,6 @@ module.exports = {
     find: ['Passport.isAuthenticated'],
     update: ['Passport.isAuthenticated'],
     destroy: ['Passport.isAuthenticated']
-
   }
 
 }

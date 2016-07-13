@@ -22,4 +22,34 @@ module.exports = class SiteController extends Controller{
   destroy(request, reply) {
     this.app.services.RestfulService.destroy(this._Model(), request, reply)
   }
+  getBoxes(request, reply) {
+    const FootprintService = this.app.services.FootprintService
+
+    const id = request.params.id
+
+    this.log.debug('[',this.constructor.name,'] (find) model =',
+      'box', ', criteria =', request.query, id,
+      ', values = ', request.body)
+
+    let response
+
+    let where =  { user: request.user.id }
+    if (id) where.site = id
+
+    response = FootprintService.find('Box', where)
+
+    response.then(elements => {
+      reply.status(elements ? 200 : 404).json(elements || {})
+    }).catch(error => {
+      if (error.code == 'E_VALIDATION') {
+        reply.status(400).json(error)
+      }
+      else if (error.code == 'E_NOT_FOUND') {
+        reply.status(404).json(error)
+      }
+      else {
+        reply.boom.wrap(error)
+      }
+    })
+  }
 }

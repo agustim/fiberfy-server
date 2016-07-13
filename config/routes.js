@@ -94,6 +94,12 @@ module.exports = [
     path: '/api/v1/site/{id?}',
     handler: 'SiteController.destroy'
   },
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/site/{id}/boxes',
+    handler: 'SiteController.getBoxes'
+  },
+
 
   /**
     * Path.
@@ -119,6 +125,29 @@ module.exports = [
      handler: 'PathController.destroy'
    },
 
+ /**
+   * Box.
+   */
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/box/{id?}',
+    handler: 'BoxController.find'
+  },
+  {
+    method: [ 'POST' ],
+    path: '/api/v1/box',
+    handler: 'BoxController.create'
+  },
+  {
+    method: [ 'PUT', 'PATCH' ],
+    path: '/api/v1/box/{id?}',
+    handler: 'BoxController.update'
+  },
+  {
+    method: [ 'DELETE' ],
+    path: '/api/v1/Box/{id?}',
+    handler: 'BoxController.destroy'
+  },
   /**
    * Constrain the DefaultController.info handler to accept only GET requests.
    */

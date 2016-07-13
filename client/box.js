@@ -61,13 +61,15 @@ Box.prototype.save = function (){
   strUrl = this.map_parent.serverUrl + "/box";
   console.log('API call post: ' + strUrl);
   if (this.id == 0) {
-    $.post( strUrl, JSON.stringify({ "name": this.name, "uuid": this.uuid, "site_id": this.site_parent.id, "type": this.type, "observations" : this.observations }))
+    $.post( strUrl, JSON.stringify({ "name": this.name, "uuid": this.uuid, "site": this.site_parent.id,
+          "type": this.type, "observations" : this.observations, "project" : this.map_parent.active_project.id }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.id = data.id;
       }, "json");
   } else {
-    $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "uuid": this.uuid, "site_id": this.site_parent.id, "type": this.type, "observations" : this.observations }))
+    $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "uuid": this.uuid, "site": this.site_parent.id,
+          "type": this.type, "observations" : this.observations, "project" : this.map_parent.active_project.id }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
       }, "json");
