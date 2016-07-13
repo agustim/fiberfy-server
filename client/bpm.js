@@ -33,7 +33,16 @@ function Mapa(divMap){
   this.type_path_colors['grey'] = [ '#2f2f2f', '#2f2f2f', '#2f2f2f' ]
   this.type_path_default = this.type_path[0];
 
+  // Llistat de box (TODO: Passar-ho a una taula.)
+  this.type_box = [ "caixa", "switch" ];
+  this.type_box_default = this.type_box[0];
   // Estatus
+  // site
+  // path
+  // box
+  // fibra
+  // split ?
+
   this.status = "";
 
   // Layer Active (civil, infra)
@@ -389,11 +398,8 @@ Mapa.prototype.debugFunction = function() {
 };
 Mapa.prototype.backMap = function(){
   $('#map-group').show();
-  $('#zoom-site-fusion-group').addClass('hide');
-  $('#zoom-fusion-graph-group').addClass('hide');
-  $('#zoom-site-group').addClass('hide');
-  $('#zoom-path-group').addClass('hide');
-  $('#form-project-group').addClass('hide');
+  $('.second-level').addClass('hide');
+  $('.third-level').addClass('hide');
   Config.closeForm();
 
   this.changeStatus("","");
@@ -407,7 +413,6 @@ Mapa.prototype.backSite = function(){
   this.changeStatus("","");
 };
 Mapa.prototype.fusionSite = function(){
-
   $('#zoom-path-group').addClass('hide');
   $('#zoom-site-fusion-group').addClass('hide');
   $('#zoom-fusion-graph-group').removeClass('hide');

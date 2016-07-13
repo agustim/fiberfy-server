@@ -43,7 +43,7 @@ html(lang="ca")
           label
       #map
     // config
-    #form-project-group.form-project-group.hide
+    #form-project-group.form-project-group.second-level.hide
       #form-project
         nav.menu
           ul.active
@@ -65,7 +65,7 @@ html(lang="ca")
             .col-s-2
               button#project-add Add
     // site fusion
-    #zoom-site-fusion-group.zoom-fusion-group.hide
+    #zoom-site-fusion-group.zoom-fusion-group.second-level.hide
       #zoom-site-fusion
         nav.menu
           ul.active
@@ -78,7 +78,7 @@ html(lang="ca")
             .notify
         .site-fusion
     // site
-    #zoom-site-group.zoom-group.hide
+    #zoom-site-group.zoom-group.second-level.hide
       #zoom-site
         nav.menu
           ul.active
@@ -105,7 +105,7 @@ html(lang="ca")
               textarea#site-observation
               button#site-update Update
     // site fusion
-    #zoom-fusion-graph-group.zoom-fusion-graph-group.hide
+    #zoom-fusion-graph-group.zoom-fusion-graph-group.third-level.hide
       #zoom-fusion-graph
         nav.menu
           ul.active
@@ -119,8 +119,20 @@ html(lang="ca")
           .col-s-12
             .notify
             canvas#fusionGraph(resize='')
+    // box
+    #zoom-box-group.zoom-group.second-level.hide
+      #zoom-box
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+        #box-notify
+          .row
+            .col-s-12
+              .notify
+        .box
     // path
-    #zoom-path-group.zoom-group.hide
+    #zoom-path-group.zoom-group.second-level.hide
       #zoom-path
         nav.menu
           ul.active

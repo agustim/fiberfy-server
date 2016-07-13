@@ -133,7 +133,7 @@ Site.prototype.onSiteClick = function (e){
       this.siteDefine();
       break;
     case "box":
-      alert("Crea Box");
+      this.addBox();
       break;
     }
 };
@@ -184,15 +184,23 @@ Site.prototype.loadTypes = function(SelectField){
     }
     SelectField.append(option);
   });
-}
+};
+Site.prototype.addBox = function(){
+  var box = new Box(0,gUUID(),'',this.map_parent.type_box_default,this,this.map_parent);
+  this.boxs[box.uuid] = box;
+  box.addHtmlBox();
+  // Amagar mapa i mostrar box
+  $('#map-group').hide();
+  $('#zoom-box-group').toggleClass('hide');
+};
 Site.prototype.deleteBox = function(uuid){
-    //Buscar el box, i esborrar-lo
-    box = this.boxs[uuid];
-    if (box.id != 0)
-      box.delete(box.id);
-    else
-      $('#box-'+ box.uuid).remove();
-    delete this.boxs[uuid];
+  //Buscar el box, i esborrar-lo
+  box = this.boxs[uuid];
+  if (box.id != 0)
+    box.delete(box.id);
+  else
+    $('#box-'+ box.uuid).remove();
+  delete this.boxs[uuid];
 };
 
 // Pagina de Definició de fusió

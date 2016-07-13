@@ -180,18 +180,25 @@ Path.prototype.onPathClick = function(e){
       console.log(e);
       this.getSegment(e);
       break;
-    default:
+    case "path":
+    case "site":
       this.editForm();
+      break;
+    case "box":
       break;
   }
 };
 Path.prototype.onPathMouseOver = function(e) {
-  this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')');
-  this.changeTypePath('over');
+  if (this.map_parent.status != 'box') {
+    this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')');
+    this.changeTypePath('over');
+  }
 };
 Path.prototype.onPathMouseOut = function(e) {
-  this.map_parent.info.update('');
-  this.changeTypePath();
+  if (this.map_parent.status != 'box') {
+    this.map_parent.info.update('');
+    this.changeTypePath();
+  }
 };
 
 Path.prototype.distance = function (){
