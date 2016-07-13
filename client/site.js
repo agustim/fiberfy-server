@@ -129,9 +129,11 @@ Site.prototype.onSiteClick = function (e){
       alert("No es pot fer un split a un Lloc!");
       break;
     case "site":
-    default:
       // Anem a editar el site
       this.siteDefine();
+      break;
+    case "box":
+      alert("Crea Box");
       break;
     }
 };

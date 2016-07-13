@@ -149,8 +149,8 @@ function Mapa(divMap){
   $('#back_fusion').click(function(){ that.backFusion(); });
 
   /* Menu d'infraestructura */
-  $('#make_box').click(function(){ that.clickMenu(this); that.makeSection(); });
-  $('#make_fiber').click(function(){ that.clickMenu(this); that.makeSite(); });
+  $('#make_box').click(function(){ that.clickMenu(this); that.makeBox(); });
+  $('#make_fiber').click(function(){ that.clickMenu(this); that.makeFiber(); });
   $('#view_obracivil').click(function() { that.changeMenu('civil'); })
 
 
@@ -449,6 +449,7 @@ Mapa.prototype.projectManager = function (){
   $('#map-group').hide();
   $('#form-project-group').removeClass('hide');
 };
+/* Obra civil */
 Mapa.prototype.makeSection = function (){
   this.changeStatus("path", "#make_section");
 };
@@ -457,6 +458,14 @@ Mapa.prototype.makeSite = function (){
 };
 Mapa.prototype.makeSplit = function (){
   this.changeStatus("split", "#split_path");
+};
+
+/* infraestructura */
+Mapa.prototype.makeFiber = function (){
+  this.changeStatus("fiber", "#make_fiber");
+};
+Mapa.prototype.makeBox = function (){
+  this.changeStatus("box", "#make_box");
 };
 Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
   // Bucle  per "Marcar" les fusions existents.
