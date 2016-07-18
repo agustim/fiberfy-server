@@ -17,6 +17,9 @@ module.exports = class Box extends Model {
         type: 'string',
         unique: true
       },
+      uuid: {
+        type: 'string'
+      },
       type: {
         type: 'string'
       },
