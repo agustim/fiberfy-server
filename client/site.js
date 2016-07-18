@@ -102,6 +102,9 @@ Site.prototype.onSiteMouseOut = function (e){
         this.changeTypeIcon();
       }
       break;
+    case 'fiber':
+      this.showIconBox();
+      break;
     default :
       this.map_parent.info.update('');
       this.changeTypeIcon();
@@ -134,6 +137,20 @@ Site.prototype.onSiteClick = function (e){
       break;
     case "box":
       this.boxDefine();
+      break;
+    case "fiber":
+      // Hi ha alguna fibra activa?
+      if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)){
+        // Sí
+        console.log('tancar fibra.');
+        this.map_parent.active_fiber.setEndBox(this);
+      } else {
+        // No n'hi ha cap actiu, el creem.
+        console.log('inici fibra.');
+        this.changeTypeIcon('active');
+        this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent);
+        this.map_parent.active_fiber.setFirstSite(this);
+      }
       break;
     case "":
       if (this.map_parent.layerActive == 'civil') this.siteDefine();
@@ -195,7 +212,6 @@ Site.prototype.boxDefine = function(){
   // Frist clear box form.
   $(".box").html("");
   // Load existen boxes.
-  this.boxes = [];
   this.loadBoxes();
   // Add click of add Button.
   $('#box-new').on("click", function(){
@@ -212,13 +228,28 @@ Site.prototype.loadBoxes = function() {
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
-      box = new Box(value.id, value.uuid, value.name, value.type, that, that.map_parent);
+      var box = new Box(value.id, value.uuid, value.name, value.type, that, that.map_parent);
       box.observations = value.observations;
       that.boxs[box.uuid] = box;
     });
     that.siteCallbackBoxes();
+    that.showIconBox();
   });
 };
+Site.prototype.showIconBox = function() {
+  switch(this.map_parent.layerActive){
+    case 'civil':
+      this.changeTypeIcon();
+      break;
+    case 'infra':
+      if (this.countBox() > 0) {
+        this.changeTypeIcon('active');
+      } else {
+        this.changeTypeIcon('grey');
+      }
+      break;
+  }
+}
 Site.prototype.siteCallbackBoxes = function() {
   var that = this;
 
@@ -242,6 +273,14 @@ Site.prototype.deleteBox = function(uuid){
   else
     $('#box-'+ box.uuid).remove();
   delete this.boxs[uuid];
+};
+Site.prototype.countBox = function(){
+  var size = 0, key;
+  var obj = this.boxs
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) size++;
+  };
+  return size;
 };
 
 // Pagina de Definició de fusió

@@ -2,6 +2,7 @@
 var Site = require('./site');
 var Box = require('./box');
 var Path = require('./path');
+var Fiber = require('./fiber');
 var Pfusion = require('./pfusion');
 var Project = require('./project');
 var Config = require('./config');
@@ -52,6 +53,8 @@ function Mapa(divMap){
   this.active_path = null;
   // Site actual
   this.active_site = null;
+  // Dibuixant fibra
+  this.active_fiber = null;
 
   // Active project
   this.active_project = null;
@@ -318,6 +321,13 @@ Mapa.prototype.load = function (){
   });
 
 };
+Mapa.prototype.loadInfra = function() {
+  // Molt a saco, si hi han molts nodes!!!
+  for(var idx_site in this.sites){
+    var s = this.sites[idx_site];
+    s.loadBoxes();
+  }
+}
 Mapa.prototype.redraw = function(){
   // Tornem a posar el tileLayer
   this.tileLayer();
@@ -343,6 +353,7 @@ Mapa.prototype.changeMenu = function(option) {
     case 'infra':
       $('nav#civil').hide();
       $('nav#infra').removeClass('hide');
+      this.loadInfra();
       break;
     case 'civil':
       $('nav#civil').show();
