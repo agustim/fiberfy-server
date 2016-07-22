@@ -186,16 +186,20 @@ Path.prototype.onPathClick = function(e){
       break;
     case "box":
       break;
+    case "fiber":
+      //this.map_parent.active_fiber.addPath(this.id);
+      console.log(this.map_parent.active_fiber.paths);
+      break;
   }
 };
 Path.prototype.onPathMouseOver = function(e) {
-  if (this.map_parent.status != 'box') {
+  if (this.map_parent.status == 'path') {
     this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')');
     this.changeTypePath('over');
   }
 };
 Path.prototype.onPathMouseOut = function(e) {
-  if (this.map_parent.status != 'box') {
+  if (this.map_parent.status == 'path') {
     this.map_parent.info.update('');
     this.changeTypePath();
   }

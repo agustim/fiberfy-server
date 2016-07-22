@@ -1,5 +1,6 @@
 var Box = require('./box');
 var Path = require('./path');
+var Fiber = require('./fiber');
 
 //=====================
 // Site
@@ -83,34 +84,59 @@ Site.prototype.changeTypeIcon = function (status, type){
 };
 
 Site.prototype.onSiteMouseOver = function (e){
-  switch(this.map_parent.status) {
-    case 'path':
-      this.changeTypeIcon('active');
+  if (this.map_parent.layerActive == 'civil'){
+    switch(this.map_parent.status) {
+      case 'path':
+        this.changeTypeIcon('active');
         break;
-    default :
-      this.map_parent.info.update('Site ' + this.name + '(' + this.id + ')');
-      this.changeTypeIcon('over');
-      $('#make_site').text('Edita Lloc');
-      break;
+      default :
+        this.map_parent.info.update('Site ' + this.name + '(' + this.id + ')');
+        this.changeTypeIcon('over');
+        $('#make_site').text('Edita Lloc');
+        break;
+    }
+  } else if (this.map_parent.layerActive == 'infra'){
+    switch(this.map_parent.status) {
+      case 'box':
+        break;
+      case 'fiber':
+        if (this.countBox() > 0)
+          this.changeTypeIcon('over');
+        break;
+    }
   }
 };
 Site.prototype.onSiteMouseOut = function (e){
-  switch(this.map_parent.status) {
-    case 'path':
-      if (((this.map_parent.active_path) && (this.map_parent.active_path.first_site) && (this.map_parent.active_path.first_site != this.id))
-          || (!this.map_parent.active_path)){
+  if (this.map_parent.layerActive == 'civil'){
+    switch(this.map_parent.status) {
+      case 'path':
+        if (((this.map_parent.active_path) && (this.map_parent.active_path.first_site) && (this.map_parent.active_path.first_site != this.id))
+            || (!this.map_parent.active_path)){
+          this.changeTypeIcon();
+        }
+        break;
+      case 'fiber':
+        this.showIconBox();
+        break;
+      default :
+        this.map_parent.info.update('');
         this.changeTypeIcon();
-      }
-      break;
-    case 'fiber':
-      this.showIconBox();
-      break;
-    default :
-      this.map_parent.info.update('');
-      this.changeTypeIcon();
-      $('#make_site').text('Crea Lloc');
-      break;
+        $('#make_site').text('Crea Lloc');
+        break;
+    }
+  } else if (this.map_parent.layerActive == 'infra'){
+    switch(this.map_parent.status) {
+      case 'box':
+        break;
+      case 'fiber':
+        if (((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site) && (this.map_parent.active_fiber.first_site != this.id))
+            || (!this.map_parent.active_fiber)){
+          this.showIconBox();
+        }
+        break;
+    }
   }
+
 };
 Site.prototype.onSiteClick = function (e){
   switch(this.map_parent.status){
@@ -143,11 +169,11 @@ Site.prototype.onSiteClick = function (e){
       if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)){
         // Sí
         console.log('tancar fibra.');
-        this.map_parent.active_fiber.setEndBox(this);
+        this.map_parent.active_fiber.setEndSite(this);
       } else {
         // No n'hi ha cap actiu, el creem.
         console.log('inici fibra.');
-        this.changeTypeIcon('active');
+        this.changeTypeIcon('over');
         this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent);
         this.map_parent.active_fiber.setFirstSite(this);
       }

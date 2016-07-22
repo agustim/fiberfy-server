@@ -484,6 +484,16 @@ Mapa.prototype.makeFiber = function (){
 Mapa.prototype.makeBox = function (){
   this.changeStatus("box", "#make_box");
 };
+
+Mapa.prototype.getPathBeetwenSites = function(s1, s2){
+  //Busquem a tots els paths  si hi ha algun que els sites coincideixen.
+  for(var idx_paths in this.paths){
+    var p = this.paths[idx_paths];
+    if ((p.first_site == s1 && p.end_site == s2) || (p.first_site == s2 && p.end_site == s1))
+     return p.id;
+  }
+  return null;
+}
 Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
   // Bucle  per "Marcar" les fusions existents.
   for(idx_tram in Trams){

@@ -1,27 +1,28 @@
 //=====================
 // Tram
-function Fiber(id, name, first_site, end_site, dots, type, m){
+function Fiber(id, name, first_site, end_site, paths, type, m){
   this.id = id;
   this.name = name;
   this.first_site = first_site;
   this.end_site = end_site;
   this.type = (!type) ? m.type_path_default : type;
   this.polyline = null;
-  this.dots = dots;
+  this.paths = paths;
+  this.sites = null;
   this.color_building = "red";
   this.color_did = "blue";
   this.color_mouseover = "green";
   this.observations = null;
 
   this.map_parent = m;
+
+  //Calcule sites?
 }
 Fiber.prototype.setFirstSite = function(b){
   this.first_site = b.id;
-  this.dots.push(b.latlng);
 };
 Fiber.prototype.setEndSite = function(b){
   this.end_site = b.id;
-  this.dots.push(b.latlng);
   this.draw();
   this.map_parent.setIconInSiteById(this.first_site);
   this.map_parent.setIconInSiteById(this.end_site);
@@ -78,11 +79,12 @@ Fiber.prototype.draw = function() {
     .addTo(this.map_parent.map);
 
 };
-Fiber.prototype.addPoint = function(point) {
+Fiber.prototype.addPath = function(path) {
   if (!this.end_site){
     if(this.first_site) {
-      this.dots.push(point);
-      this.draw();
+      console.log(path);
+      this.paths.push(path);
+      //this.draw();
     } else {
       console.log("Els trams comencen a una caixa.");
     }
