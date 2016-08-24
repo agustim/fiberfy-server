@@ -8,7 +8,7 @@ const Controller = require('trails-controller')
  */
 module.exports = class BoxController extends Controller{
   _Model() {
-    return('Box')
+    return ('Box')
   }
   create(request, reply) {
     if (!request.body

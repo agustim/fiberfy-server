@@ -18,7 +18,7 @@ module.exports = class FiberTemplate extends Model {
       },
       colors: {
         type: 'string'
-      }    
+      }
     }
   }
 }

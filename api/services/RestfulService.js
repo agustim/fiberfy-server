@@ -44,7 +44,7 @@ module.exports = class RestfulService extends Service {
   find(model, request, reply) {
     const FootprintService = this.app.services.FootprintService
 
-    const project = parseInt(request.query.project);
+    const project = parseInt(request.query.project)
     const id = request.params.id
 
     this.log.debug('[',this.constructor.name,'] (find) model =',

@@ -9,7 +9,7 @@ const Controller = require('trails-controller')
 module.exports = class ProjectController extends Controller{
 
   _Model() {
-    return('Project')
+    return ('Project')
   }
 
   create(request, reply) {

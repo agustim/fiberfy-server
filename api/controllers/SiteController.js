@@ -8,7 +8,7 @@ const Controller = require('trails-controller')
  */
 module.exports = class SiteController extends Controller{
   _Model() {
-    return('Site')
+    return ('Site')
   }
   create(request, reply) {
     this.app.services.RestfulService.create(this._Model(), request, reply)
