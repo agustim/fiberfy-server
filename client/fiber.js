@@ -157,8 +157,9 @@ Fiber.prototype.addSite = function (site){
 }
 Fiber.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/path";
+  strUrl = this.map_parent.serverUrl + "/fiber";
   console.log('API call: ' + strUrl);
+  console.log(this);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");
     return;
