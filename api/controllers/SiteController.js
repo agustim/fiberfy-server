@@ -58,7 +58,7 @@ module.exports = class SiteController extends Controller{
     const id = request.params.id
 
     this.log.debug('[',this.constructor.name,'] (find) model =',
-      'box', ', criteria =', request.query, id,
+      'fusion', ', criteria =', request.query, id,
       ', values = ', request.body)
 
     let response
