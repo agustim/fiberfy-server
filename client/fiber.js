@@ -8,7 +8,7 @@ function Fiber(id, name, first_site, end_site, paths, type, m){
   this.type = (!type) ? m.type_path_default : type;
   this.polyline = null;
   this.paths = paths;
-  this.sites = null;
+  this.sites = [];
   this.color_building = "red";
   this.color_did = "blue";
   this.color_mouseover = "green";
@@ -20,6 +20,7 @@ function Fiber(id, name, first_site, end_site, paths, type, m){
 }
 Fiber.prototype.setFirstSite = function(b){
   this.first_site = b.id;
+  this.sites.push(b.id);
 };
 Fiber.prototype.setEndSite = function(b){
   this.end_site = b.id;
@@ -58,6 +59,44 @@ Fiber.prototype.findFiberColor = function(status, type) {
 Fiber.prototype.clear = function() {
   this.map_parent.map.removeLayer(this.polyline);
 };
+Fiber.prototype.getAllDots = function() {
+  var that = this;
+
+  var dots = [];
+  for(var x = 0; x < this.paths.length; x++){
+    var actPath = this.map_parent.getPath(this.paths[x]);
+    // Si el primer site del path actual, no és el site per numero
+    // que toca s'han de guardar els punts al reves
+    if (actPath.first_site == this.sites[x]) {
+      for(var y = 0; y < actPath.dots.length; y++){
+        var actDot = actPath.dots[y];
+        if (dots.length == 0){
+          dots.push(actDot);
+        } else {
+          // Mirem que no hi hagi el punt repetit!!
+          var beforeDot = dots[dots.length - 1]
+          if ((beforeDot.lat != actDot.lat) || (beforeDot.lng != actDot.lng)){
+            dots.push(actDot);
+          }
+        }
+      }
+    } else {
+      for(var y = actPath.dots.length - 1; y >= 0; y--){
+        var actDot = actPath.dots[y];
+        if (dots.length == 0){
+          dots.push(actDot);
+        } else {
+          // Mirem que no hi hagi el punt repetit!!
+          var beforeDot = dots[dots.length - 1]
+          if ((beforeDot.lat != actDot.lat) || (beforeDot.lng != actDot.lng)){
+            dots.push(actDot);
+          }
+        }
+      }
+    }
+  }
+  return dots;
+}
 
 Fiber.prototype.draw = function() {
   var that = this;
@@ -68,7 +107,8 @@ Fiber.prototype.draw = function() {
 
   var color = (this.end_site) ? this.findFiberColor() : this.findFiberColor('active');
 
-  this.polyline = new L.Polyline(this.dots, {
+  var dots = this.getAllDots();
+  this.polyline = new L.Polyline(dots, {
       color: color,
       weight: 5,
       opacity: 0.5,
@@ -84,7 +124,7 @@ Fiber.prototype.addPath = function(path) {
     if(this.first_site) {
       console.log(path);
       this.paths.push(path);
-      //this.draw();
+      this.draw();
     } else {
       console.log("Els trams comencen a una caixa.");
     }
@@ -92,6 +132,29 @@ Fiber.prototype.addPath = function(path) {
     console.log("Aquest tram ja està tancat.");
   }
 };
+Fiber.prototype.addSite = function (site){
+  var countBox = site.countBox();
+  var lastSiteInFiber = this.sites[this.sites.length - 1];
+  // Comprovar si existeix un path entre aquest dos sites!
+  var pathBetween = this.map_parent.getPathBeetwenSites(lastSiteInFiber, site.id);
+
+  // No  hi ha path entre aquest dos i no estem dient que ja estem a l'últim site!
+  if ((!pathBetween)  && (lastSiteInFiber != site.id)) {
+      console.log("Aquest site no està seguit de l'altre!!!");
+      return;
+  }
+  if ((countBox > 0 ) && (lastSiteInFiber == site.id)){
+    // Sí, és el final
+    console.log('Tancar fibra.');
+    this.setEndSite(this);
+    //this.getAllDots();
+  } else {
+    // No, només pot ser un intermig
+    console.log('Intermedial site!');
+    this.addPath(pathBetween);
+    this.sites.push(site.id);
+  }
+}
 Fiber.prototype.save = function (){
   var that = this;
   strUrl = this.map_parent.serverUrl + "/path";

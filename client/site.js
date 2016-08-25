@@ -82,7 +82,7 @@ Site.prototype.changeTypeIcon = function (status, type){
   }
   this.marker.setIcon(icon);
 };
-
+// Mouse Evnets
 Site.prototype.onSiteMouseOver = function (e){
   if (this.map_parent.layerActive == 'civil'){
     switch(this.map_parent.status) {
@@ -163,13 +163,12 @@ Site.prototype.onSiteClick = function (e){
       break;
     case "box":
       this.boxDefine();
-      break;
+      break;sitessites
     case "fiber":
       // Hi ha alguna fibra activa?
       if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)){
         // Sí
-        console.log('tancar fibra.');
-        this.map_parent.active_fiber.setEndSite(this);
+        this.map_parent.active_fiber.addSite(this);
       } else {
         // No n'hi ha cap actiu, el creem.
         console.log('inici fibra.');
@@ -183,6 +182,7 @@ Site.prototype.onSiteClick = function (e){
       else this.boxDefine();
     }
 };
+
 // Pagina de Site
 Site.prototype.siteDefine = function() {
   var that = this;
