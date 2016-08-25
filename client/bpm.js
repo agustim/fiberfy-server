@@ -65,6 +65,9 @@ function Mapa(divMap){
   // Llista de Site
   this.sites = new Array();
 
+  // Llistat de fibres
+  this.fibers = [];
+
   // Llista de Projectes de l'usuari
   this.projects = new Array();
 
@@ -297,10 +300,17 @@ Mapa.prototype.load = function (){
   }
   this.paths = [];
 
+  // Netejem les fibres existents al mapa
+  for(var idx_paths in this.fibers){
+    var f = this.fibers[idx_paths];
+    f.clear();
+  }
+  this.fibers = [];
+
+
   // Carreguem les caixes.
   strUrl = that.serverUrl + "/site?project="+that.active_project.id;
   $.getJSON(strUrl, function (data) {
-    // Iterem
     $.each(data, function (index, value) {
       site = new Site(value.id, value.name, L.latLng(value.latitude, value.longitude), value.type, that);
       site.observations = value.observations;
@@ -309,17 +319,24 @@ Mapa.prototype.load = function (){
     // Carreguem els trams.
     strUrl = that.serverUrl + "/path?project="+that.active_project.id;
     $.getJSON(strUrl, function (data) {
-      // Iterem
       $.each(data, function (index, value) {
         path = new Path(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), value.type, that);
         path.observations = value.observations;
         that.paths.push(path);
       });
+      // Carreguem les fibres
+      strUrl = that.serverUrl + "/fiber?project="+that.active_project.id;
+      $.getJSON(strUrl, function (data) {
+        $.each(data, function (index, value) {
+          path = new Fiber(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), value.template, that);
+          path.observations = value.observations;
+          that.fibers.push(path);
+        });
+      });
       that.clearLayers();
       that.redraw();
     });
   });
-
 };
 Mapa.prototype.loadInfra = function() {
   // Molt a saco, si hi han molts nodes!!!

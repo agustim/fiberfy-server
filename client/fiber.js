@@ -1,11 +1,11 @@
 //=====================
 // Tram
-function Fiber(id, name, first_site, end_site, paths, type, m){
+function Fiber(id, name, first_site, end_site, paths, template, m){
   this.id = id;
   this.name = name;
   this.first_site = first_site;
   this.end_site = end_site;
-  this.type = (!type) ? m.type_path_default : type;
+  this.template = (!template) ? 0 : template;
   this.polyline = null;
   this.paths = paths;
   this.sites = [];
@@ -16,7 +16,11 @@ function Fiber(id, name, first_site, end_site, paths, type, m){
 
   this.map_parent = m;
 
-  //Calcule sites?
+  //Calcule sites
+  if (this.paths.length > 0) {
+    this.getSites()
+  }
+
 }
 Fiber.prototype.setFirstSite = function(b){
   this.first_site = b.id;
@@ -38,7 +42,8 @@ Fiber.prototype.setEndSite = function(b){
 };
 Fiber.prototype.changeTypeFiber = function(status, type) {
   this.polyline.setStyle( { color: this.findFiberColor(status, type) });
-}
+};
+
 Fiber.prototype.findFiberColor = function(status, type) {
   if (!type) type = this.type;
   if (!type) type = this.map_parent.type_path_default;
@@ -59,6 +64,47 @@ Fiber.prototype.findFiberColor = function(status, type) {
 Fiber.prototype.clear = function() {
   this.map_parent.map.removeLayer(this.polyline);
 };
+
+Fiber.prototype.getSites = function() {
+  var allSites = [];
+  var prePath = this.map_parent.getPath(this.paths[0]);
+  for(var x = 1; x < this.paths.length; x++){
+    var actPath = this.map_parent.getPath(this.paths[x]);
+    if ((prePath.first_site == actPath.first_site) || (prePath.first_site == actPath.end_site)) {
+      if (allSites.length == 0){
+        // Només pot passar la primer vegada
+        allSites.push(prePath.end_site);
+        allSites.push(prePath.first_site);
+      }
+      if(prePath.first_site == actPath.end_site) {
+        allSites.push(actPath.end_site)
+        allSites.push(actPath.first_site)
+      } else {
+        allSites.push(actPath.first_site)
+        allSites.push(actPath.end_site)
+      }
+    } else if ((prePath.end_site == actPath.first_site) || (prePath.end_site == actPath.end_site)) {
+      if (allSites.length == 0){
+        // Només pot passar la primer vegada
+        allSites.push(prePath.first_site);
+        allSites.push(prePath.end_site);
+      }
+      if(prePath.end_site == actPath.end_site) {
+        allSites.push(actPath.end_site)
+        allSites.push(actPath.first_site)
+      } else {
+        allSites.push(actPath.first_site)
+        allSites.push(actPath.end_site)
+      }
+    } else {
+      console.log("ERROR: Dos paths que no tene sits ens comú.");
+    }
+  }
+  // Hauriem de tenir els sites intermitjos duplicats.
+  console.log(allSites);
+
+};
+
 Fiber.prototype.getAllDots = function() {
   var that = this;
 
@@ -117,8 +163,8 @@ Fiber.prototype.draw = function() {
     .on('mouseover', function(e) { return that.onFiberMouseOver(e); })
     .on('mouseout', function(e) { return that.onFiberMouseOut(e); })
     .addTo(this.map_parent.map);
-
 };
+
 Fiber.prototype.addPath = function(path) {
   if (!this.end_site){
     if(this.first_site) {
@@ -146,8 +192,7 @@ Fiber.prototype.addSite = function (site){
   if ((countBox > 0 ) && (lastSiteInFiber == site.id)){
     // Sí, és el final
     console.log('Tancar fibra.');
-    this.setEndSite(this);
-    //this.getAllDots();
+    this.setEndSite(site);
   } else {
     // No, només pot ser un intermig
     console.log('Intermedial site!');
@@ -165,7 +210,7 @@ Fiber.prototype.save = function (){
     return;
   }
   $.post( strUrl, JSON.stringify({ "first": this.first_site, "last": this.end_site,
-              "intermedial": JSON.stringify(this.dots), "project": this.map_parent.active_project.id,
+              "intermedial": JSON.stringify(this.paths), "project": this.map_parent.active_project.id,
               "type": this.type}))
     .done(function( data ) {
       that.id = data.id;
