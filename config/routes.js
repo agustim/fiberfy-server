@@ -148,12 +148,30 @@ module.exports = [
     path: '/api/v1/Box/{id?}',
     handler: 'BoxController.destroy'
   },
+
   /**
-   * Constrain the DefaultController.info handler to accept only GET requests.
-   */
+    * Fiber
+    */
   {
     method: [ 'GET' ],
-    path: '/api/v1/default/info',
-    handler: 'DefaultController.info'
-  }
+    path: '/api/v1/fiber/{id?}',
+    handler: 'FiberController.find'
+  },
+  {
+    method: [ 'POST' ],
+    path: '/api/v1/fiber',
+    handler: 'FiberController.create'
+  },
+  {
+    method: [ 'PUT', 'PATCH' ],
+    path: '/api/v1/fiber/{id?}',
+    handler: 'FiberController.update'
+  },
+  {
+    method: [ 'DELETE' ],
+    path: '/api/v1/fiber/{id?}',
+    handler: 'FiberController.destroy'
+  },
+
+
 ]
