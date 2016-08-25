@@ -31,7 +31,7 @@ function Mapa(divMap){
   this.type_path_colors['normal'] = [ "#000080", "#254117", "#806517"  ];
   this.type_path_colors['over']   = [ '#95b9c7','#99C68E', '#AF9B60' ];
   this.type_path_colors['active'] = [ '#357ec7','#7FE817', '#E8A317' ];
-  this.type_path_colors['grey'] = [ '#2f2f2f', '#2f2f2f', '#2f2f2f' ]
+  this.type_path_colors['grey'] = [ '#2f2f2f', '#2f2f2f', '#2f2f2f' ];
   this.type_path_default = this.type_path[0];
 
   // Llistat de box (TODO: Passar-ho a una taula.)
@@ -156,7 +156,7 @@ function Mapa(divMap){
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
-  $('#view_infrastructure').click(function() { that.changeMenu('infra'); })
+  $('#view_infrastructure').click(function() { that.changeMenu('infra'); });
 
   $('.back_map').click(function(){ that.clickMenu(this); that.backMap(); });
   $('.back_site').click(function(){ that.backSite(); });
@@ -166,7 +166,7 @@ function Mapa(divMap){
   /* Menu d'infraestructura */
   $('#make_box').click(function(){ that.clickMenu(this); that.makeBox(); });
   $('#make_fiber').click(function(){ that.clickMenu(this); that.makeFiber(); });
-  $('#view_obracivil').click(function() { that.changeMenu('civil'); })
+  $('#view_obracivil').click(function() { that.changeMenu('civil'); });
 
 
   this.loadProjects();
@@ -221,7 +221,7 @@ Mapa.prototype.findProject = function(id) {
     }
   }
   return null;
-}
+};
 
 Mapa.prototype.drawProjects = function (){
   var that = this;
@@ -270,17 +270,17 @@ Mapa.prototype.drawProjects = function (){
     } else {
       that.notify("Has de posar un nom de projecte!");
     }
-  })
+  });
   $('.delete-project-button').on('click', function(e) {
     var project = that.findProject($('#'+e.target.id).data("id"));
     project.delete();
     that.loadProjects();
-  })
+  });
   $('.active-project-button').on('click', function(e) {
     var project = that.findProject($('#'+e.target.id).data("id"));
     that.active_project = project;
     that.loadProjects();
-  })
+  });
 };
 /* End of Project resources */
 
@@ -344,7 +344,7 @@ Mapa.prototype.loadInfra = function() {
     var s = this.sites[idx_site];
     s.loadBoxes();
   }
-}
+};
 Mapa.prototype.redraw = function(){
   // Tornem a posar el tileLayer
   this.tileLayer();
@@ -380,7 +380,7 @@ Mapa.prototype.changeMenu = function(option) {
   this.layerActive = option;
   this.status = "";
   this.changeColor(option);
-}
+};
 
 Mapa.prototype.changeColor = function(option) {
   var status = (option == "infra") ? "grey":"normal";
@@ -399,12 +399,12 @@ Mapa.prototype.changeColor = function(option) {
   for(var idx_fiber in this.fibers){
     var f = this.fibers[idx_fiber];
     if (option == 'civil') {
-      f.clear()
+      f.clear();
     } else if (option == 'infra'){
       f.draw();
     }
   }
-}
+};
 
 /* --- */
 
@@ -520,7 +520,7 @@ Mapa.prototype.getPathBeetwenSites = function(s1, s2){
      return p.id;
   }
   return null;
-}
+};
 Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
   // Bucle  per "Marcar" les fusions existents.
   for(idx_tram in Trams){

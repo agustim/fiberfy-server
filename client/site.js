@@ -48,7 +48,7 @@ Site.prototype.save = function (){
 Site.prototype.clear = function(){
   var that = this;
   this.map_parent.map.removeLayer(this.marker);
-}
+};
 
 Site.prototype.draw = function (){
   var that = this;
@@ -163,7 +163,7 @@ Site.prototype.onSiteClick = function (e){
       break;
     case "box":
       this.boxDefine();
-      break;sitessites
+      break;sitessites;
     case "fiber":
       // Hi ha alguna fibra activa?
       if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)){
@@ -243,7 +243,7 @@ Site.prototype.boxDefine = function(){
   // Add click of add Button.
   $('#box-new').on("click", function(){
     that.addBox();
-  })
+  });
   $('#box-fusio').on('click', function (){
     that.siteFusion();
     $('#zoom-box-group').toggleClass('hide');
@@ -251,7 +251,7 @@ Site.prototype.boxDefine = function(){
   // Hidden and Show div's
   $('#map-group').hide();
   $('#zoom-box-group').toggleClass('hide');
-}
+};
 // Carraguem els seus boxs
 Site.prototype.loadBoxes = function() {
   var that = this;
@@ -280,7 +280,7 @@ Site.prototype.showIconBox = function() {
       }
       break;
   }
-}
+};
 Site.prototype.siteCallbackBoxes = function() {
   var that = this;
 
@@ -307,7 +307,7 @@ Site.prototype.deleteBox = function(uuid){
 };
 Site.prototype.countBox = function(){
   var size = 0, key;
-  var obj = this.boxs
+  var obj = this.boxs;
   for (key in obj) {
     if (obj.hasOwnProperty(key)) size++;
   };

@@ -19,7 +19,7 @@ function Fiber(id, name, first_site, end_site, paths, colors, template, m){
 
   //Calcule sites
   if (this.paths.length > 0) {
-    this.getSites()
+    this.getSites();
   }
 
 }
@@ -61,7 +61,7 @@ Fiber.prototype.findFiberColor = function(status, type) {
       color = (this.map_parent.layerActive == 'civil') ? this.map_parent.type_path_colors['normal'][type_idx] : this.map_parent.type_path_colors['grey'][type_idx];
   }
   return color;
-}
+};
 Fiber.prototype.clear = function() {
   this.map_parent.map.removeLayer(this.polyline);
 };
@@ -77,10 +77,10 @@ Fiber.prototype.getSites = function() {
         this.sites.push(prePath.end_site);
       }
       if(prePath.first_site == actPath.end_site) {
-        this.sites.push(actPath.end_site)
+        this.sites.push(actPath.end_site);
         if (x == this.paths.length - 1 ) this.sites.push(actPath.first_site);
       } else {
-        this.sites.push(actPath.first_site)
+        this.sites.push(actPath.first_site);
         if (x == this.paths.length - 1 ) this.sites.push(actPath.end_site);
       }
     } else if ((prePath.end_site == actPath.first_site) || (prePath.end_site == actPath.end_site)) {
@@ -89,10 +89,10 @@ Fiber.prototype.getSites = function() {
         this.sites.push(prePath.first_site);
       }
       if(prePath.end_site == actPath.end_site) {
-        this.sites.push(actPath.end_site)
+        this.sites.push(actPath.end_site);
         if (x == this.paths.length - 1 ) this.sites.push(actPath.first_site);
       } else {
-        this.sites.push(actPath.first_site)
+        this.sites.push(actPath.first_site);
         if (x == this.paths.length - 1 ) this.sites.push(actPath.end_site);
       }
     } else {
@@ -118,7 +118,7 @@ Fiber.prototype.getAllDots = function() {
           dots.push(actDot);
         } else {
           // Mirem que no hi hagi el punt repetit!!
-          var beforeDot = dots[dots.length - 1]
+          var beforeDot = dots[dots.length - 1];
           if ((beforeDot.lat != actDot.lat) || (beforeDot.lng != actDot.lng)){
             dots.push(actDot);
           }
@@ -131,7 +131,7 @@ Fiber.prototype.getAllDots = function() {
           dots.push(actDot);
         } else {
           // Mirem que no hi hagi el punt repetit!!
-          var beforeDot = dots[dots.length - 1]
+          var beforeDot = dots[dots.length - 1];
           if ((beforeDot.lat != actDot.lat) || (beforeDot.lng != actDot.lng)){
             dots.push(actDot);
           }
@@ -140,7 +140,7 @@ Fiber.prototype.getAllDots = function() {
     }
   }
   return dots;
-}
+};
 
 Fiber.prototype.draw = function() {
   var that = this;
@@ -197,7 +197,7 @@ Fiber.prototype.addSite = function (site){
     this.addPath(pathBetween);
     this.sites.push(site.id);
   }
-}
+};
 Fiber.prototype.save = function (){
   var that = this;
   strUrl = this.map_parent.serverUrl + "/fiber";
@@ -227,7 +227,7 @@ Fiber.prototype.loadTypes = function(SelectField){
     }
     SelectField.append(option);
   });
-}
+};
 Fiber.prototype.updateForm = function (){
   var that = this;
   // Carraguem els caps del formulari al objecte

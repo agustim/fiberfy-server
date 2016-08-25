@@ -31,7 +31,7 @@ Project.prototype.delete = function(){
   strUrl = this.map_parent.serverUrl + "/project";
   console.log('API call: ' + strUrl);
   if (this.id == 0 || this.id == null) {
-    console.log("Can not delete project without id.")
+    console.log("Can not delete project without id.");
   } else {
     $.delete( strUrl+"/"+this.id, JSON.stringify({ "id": this.id }))
       .done(function( data ) {

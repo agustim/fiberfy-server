@@ -36,7 +36,7 @@ Path.prototype.setEndSite = function(b){
 };
 Path.prototype.changeTypePath = function(status, type) {
   this.polyline.setStyle( { color: this.findPathColor(status, type) });
-}
+};
 Path.prototype.findPathColor = function(status, type) {
   if (!type) type = this.type;
   if (!type) type = this.map_parent.type_path_default;
@@ -53,7 +53,7 @@ Path.prototype.findPathColor = function(status, type) {
       color = (this.map_parent.layerActive == 'civil') ? this.map_parent.type_path_colors['normal'][type_idx] : this.map_parent.type_path_colors['grey'][type_idx];
   }
   return color;
-}
+};
 Path.prototype.clear = function() {
   this.map_parent.map.removeLayer(this.polyline);
 };
@@ -118,7 +118,7 @@ Path.prototype.loadTypes = function(SelectField){
     }
     SelectField.append(option);
   });
-}
+};
 Path.prototype.updateForm = function (){
   var that = this;
   // Carraguem els caps del formulari al objecte
