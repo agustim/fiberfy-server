@@ -394,6 +394,16 @@ Mapa.prototype.changeColor = function(option) {
     var p = this.paths[idx_paths];
     p.changeTypePath(status);
   }
+
+  // Pintem o esborrem la fibra tirada?
+  for(var idx_fiber in this.fibers){
+    var f = this.fibers[idx_fiber];
+    if (option == 'civil') {
+      f.clear()
+    } else if (option == 'infra'){
+      f.draw();
+    }
+  }
 }
 
 /* --- */

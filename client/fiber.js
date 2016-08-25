@@ -66,43 +66,40 @@ Fiber.prototype.clear = function() {
 };
 
 Fiber.prototype.getSites = function() {
-  var allSites = [];
+
   var prePath = this.map_parent.getPath(this.paths[0]);
   for(var x = 1; x < this.paths.length; x++){
     var actPath = this.map_parent.getPath(this.paths[x]);
     if ((prePath.first_site == actPath.first_site) || (prePath.first_site == actPath.end_site)) {
-      if (allSites.length == 0){
+      if (this.sites.length == 0){
         // Només pot passar la primer vegada
-        allSites.push(prePath.end_site);
-        allSites.push(prePath.first_site);
+        this.sites.push(prePath.end_site);
       }
       if(prePath.first_site == actPath.end_site) {
-        allSites.push(actPath.end_site)
-        allSites.push(actPath.first_site)
+        this.sites.push(actPath.end_site)
+        if (x == this.paths.length - 1 ) this.sites.push(actPath.first_site);
       } else {
-        allSites.push(actPath.first_site)
-        allSites.push(actPath.end_site)
+        this.sites.push(actPath.first_site)
+        if (x == this.paths.length - 1 ) this.sites.push(actPath.end_site);
       }
     } else if ((prePath.end_site == actPath.first_site) || (prePath.end_site == actPath.end_site)) {
-      if (allSites.length == 0){
+      if (this.sites.length == 0){
         // Només pot passar la primer vegada
-        allSites.push(prePath.first_site);
-        allSites.push(prePath.end_site);
+        this.sites.push(prePath.first_site);
       }
       if(prePath.end_site == actPath.end_site) {
-        allSites.push(actPath.end_site)
-        allSites.push(actPath.first_site)
+        this.sites.push(actPath.end_site)
+        if (x == this.paths.length - 1 ) this.sites.push(actPath.first_site);
       } else {
-        allSites.push(actPath.first_site)
-        allSites.push(actPath.end_site)
+        this.sites.push(actPath.first_site)
+        if (x == this.paths.length - 1 ) this.sites.push(actPath.end_site);
       }
     } else {
       console.log("ERROR: Dos paths que no tene sits ens comú.");
+      console.log(this);
     }
+    prePath = actPath;
   }
-  // Hauriem de tenir els sites intermitjos duplicats.
-  console.log(allSites);
-
 };
 
 Fiber.prototype.getAllDots = function() {
@@ -283,6 +280,7 @@ Fiber.prototype.editForm = function() {
   $('#zoom-path-group').toggleClass('hide');
 };
 Fiber.prototype.onFiberClick = function(e){
+  console.log(this.map_parent.status);
   var that = this;
   switch(this.map_parent.status){
     case "split":
@@ -301,7 +299,7 @@ Fiber.prototype.onFiberClick = function(e){
 };
 Fiber.prototype.onFiberMouseOver = function(e) {
   if (this.map_parent.status != 'box') {
-    this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')');
+    this.map_parent.info.update('Fibra ' + this.name + '(' + this.id + ')');
     this.changeTypeFiber('over');
   }
 };
