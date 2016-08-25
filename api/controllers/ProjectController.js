@@ -68,6 +68,8 @@ module.exports = class ProjectController extends Controller{
       this._Model(), ', criteria =', request.query, id,
       ', values = ', request.body)
 
+    let response
+
     let where =  { user: request.user.id }
     if (id) where.id = id
     response = FootprintService.update(this._Model(), where , request.body)

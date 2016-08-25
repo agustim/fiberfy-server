@@ -200,6 +200,6 @@ module.exports = [
     method: [ 'DELETE' ],
     path: '/api/v1/fibertemplate/{id?}',
     handler: 'FiberTemplateController.destroy'
-  },
+  }
 
 ]
