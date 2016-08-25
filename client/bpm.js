@@ -328,7 +328,7 @@ Mapa.prototype.load = function (){
       strUrl = that.serverUrl + "/fiber?project="+that.active_project.id;
       $.getJSON(strUrl, function (data) {
         $.each(data, function (index, value) {
-          path = new Fiber(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), value.template, that);
+          path = new Fiber(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), $.parseJSON(value.colors), value.template, that);
           path.observations = value.observations;
           that.fibers.push(path);
         });

@@ -173,7 +173,7 @@ Site.prototype.onSiteClick = function (e){
         // No n'hi ha cap actiu, el creem.
         console.log('inici fibra.');
         this.changeTypeIcon('over');
-        this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent);
+        this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), {}, this.map_parent.type_path_default, this.map_parent);
         this.map_parent.active_fiber.setFirstSite(this);
       }
       break;
@@ -335,7 +335,7 @@ Site.prototype.siteFusionPaint = function() {
   var strUrlMerger = that.map_parent.serverUrl + "/site/" + that.id + "/merger";
   $.getJSON(strUrlMerger, function (dataMerger){
     // Carreguem les caixes.
-    var strUrlSection = that.map_parent.serverUrl + "/site/" + that.id + "/section";
+    var strUrlSection = that.map_parent.serverUrl + "/site/" + that.id + "/boxes";
     $.getJSON(strUrlSection, function (dataSection) {
       // Insertem els boto per fusionar o la fusió que té.
       that.actualFusionSite = that.map_parent.buildSiteMerger(dataSection, dataMerger);
