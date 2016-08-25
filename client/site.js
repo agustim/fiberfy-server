@@ -235,6 +235,7 @@ Site.prototype.boxDefine = function(){
   var that = this;
   // Remove click event.
   $('#box-new').unbind("click");
+  $('#box-fusio').unbind("click");
   // Frist clear box form.
   $(".box").html("");
   // Load existen boxes.
@@ -243,6 +244,10 @@ Site.prototype.boxDefine = function(){
   $('#box-new').on("click", function(){
     that.addBox();
   })
+  $('#box-fusio').on('click', function (){
+    that.siteFusion();
+    $('#zoom-box-group').toggleClass('hide');
+  });
   // Hidden and Show div's
   $('#map-group').hide();
   $('#zoom-box-group').toggleClass('hide');

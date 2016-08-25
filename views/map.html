@@ -131,11 +131,17 @@ html(lang="ca")
             .col-s-12
               .notify
         .box
+        #box-fusio
+          .row
+            .col-s-2
+              button#box-fusio Fusio
+            .col-s-10
         #box-add
           .row
             .col-s-2
               button#box-new Nou
             .col-s-10
+
 
     // path
     #zoom-path-group.zoom-group.second-level.hide
@@ -167,5 +173,37 @@ html(lang="ca")
             .col-s-12
               #div-path-save.button
                 button#path-update Update
+
+    // path
+    #zoom-fiber-group.zoom-group.second-level.hide
+      #zoom-fiber
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+        .fiber
+          .row
+            .col-s-12
+              .notify
+          .row
+            .col-s-6
+                label Name :
+                input#fiber-name
+                label First Box :
+                input#fiber-first-site
+                label End Box :
+                input#fiber-end-site
+            .col-s-6
+                label Intermedial :
+                textarea#fiber-intermedial
+                label Observation :
+                textarea#fiber-observation
+          .row
+            .col-s-12
+              #div-fiber-save.button
+                button#fiber-update Update
+
+
+
     script(src='js/bundle.js')
     script(src='js/responsive.min.js')

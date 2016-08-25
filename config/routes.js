@@ -99,6 +99,11 @@ module.exports = [
     path: '/api/v1/site/{id}/boxes',
     handler: 'SiteController.getBoxes'
   },
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/site/{id}/merger',
+    handler: 'SiteController.getMerger'
+  },
 
 
   /**

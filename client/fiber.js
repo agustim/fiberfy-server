@@ -1,6 +1,6 @@
 //=====================
 // Tram
-function Fiber(id, name, first_site, end_site, paths, template, m){
+function Fiber(id, name, first_site, end_site, paths, colors, template, m){
   this.id = id;
   this.name = name;
   this.first_site = first_site;
@@ -9,6 +9,7 @@ function Fiber(id, name, first_site, end_site, paths, template, m){
   this.polyline = null;
   this.paths = paths;
   this.sites = [];
+  this.colors = colors;
   this.color_building = "red";
   this.color_did = "blue";
   this.color_mouseover = "green";
@@ -231,19 +232,19 @@ Fiber.prototype.updateForm = function (){
   var that = this;
   // Carraguem els caps del formulari al objecte
 
-  this.name = $('#path-name').val();
-  this.first_site = $('#path-first-site').val();
-  this.end_site = $('#path-end-site').val();
-  this.dots = $.parseJSON($('#path-intermedial').val());
-  this.type = $('#path-type').val();
+  this.name = $('#fiber-name').val();
+  this.first_site = $('#fiber-first-site').val();
+  this.end_site = $('#fiber-end-site').val();
+  this.paths = $.parseJSON($('#fiber-intermedial').val());
+  this.type = $('#fiber-type').val();
   try {
-    this.colors = $.parseJSON($('#path-colors').val());
+    this.colors = $.parseJSON($('#fiber-colors').val());
   } catch(err) {
     console.log(err);
   }
-  this.observations = $('#path-observations').val();
+  this.observations = $('#fiber-observations').val();
 
-  strUrl = this.map_parent.serverUrl + "/path/" + this.id;
+  strUrl = this.map_parent.serverUrl + "/fiber/" + this.id;
   console.log('API call: ' + strUrl);
   if (this.first_site == null || this.end_site == null) {
     console.log("First or End site does not have id, please check this problem.");
@@ -251,7 +252,7 @@ Fiber.prototype.updateForm = function (){
   }
   // Not exist $.put need use $.ajax
   $.put( strUrl, JSON.stringify({ "name": this.name, "first": this.first_site, "last": this.end_site,
-                                  "intermedial": JSON.stringify(this.dots) ,
+                                  "intermedial": JSON.stringify(this.paths) ,
                                   "colors": this.colors, "project": this.map_parent.active_project.id,
                                   "type": this.type,
                                   "observations": this.observations }))
@@ -263,39 +264,25 @@ Fiber.prototype.updateForm = function (){
 Fiber.prototype.editForm = function() {
   var that = this;
   // Clear old click events.
-  $('#path-update').unbind("click");
+  $('#fiber-update').unbind("click");
 
   // Carreguem les dades a on toqui
-  $('#path-name').val(this.name);
-  $('#path-first-site').val(this.first_site);
-  $('#path-end-site').val(this.end_site);
-  $('#path-intermedial').val(JSON.stringify(this.dots));
+  $('#fiber-name').val(this.name);
+  $('#fiber-first-site').val(this.first_site);
+  $('#fiber-end-site').val(this.end_site);
+  $('#fiber-intermedial').val(JSON.stringify(this.paths));
+  $('#fiber-colors').val(JSON.stringify(this.colors));
 
-  $('#path-observations').val(this.observations);
-  $('#path-update').click(function(){ that.updateForm();});
+  $('#fiber-observations').val(this.observations);
+  $('#fiber-update').click(function(){ that.updateForm();});
 
-  this.loadTypes($('#path-type'));
   // Canviem de pàgina
   $('#map-group').hide();
-  $('#zoom-path-group').toggleClass('hide');
+  $('#zoom-fiber-group').toggleClass('hide');
 };
 Fiber.prototype.onFiberClick = function(e){
-  console.log(this.map_parent.status);
   var that = this;
-  switch(this.map_parent.status){
-    case "split":
-      alert("Fer un split!");
-      console.log(that);
-      console.log(e);
-      this.getSegment(e);
-      break;
-    case "path":
-    case "site":
-      this.editForm();
-      break;
-    case "box":
-      break;
-  }
+  this.editForm();
 };
 Fiber.prototype.onFiberMouseOver = function(e) {
   if (this.map_parent.status != 'box') {
