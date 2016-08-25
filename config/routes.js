@@ -173,5 +173,28 @@ module.exports = [
     handler: 'FiberController.destroy'
   },
 
+  /**
+    * FiberTemplate
+    */
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/fibertemplate/{id?}',
+    handler: 'FiberTemplateController.find'
+  },
+  {
+    method: [ 'POST' ],
+    path: '/api/v1/fibertemplate',
+    handler: 'FiberTemplateController.create'
+  },
+  {
+    method: [ 'PUT', 'PATCH' ],
+    path: '/api/v1/fibertemplate/{id?}',
+    handler: 'FiberTemplateController.update'
+  },
+  {
+    method: [ 'DELETE' ],
+    path: '/api/v1/fibertemplate/{id?}',
+    handler: 'FiberTemplateController.destroy'
+  },
 
 ]
