@@ -64,9 +64,9 @@ module.exports = class SiteController extends Controller{
     let response
 
     let where =  { user: request.user.id }
-    if (id) where.site = id
+    if (id) where.fbox = id
 
-    response = FootprintService.find('Box', where)
+    response = FootprintService.find('Fusion', where)
 
     response.then(elements => {
       reply.status(elements ? 200 : 404).json(elements || {})
