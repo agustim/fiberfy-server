@@ -31,12 +31,10 @@ module.exports = class SiteController extends Controller{
       'box', ', criteria =', request.query, id,
       ', values = ', request.body)
 
-    let response
-
-    let where =  { user: request.user.id }
+    const where =  { user: request.user.id }
     if (id) where.site = id
 
-    response = FootprintService.find('Box', where)
+    const response = FootprintService.find('Box', where)
 
     response.then(elements => {
       reply.status(elements ? 200 : 404).json(elements || {})
@@ -61,12 +59,13 @@ module.exports = class SiteController extends Controller{
       'fusion', ', criteria =', request.query, id,
       ', values = ', request.body)
 
-    let response
-
     let where =  { user: request.user.id }
-    if (id) where.fbox = id
+    if (id) where = { or: [
+                        { fbox: id },
+                        { lbox: id }
+    ]}
 
-    response = FootprintService.find('Fusion', where)
+    const response = FootprintService.find('Fusion', where)
 
     response.then(elements => {
       reply.status(elements ? 200 : 404).json(elements || {})
