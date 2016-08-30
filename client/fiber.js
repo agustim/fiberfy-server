@@ -329,4 +329,118 @@ Fiber.prototype.getSegment = function (e){
 */
 console.log("");
 };
+
+Fiber.prototype.drawColors = function (e) {
+  var that = this;
+  $('#div-fiber-colors').hide();
+
+  $('#div-fiber-colors-gui').html("");
+
+  if (this.colors) {
+    $.each(this.colors, function (itub,tub){
+        var label_tub = $('<label>').text("Tub")
+        var label_colors = $('<label>').text("Fibres")
+        var input_tub = $('<input class="tub-name" type="text" class="readonly">').attr('value',tub.name);
+        var this_tub = $('<div class="row">')
+                      .append($('<div class="col-s-12">')
+                        .append($('<div class="row">')
+                          .append($('<div class="col-s-1">')
+                            .append(label_tub)
+                          )
+                          .append($('<div class="col-s-11">')
+                            .append(input_tub)
+                          )
+                        )
+                        .append($('<div class="row">')
+                          .append($('<div class="col-s-1">')
+                            .append(label_colors)
+                          )
+                        )
+                      );
+        var this_fibers = $('<div class="row">');
+
+        input_tub.on('change', function(e) { that.onChangeTub(e, itub); } )
+
+        $.each(tub.fibers, function (ifiber, fiber){
+          var this_remove_link = $('<a>')
+                              .html("X");
+          var input_fiber = $('<input class="fiber-name" type="text" class="readonly">').attr('value',fiber.color);
+          var col_line_Name = $('<div class="col-s-3">')
+              .append($('<div class="input-group">')
+                .append( input_fiber )
+                .append($('<span class="input-group-addon supplement input-close">')
+                  .append( this_remove_link )
+                )
+              )
+          this_remove_link.on('click', function(e) { that.onRemoveFiber(e, itub, ifiber); } )
+          input_fiber.on('change', function(e) { that.onChangeFiber(e, itub, ifiber); } )
+
+          this_fibers.append(col_line_Name);
+        })
+        var add_fiber = $('<div class="col-s-3">')
+                        .append($('<button>')
+                          .text('Afegir fibra...')
+                        );
+        add_fiber.on('click', function(e){ that.onAddFiber(e,itub);})
+
+        this_fibers.append(add_fiber);
+
+        $('#div-fiber-colors-gui').append(this_tub).append(this_fibers)
+    });
+  }
+  var add_tub = $('<div class="row">')
+                .append($('<div class="col-s-12">')
+                  .append($('<button>')
+                    .text('Afegir tub...')
+                  )
+                );
+  add_tub.on('click', function(e){ that.onAddTub(e); })
+  $('#div-fiber-colors-gui').append(add_tub);
+
+}
+Fiber.prototype.onRemoveFiber = function(e, itub, ifiber) {
+    var that = this
+    delete that.colors[itub].fibers[ifiber];
+    // delete mark item like "undefined", need clear array.
+    that.colors[itub].fibers = $.grep(that.colors[itub].fibers,function(n){ return n == 0 || n });
+    $('#fiber-colors').val(JSON.stringify(that.colors));
+    that.drawColors();
+    e.stopPropagation();
+    return false;
+}
+Fiber.prototype.onChangeFiber = function(e, itub, ifiber) {
+    var that = this
+    that.colors[itub].fibers[ifiber].color =  $(e.currentTarget).val();
+    $('#fiber-colors').val(JSON.stringify(that.colors));
+    e.stopPropagation();
+    return false;
+}
+Fiber.prototype.onChangeTub = function(e, itub) {
+    var that = this
+    that.colors[itub].name =  $(e.currentTarget).val();
+    $('#fiber-colors').val(JSON.stringify(that.colors));
+    e.stopPropagation();
+    return false;
+}
+Fiber.prototype.onAddTub = function(e) {
+  var that = this
+  if (that.colors == null || that.colors == "") {
+    that.colors = new Array({"name":"", "fibers":[]});
+  } else {
+    that.colors.push({"name":"", "fibers":[]});
+  }
+  $('#fiber-colors').val(JSON.stringify(that.colors));
+  that.drawColors();
+  e.stopPropagation();
+  return false;
+}
+Fiber.prototype.onAddFiber = function(e, itub) {
+  var that = this
+  that.colors[itub].fibers.push({"color":""});
+  $('#fiber-colors').val(JSON.stringify(that.colors));
+  that.drawColors();
+  e.stopPropagation();
+  return false;
+}
+
 module.exports = exports = Fiber;
