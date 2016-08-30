@@ -271,7 +271,14 @@ Fiber.prototype.editForm = function() {
   $('#fiber-first-site').val(this.first_site);
   $('#fiber-end-site').val(this.end_site);
   $('#fiber-intermedial').val(JSON.stringify(this.paths));
-  $('#fiber-colors').val(JSON.stringify(this.colors));
+  if(this.colors == null || this.colors == "") {
+    $("#fiber-colors").val("");
+  } else {
+    $('#fiber-colors').val(JSON.stringify(this.colors));
+  }
+
+  // GUI colors
+  this.drawColors();
 
   $('#fiber-observations').val(this.observations);
   $('#fiber-update').click(function(){ that.updateForm();});
