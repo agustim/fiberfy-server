@@ -584,10 +584,10 @@ Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
 function existMerger(tram, tub, color, mergers){
   for(idx_merger in mergers){
     merger = mergers[idx_merger];
-    if (merger.fsectionId == tram && merger.fcolor == tub + "." + color)
-      return merger.lsectionId+"."+merger.lcolor;
-    if (merger.lsectionId == tram && merger.lcolor == tub + "." + color)
-      return merger.fsectionId+"."+merger.fcolor;
+    if (merger.ffiber == tram && merger.fcolor == tub + "." + color)
+      return merger.lfiber+"."+merger.lcolor;
+    if (merger.lfiber == tram && merger.lcolor == tub + "." + color)
+      return merger.ffiber+"."+merger.fcolor;
   }
   return "";
 }

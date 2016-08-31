@@ -50,7 +50,7 @@ module.exports = class SiteController extends Controller{
       }
     })
   }
-  getMerger(request, reply) {
+  getFusion(request, reply) {
     const FootprintService = this.app.services.FootprintService
 
     const id = request.params.id
@@ -60,12 +60,40 @@ module.exports = class SiteController extends Controller{
       ', values = ', request.body)
 
     let where =  { user: request.user.id }
-    if (id) where = { or: [
-                        { fbox: id },
-                        { lbox: id }
-    ]}
+    if (id) where = { site: id }
 
     const response = FootprintService.find('Fusion', where)
+
+    response.then(elements => {
+      reply.status(elements ? 200 : 404).json(elements || {})
+    }).catch(error => {
+      if (error.code == 'E_VALIDATION') {
+        reply.status(400).json(error)
+      }
+      else if (error.code == 'E_NOT_FOUND') {
+        reply.status(404).json(error)
+      }
+      else {
+        reply.boom.wrap(error)
+      }
+    })
+  }
+  getFibers(request, reply) {
+    const FootprintService = this.app.services.FootprintService
+
+    const id = request.params.id
+
+    this.log.debug('[',this.constructor.name,'] (find) model =',
+      'fibers', ', criteria =', request.query, id,
+      ', values = ', request.body)
+
+    let where =  { user: request.user.id }
+    if (id) where = { or: [
+                        { first: id },
+                        { last: id }
+    ]}
+
+    const response = FootprintService.find('Fiber', where)
 
     response.then(elements => {
       reply.status(elements ? 200 : 404).json(elements || {})

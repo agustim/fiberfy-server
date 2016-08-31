@@ -13,17 +13,20 @@ module.exports = class Fusion extends Model {
 
   static schema () {
     return {
-      fbox: {
-        type: 'Box'
+      site: {
+        model: 'Site'
+      },
+      ffiber: {
+        model: 'Fiber'
       },
       fcolor: {
-        type: 'integer'
+        type: 'string'
       },
-      lbox: {
-        type: 'Box'
+      lfiber: {
+        model: 'Fiber'
       },
       lcolor: {
-        type: 'integer'
+        type: 'string'
       },
       status: {
         type: 'string'

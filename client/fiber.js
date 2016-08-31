@@ -253,7 +253,7 @@ Fiber.prototype.updateForm = function (){
   // Not exist $.put need use $.ajax
   $.put( strUrl, JSON.stringify({ "name": this.name, "first": this.first_site, "last": this.end_site,
                                   "intermedial": JSON.stringify(this.paths) ,
-                                  "colors": this.colors, "project": this.map_parent.active_project.id,
+                                  "colors": JSON.stringify(this.colors), "project": this.map_parent.active_project.id,
                                   "type": this.type,
                                   "observations": this.observations }))
     .done(function( data ) {

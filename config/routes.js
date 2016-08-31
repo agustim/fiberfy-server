@@ -101,10 +101,14 @@ module.exports = [
   },
   {
     method: [ 'GET' ],
-    path: '/api/v1/site/{id}/merger',
-    handler: 'SiteController.getMerger'
+    path: '/api/v1/site/{id}/fusion',
+    handler: 'SiteController.getFusion'
   },
-
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/site/{id}/fibers',
+    handler: 'SiteController.getFibers'
+  },
 
   /**
     * Path.
@@ -200,6 +204,35 @@ module.exports = [
     method: [ 'DELETE' ],
     path: '/api/v1/fibertemplate/{id?}',
     handler: 'FiberTemplateController.destroy'
+  },
+
+  /**
+    * Fusion
+    */
+  {
+    method: [ 'GET' ],
+    path: '/api/v1/fusion/{id?}',
+    handler: 'FusionController.find'
+  },
+  {
+    method: [ 'POST' ],
+    path: '/api/v1/fusion',
+    handler: 'FusionController.create'
+  },
+  {
+    method: [ 'PUT', 'PATCH' ],
+    path: '/api/v1/fusion/{id?}',
+    handler: 'FusionController.update'
+  },
+  {
+    method: [ 'DELETE' ],
+    path: '/api/v1/fusion/{id}',
+    handler: 'FusionController.destroy'
+  },
+  {
+    method: [ 'DELETE' ],
+    path: '/api/v1/fusion',
+    handler: 'FusionController.destroyByParameters'
   }
 
 ]

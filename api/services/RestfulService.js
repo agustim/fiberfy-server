@@ -23,8 +23,8 @@ module.exports = class RestfulService extends Service {
       || !request.body.user
       || !request.body.project) {
       reply.json({flag: false, data: '', message: 'Error!'})
+      return
     }
-
     FootprintService.create(model, request.body)
       .then(elements => {
         reply.status(200).json(elements || {})
@@ -111,7 +111,12 @@ module.exports = class RestfulService extends Service {
     let response
 
     let where =  { user: request.user.id }
-    if (id) where.id = id
+    if (!id) {
+      reply.status(500).json({flag: false, data: '', message: 'Error, you can not remove without id.'})
+      return
+    }
+
+    where.id = id
     response = FootprintService.destroy(model, where)
 
     this.log.debug(response)
@@ -129,5 +134,4 @@ module.exports = class RestfulService extends Service {
       }
     })
   }
-
 }

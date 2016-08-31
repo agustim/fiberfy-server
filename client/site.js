@@ -332,10 +332,10 @@ Site.prototype.siteFusionPaint = function() {
 
   var global = $('<div>');
   // Carreguem les fusions
-  var strUrlMerger = that.map_parent.serverUrl + "/site/" + that.id + "/merger";
+  var strUrlMerger = that.map_parent.serverUrl + "/site/" + that.id + "/fusion";
   $.getJSON(strUrlMerger, function (dataMerger){
     // Carreguem les caixes.
-    var strUrlSection = that.map_parent.serverUrl + "/site/" + that.id + "/boxes";
+    var strUrlSection = that.map_parent.serverUrl + "/site/" + that.id + "/fibers";
     $.getJSON(strUrlSection, function (dataSection) {
       // Insertem els boto per fusionar o la fusió que té.
       that.actualFusionSite = that.map_parent.buildSiteMerger(dataSection, dataMerger);
@@ -351,7 +351,7 @@ Site.prototype.siteFusionPaint = function() {
         var columns = $('<div class="col-s-3">').appendTo(row);
         var title_tram = $('<h1 title="' + tram.name + '">Del Tram ' + tram.id + '</h1>');
         title_tram.on('click', function(){
-          that.map_parent.getPath(tram.id);
+          //that.map_parent.getPath(tram.id);
         });
         title_tram.appendTo(columns);
         var this_site = $('<ul>').appendTo(columns);
@@ -408,9 +408,10 @@ Site.prototype.onChangeSelect = function(e){
 
     // Mirar de grabar la fusió
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/merger";
+  strUrl = this.map_parent.serverUrl + "/fusion";
   console.log('API call: ' + strUrl);
-  $.post( strUrl, JSON.stringify({ "site_id": that.id , "fsection_id": ffiber[0], "fcolor": ffiber[1]+"."+ffiber[2], "lsection_id": lfiber[0], "lcolor": lfiber[1]+"."+lfiber[2] }))
+  $.post( strUrl, JSON.stringify({ "site": that.id , "ffiber": ffiber[0], "fcolor": ffiber[1]+"."+ffiber[2],
+                                  "lfiber": lfiber[0], "lcolor": lfiber[1]+"."+lfiber[2], "project" : this.map_parent.active_project.id }))
     .done(function( data ) {
       that.map_parent.notify("Updated!");
       myMerger = $.parseJSON( data );
@@ -426,9 +427,10 @@ Site.prototype.removeFusion = function(e){
 
   // Esborrar merge
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/merger";
+  strUrl = this.map_parent.serverUrl + "/fusion";
   console.log('API call: ' + strUrl);
-  $.delete( strUrl, JSON.stringify({ "site_id": that.id ,"fsection_id": ffiber[0], "fcolor": ffiber[1]+"."+ffiber[2], "lsection_id": lfiber[0], "lcolor": lfiber[1]+"."+lfiber[2] }))
+  $.delete( strUrl, JSON.stringify({ "site": that.id ,"ffiber": parseInt(ffiber[0]), "fcolor": ffiber[1]+"."+ffiber[2],
+                                     "lfiber": parseInt(lfiber[0]), "lcolor": lfiber[1]+"."+lfiber[2], "project" : this.map_parent.active_project.id }))
     .done(function( data ) {
       that.map_parent.notify("Deleted!");
       myMerger = $.parseJSON( data );
