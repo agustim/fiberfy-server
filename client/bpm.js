@@ -118,7 +118,7 @@ function Mapa(divMap){
     eval ("var " +  name + "GreyIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".grey.png'}});");
     eval ("this.type_site_icon_grey['" + name +"'] = new " + name +"GreyIcon();");
   }
-  console.log(this);
+  //console.log(this);
   // Posicio inicial i zoom.
   this.map.setView([41.412, 2.15353], 17);
 
