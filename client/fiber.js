@@ -212,6 +212,9 @@ Fiber.prototype.save = function (){
               "type": this.type}))
     .done(function( data ) {
       that.id = data.id;
+      that.map_parent.active_fiber = null;
+      
+      that.map_parent.loadInfra();
     }, "json");
 };
 Fiber.prototype.loadTypes = function(SelectField){
