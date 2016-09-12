@@ -13,7 +13,7 @@
 #list-projects { padding: 10px }
 
 /*------ Site -------*/
-.fiber, .site, .path, .config, .box, #box-add {
+.fiber, .site, .path, .config, .box, #box-add, .btn {
   margin: 10px;
 }
 /*------ Two Pages -----*/
