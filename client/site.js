@@ -163,7 +163,7 @@ Site.prototype.onSiteClick = function (e){
       break;
     case "box":
       this.boxDefine();
-      break;sitessites;
+      break;
     case "fiber":
       // Hi ha alguna fibra activa?
       if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)){
