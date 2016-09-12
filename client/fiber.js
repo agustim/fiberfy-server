@@ -213,7 +213,7 @@ Fiber.prototype.save = function (){
     .done(function( data ) {
       that.id = data.id;
       that.map_parent.active_fiber = null;
-      
+      // Maybe is not necessary reload all...
       that.map_parent.loadInfra();
     }, "json");
 };
