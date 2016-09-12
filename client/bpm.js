@@ -436,6 +436,7 @@ Mapa.prototype.debugFunction = function() {
   }
 };
 Mapa.prototype.backMap = function(){
+  if (this.layerActive == 'infra') this.loadInfra();
   $('#map-group').show();
   $('.second-level').addClass('hide');
   $('.third-level').addClass('hide');
