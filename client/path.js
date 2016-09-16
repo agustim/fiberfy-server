@@ -55,7 +55,8 @@ Path.prototype.findPathColor = function(status, type) {
   return color;
 };
 Path.prototype.clear = function() {
-  this.map_parent.map.removeLayer(this.polyline);
+  if (this.polyline)
+    this.map_parent.map.removeLayer(this.polyline);
 };
 
 Path.prototype.draw = function() {

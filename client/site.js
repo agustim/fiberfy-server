@@ -46,8 +46,8 @@ Site.prototype.save = function (){
   }
 };
 Site.prototype.clear = function(){
-  var that = this;
-  this.map_parent.map.removeLayer(this.marker);
+  if (this.marker)
+    this.map_parent.map.removeLayer(this.marker);
 };
 
 Site.prototype.draw = function (){
