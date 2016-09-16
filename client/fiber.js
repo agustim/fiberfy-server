@@ -63,7 +63,8 @@ Fiber.prototype.findFiberColor = function(status, type) {
   return color;
 };
 Fiber.prototype.clear = function() {
-  this.map_parent.map.removeLayer(this.polyline);
+  if (this.polyline)
+    this.map_parent.map.removeLayer(this.polyline);
 };
 
 Fiber.prototype.getSites = function() {

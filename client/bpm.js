@@ -301,8 +301,8 @@ Mapa.prototype.load = function (){
   this.paths = [];
 
   // Netejem les fibres existents al mapa
-  for(var idx_paths in this.fibers){
-    var f = this.fibers[idx_paths];
+  for(var idx_fiber in this.fibers){
+    var f = this.fibers[idx_fiber];
     f.clear();
   }
   this.fibers = [];
