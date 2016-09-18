@@ -1,15 +1,15 @@
 
 //=====================
-// Project
+// Projecte
 
-var Project = function(id, name, m){
+var Projecte = function(id, name, m){
   this.id = id;
   this.name = name;
   this.status = "define";
   this.map_parent = m;
 };
 
-Project.prototype.save = function (){
+Projecte.prototype.save = function (){
   var that = this;
   strUrl = this.map_parent.serverUrl + "/project";
   console.log('API call: ' + strUrl);
@@ -26,7 +26,7 @@ Project.prototype.save = function (){
       }, "json");
   }
 };
-Project.prototype.delete = function(){
+Projecte.prototype.delete = function(){
   var that = this;
   strUrl = this.map_parent.serverUrl + "/project";
   console.log('API call: ' + strUrl);
@@ -40,4 +40,4 @@ Project.prototype.delete = function(){
   }
 };
 
-module.exports = Project;
+module.exports = Projecte;
