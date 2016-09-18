@@ -449,7 +449,13 @@ Mapa.prototype.backSite = function(){
   $('#zoom-path-group').addClass('hide');
   $('#zoom-site-fusion-group').addClass('hide');
   $('#zoom-fusion-graph-group').addClass('hide');
-  $('#zoom-site-group').removeClass('hide');
+  if (this.layerActive == 'civil') {
+    $('#zoom-site-group').removeClass('hide');
+    $('#zoom-box-group').addClass('hide');
+  } else {
+    $('#zoom-site-group').addClass('hide');
+    $('#zoom-box-group').removeClass('hide');
+  }
   $('#form-project-group').addClass('hide');
   this.changeStatus("","");
 };

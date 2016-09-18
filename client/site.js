@@ -251,6 +251,9 @@ Site.prototype.boxDefine = function(){
   // Hidden and Show div's
   $('#map-group').hide();
   $('#zoom-box-group').toggleClass('hide');
+
+  // Posem el ID d'aquest site al
+  that.map_parent.active_site = that;
 };
 // Carraguem els seus boxs
 Site.prototype.loadBoxes = function() {
