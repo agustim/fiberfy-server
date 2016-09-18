@@ -4,7 +4,7 @@ var Box = require('./box');
 var Path = require('./path');
 var Fiber = require('./fiber');
 var Pfusion = require('./pfusion');
-var Project = require('./project');
+var Projecte = require('./projecte');
 var Config = require('./config');
 
 //=====================
@@ -68,7 +68,7 @@ function Mapa(divMap){
   // Llistat de fibres
   this.fibers = [];
 
-  // Llista de Projectes de l'usuari
+  // Llista de Projectees de l'usuari
   this.projects = new Array();
 
   // Dibuix del Mapa
@@ -160,6 +160,7 @@ function Mapa(divMap){
 
   $('.back_map').click(function(){ that.clickMenu(this); that.backMap(); });
   $('.back_site').click(function(){ that.backSite(); });
+
   $('#fusion_graph').click(function(){ that.fusionSite(); });
   $('#back_fusion').click(function(){ that.backFusion(); });
 
@@ -190,14 +191,14 @@ Mapa.prototype.loadProjects = function (){
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
-      project = new Project(value.id, value.name, that);
+      project = new Projecte(value.id, value.name, that);
       that.projects.push(project);
     });
     // Hi ha projecte actiu?
     if (!that.active_project){
       // No hi ha cap actiu, però tampoc té cap projecte, creem un per defecte.
       if (that.projects.length == 0){
-        project = new Project(0, that.project_default_name , that);
+        project = new Projecte(0, that.project_default_name , that);
         project.save();
         that.projects.push(project);
       }
@@ -262,7 +263,7 @@ Mapa.prototype.drawProjects = function (){
   $(addbutton).on('click', function(e) {
     var name = $(addinput).val();
     if (name != "") {
-      var project = new Project(0, name, that);
+      var project = new Projecte(0, name, that);
       project.save();
       that.projects.push(project);
       $(addinput).val("");
