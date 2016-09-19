@@ -15,13 +15,24 @@ L'obra civil ens permet esquematitzar els elements físic, hi ha dos grans blocs
 * Lloc
 * Tram
 
+### Lloc
+
+Els llocs son punts físic on es poden ubicar "caixes".
+
+
+### Tram
+
+Els trams son camins entre dos llocs.
+
+
 ## Cablejat
 
-El Cablejat és el conjunt de fibres i "caixes" que fem en el desplagament.
+El Cablejat és el conjunt de fibres, "caixes" i fusions que fem en el desplagament.
 
-* caixes
-* fibres
-* fusions
-
+* Caixes
+* Fibres
+* Fusions
 
 El cablejat està molt relacionat amb l'Obra civil i per això una "caixa" s'ha de posar en un "Lloc" i una fibra passa per diferents Trams.
+
+Les fusions només estan relacionades amb les caixes que hi ha dos o més fibres que arribin a aquest punt.
