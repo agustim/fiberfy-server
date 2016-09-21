@@ -2,22 +2,22 @@
 
 ## Manual d'Usuari
 
-L'objectiu principal de l'eina és posicionar en el mapa, tant la distribució física dels elements de la fibra (a partir d'ara Obra civil), com els desplegaments de la fibra i les seves "fusions" (a partir d'ara Cablejat).
+L'objectiu principal de l'eina és posicionar en el mapa, tant la distribució física dels elements d'intraestructura per a la xarxa de fibra òptica (a partir d'ara Obra civil), com els desplegaments de la fibra i les seves "fusions" (a partir d'ara Cablejat).
 
-Transversalment l'eina té usuaris i projectes. Els projectes son conjunts d'Obra civil i cablejat que un usuari pot definir, i els usuaris tenen els seus propis projectes. Per tant els usuaris tenen projectes i els projectes son conjunts de "desplegaments".
+Transversalment, l'eina té usuaris i projectes. Els projectes són conjunts d'Obra civil i Cablejat que un usuari pot definir. Els usuaris tenen els seus propis projectes. Per tant, els usuaris tenen projectes i els projectes són conjunts de "desplegaments" de Cablejat ubicat en Obra civil.
 
-Els projectes son d'un sol usuari i per tant no es poden veure per la resta d'usuaris.
+Els projectes són d'un sol usuari i, per tant, un projecte no és visible per la resta d'usuaris.
 
 ## Obra civil
 
 L'obra civil ens permet esquematitzar els elements físic, hi ha dos grans blocs:
 
-* Lloc
-* Tram
+* Llocs
+* Trams
 
-### Lloc
+### Llocs
 
-Els llocs son punts físic on es poden ubicar "caixes", cada caixa té com a característiques la posició (latitud i longitud), l'estat, tipus i Observacions.
+Els llocs són punts físics on es poden ubicar "caixes", cada caixa té com a característiques: posició (latitud i longitud), estat, tipus i observacions.
 
 N'hi ha de set tipus:
 
@@ -25,14 +25,14 @@ N'hi ha de set tipus:
 * Postes
 * Cambres
 * Armaris
-* POE
+* POE (transicions entre trams soterrats i façanes o postes, típicament són tubs metàl·lics verticals)
 * Ganxo
-* Salt: Es un cas especial, que ha de servir per ajuntar dos trams que son de tipus diferent, per exemple façana i aeri.
+* Salt (és un cas especial, que ha de servir per ajuntar dos trams que són de tipus diferent, per exemple: façana i aeri)
 
 
-### Tram
+### Trams
 
-Els trams son camins entre dos llocs. Les seves característiques son lloc inicial, lloc final, punts d'aquell tram, tipus i Observacions.
+Els trams són camins entre dos llocs. Les seves característiques són: lloc inicial, lloc final, punts intermitjos del tram, tipus i observacions.
 
 Un tram potser dels següents tipus:
 
@@ -43,32 +43,32 @@ Un tram potser dels següents tipus:
 
 ## Cablejat
 
-El Cablejat és el conjunt de fibres, "caixes" i fusions que fem en el desplegament.
+El cablejat és el conjunt de: fibres (ubicades dins dels cables), "caixes" i fusions. Aquests elements formen el desplegament.
 
 * Caixes
 * Fibres
 * Fusions
 
-El cablejat està molt relacionat amb l'Obra civil i per això una "caixa" s'ha de posar en un "Lloc" i una fibra passa per diferents Trams.
+El cablejat està directament relacionat amb l'Obra civil i, per això, una "Caixa" s'ubica en un "Lloc" i una fibra passa per un o més "Trams".
 
-Les fusions només estan relacionades amb les caixes que hi ha dos o més fibres que arribin a aquest punt.
+Les fusions estan relacionades amb les caixes sempre que hi hagi dues o més fibres que arribin a aquest punt, a la caixa.
 
 ### Caixes
 
-Les caixes son els espais físic on poden haver-hi fusion, també podem incloure aquell maquinari com splitters, etc...
+Les caixes són els espais físics on poden haver-hi fusions, també hi pot haver altres elements: splitters, etc...
 
 ### Fibres
 
-Les fibres van d'una caixa a un altre. Quan les dibuixes has de començar per una caixa, anar passant per tots els llocs que passarà la fibra fins arribar a un altre caixa, s'han de fer dos clic a l'última caixa per què el sistema entengui que s'acaba allí aquella fibra.
+Les fibres van d'una caixa a una altra. Quan es dibuixen cal començar per una caixa, anar marcant tots els llocs que passarà la fibra fins arribar a una altra caixa. Cal fer dos clic a l'última caixa perquè el sistema entengui que s'acaba allí aquella fibra.
 
 ### Fusions
 
-Direm de les diferents fibres amb qui es solda i el sistema ens generà un esquema de com està fusionada aquella caixa.
+S'identifiquen les diferents fibres que es solden. El sistema genera un esquema de com estan fusionades les fibres a la caixa.
 
 
 ## Sobre el programari
 
-Per veure la demo podeu anar a : http://demo.fiberfy.io utilitzeu l'usuari "demo" i clau "demo"
+Per veure una demo podeu anar a : http://demo.fiberfy.io utilitzeu l'usuari "demo" i clau "demo"
 
 Bugs i Noves funcionalitat: https://github.com/agustim/fiberfy-server/issues
 
