@@ -18,7 +18,7 @@ function Mapa(divMap){
   this.project_default_name = "default";
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
-  this.type_site = ['Arqueta', 'Poster', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
+  this.type_site = ['Arqueta', 'Poste', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
   this.type_site_icon = [];
   this.type_site_icon_over = [];
   this.type_site_icon_active = [];
