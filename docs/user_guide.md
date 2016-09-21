@@ -22,7 +22,7 @@ Els llocs son punts físic on es poden ubicar "caixes", cada caixa té com a car
 N'hi ha de set tipus:
 
 * Arquetes
-* Pòsters
+* Pòstes
 * Cambres
 * Armaris
 * POE
