@@ -2,13 +2,13 @@
 //=====================
 // Projecte
 
-var Projecte = function(id, name, m){
+var Projecte = function(id, name, lat, lng, zoom, m){
   this.id = id;
   this.name = name;
   this.status = "define";
-  this.latitude = null;
-  this.longitude = null;
-  this.zoom = null;
+  this.latitude = lat;
+  this.longitude = lng;
+  this.zoom = zoom;
   this.map_parent = m;
 };
 
@@ -19,7 +19,8 @@ Projecte.prototype.save = function (){
   var data = {}
   var prop = [ "name", "status", "latitude", "longitude", "zoom" ];
   prop.forEach(function(item) {
-      if (this[item]) data[item] = this[item];
+      if (that[item])
+        data[item] = that[item];
   });
   if (this.id == 0 || this.id == null) {
     $.post( strUrl, JSON.stringify(data))

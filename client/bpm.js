@@ -16,6 +16,9 @@ function Mapa(divMap){
   this.tiles = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   this.serverUrl = "/api/v1";
   this.project_default_name = "default";
+  this.project_default_latitude = 41.412;
+  this.project_default_longitude = 2.15353;
+  this.project_default_zoom = 17;
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
   this.type_site = ['Arqueta', 'Poste', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
@@ -43,6 +46,7 @@ function Mapa(divMap){
   // box
   // fibra
   // split ?
+
 
   this.status = "";
 
@@ -120,7 +124,8 @@ function Mapa(divMap){
   }
   //console.log(this);
   // Posicio inicial i zoom.
-  this.map.setView([41.412, 2.15353], 17);
+
+  this.map.setView(L.latLng(this.project_default_latitude,this.project_default_longitude), this.project_default_zoom);
 
   // Event de click
   this.map.on('click', function(e) { that.onClick(e); });
@@ -191,14 +196,14 @@ Mapa.prototype.loadProjects = function (){
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
-      project = new Projecte(value.id, value.name, that);
+      project = new Projecte(value.id, value.name, value.latitude, value.longitude, value.zoom, that);
       that.projects.push(project);
     });
     // Hi ha projecte actiu?
     if (!that.active_project){
       // No hi ha cap actiu, però tampoc té cap projecte, creem un per defecte.
       if (that.projects.length == 0){
-        project = new Projecte(0, that.project_default_name , that);
+        project = new Projecte(0, that.project_default_name , that.project_default_latitude,that.project_default_longitude, that.project_default_zoom, that);
         project.save();
         that.projects.push(project);
       }
@@ -233,6 +238,7 @@ Mapa.prototype.drawProjects = function (){
   // Clean events
   $('.active-project-button').unbind("click");
   $('.delete-project-button').unbind("click");
+
   $(addbutton).unbind('click');
   // Print List
   var llista = $("<div id='project-list'>");
@@ -243,7 +249,8 @@ Mapa.prototype.drawProjects = function (){
     var buttonActiveProject = '';
     if (value.id == that.active_project.id) {
       projectName = "<label class='active'>" + projectName + "</label>";
-      buttonActiveProject = "<label class='active'>Project Actived</label>";
+      buttonActiveProject = "<label class='active'>Project Actived ";
+      buttonActiveProject += '   <button class="position-project-button" id="position-project-' + value.id + '" data-id="' + value.id + '">Save Position</button></label>' ;
     } else {
       buttonActiveProject = '<button class="active-project-button" id="active-project-' + value.id + '" data-id="' + value.id + '">Active</button>' +
                     '   <button class="delete-project-button" id="delete-project-' + value.id + '" data-id="' + value.id + '">Delete</button>' ;
@@ -263,7 +270,9 @@ Mapa.prototype.drawProjects = function (){
   $(addbutton).on('click', function(e) {
     var name = $(addinput).val();
     if (name != "") {
-      var project = new Projecte(0, name, that);
+      var ll = that.map.getCenter();
+      var zoom = that.map.getZoom();
+      var project = new Projecte(0, name,  ll.latitude,ll.longitude, zoom, that);
       project.save();
       that.projects.push(project);
       $(addinput).val("");
@@ -281,6 +290,14 @@ Mapa.prototype.drawProjects = function (){
     var project = that.findProject($('#'+e.target.id).data("id"));
     that.active_project = project;
     that.loadProjects();
+  });
+  $('.position-project-button').on('click', function(e) {
+    //that.active_project.latitude =
+    var ll = that.map.getCenter();
+    that.active_project.latitude = ll.lat;
+    that.active_project.longitude = ll.lng;
+    that.active_project.zoom = that.map.getZoom();
+    that.active_project.save();
   });
 };
 /* End of Project resources */
@@ -334,6 +351,12 @@ Mapa.prototype.load = function (){
           that.fibers.push(path);
         });
       });
+      // Posició del projecte.
+      that.active_project.latitude = (that.active_project.latitude) ? that.active_project.latitude : that.project_default_latitude;
+      that.active_project.longitude = (that.active_project.longitude) ? that.active_project.longitude : that.project_default_longitude;
+      that.active_project.zoom = (that.active_project.zoom) ? that.active_project.zoom : that.project_default_zoom;
+
+      that.map.setView(L.latLng( that.active_project.latitude , that.active_project.longitude ), that.active_project.zoom );
       that.clearLayers();
       that.redraw();
     });
