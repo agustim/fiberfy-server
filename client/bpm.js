@@ -16,9 +16,9 @@ function Mapa(divMap){
   this.tiles = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   this.serverUrl = "/api/v1";
   this.project_default_name = "default";
-  this.project_default_latitude = 41.412;
-  this.project_default_longitude = 2.15353;
-  this.project_default_zoom = 17;
+  this.project_default_latitude = 41.66060124302088;
+  this.project_default_longitude = 1.571044921875;
+  this.project_default_zoom = 8;
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
   this.type_site = ['Arqueta', 'Poste', 'Cambra', 'Armari', 'Poe', 'Ganxo', 'Salt'];
@@ -270,9 +270,7 @@ Mapa.prototype.drawProjects = function (){
   $(addbutton).on('click', function(e) {
     var name = $(addinput).val();
     if (name != "") {
-      var ll = that.map.getCenter();
-      var zoom = that.map.getZoom();
-      var project = new Projecte(0, name,  ll.latitude,ll.longitude, zoom, that);
+      var project = new Projecte(0, name,  that.project_default_latitude,that.project_default_longitude, that.project_default_zoom, that);
       project.save();
       that.projects.push(project);
       $(addinput).val("");
