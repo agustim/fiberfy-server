@@ -250,7 +250,10 @@ Mapa.prototype.drawProjects = function (){
     if (value.id == that.active_project.id) {
       projectName = "<label class='active'>" + projectName + "</label>";
       buttonActiveProject = "<label class='active'>Project Actived ";
-      buttonActiveProject += '   <button class="position-project-button" id="position-project-' + value.id + '" data-id="' + value.id + '">Save Position</button></label>' ;
+      buttonActiveProject += '   <button class="position-project-button" id="position-project-' + value.id + '" data-id="' + value.id + '">Save Pos</button>';
+      buttonActiveProject += '   <button class="report-project-button" id="report-project-' + value.id + '" data-id="' + value.id + '">Report</button>';
+      buttonActiveProject += '   <button class="export-project-button" id="export-project-' + value.id + '" data-id="' + value.id + '">Export</button>';
+      buttonActiveProject += '</label>' ;
     } else {
       buttonActiveProject = '<button class="active-project-button" id="active-project-' + value.id + '" data-id="' + value.id + '">Active</button>' +
                     '   <button class="delete-project-button" id="delete-project-' + value.id + '" data-id="' + value.id + '">Delete</button>' ;
@@ -290,15 +293,40 @@ Mapa.prototype.drawProjects = function (){
     that.loadProjects();
   });
   $('.position-project-button').on('click', function(e) {
-    //that.active_project.latitude =
     var ll = that.map.getCenter();
     that.active_project.latitude = ll.lat;
     that.active_project.longitude = ll.lng;
     that.active_project.zoom = that.map.getZoom();
     that.active_project.save();
   });
+  $('.report-project-button').on('click', function(e) {
+
+  });
+  $('.export-project-button').on('click', function(e) {
+
+  });
+
 };
 /* End of Project resources */
+
+Mapa.prototype.export = function(){
+  var that =  this;
+  // Exportar tots els sites
+  for(var idx_site in this.sites){
+    var s = this.sites[idx_site];
+    console.log(s.marker.toGeoJSON());
+  }
+
+  // Exportar tots els paths
+  for(var idx_paths in this.paths){
+    var p = this.paths[idx_paths];
+  }
+
+  // Exportar totes les fibres
+  for(var idx_fiber in this.fibers){
+    var f = this.fibers[idx_fiber];
+  }
+}
 
 Mapa.prototype.load = function (){
   var that =  this;
@@ -619,6 +647,15 @@ function existMerger(tram, tub, color, mergers){
       return merger.ffiber+"."+merger.fcolor;
   }
   return "";
+}
+Mapa.prototype.havePaths = function (id){
+  for(idx_path in this.paths){
+    var path = this.paths[idx_path];
+    if ( (path.first_site == id) || (path.end_site == id)){
+      return true;
+    }
+  }
+  return false;
 }
 Mapa.prototype.setIconInSiteById = function (id, status, type){
   for(idx_site in this.sites){

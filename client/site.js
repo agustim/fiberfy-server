@@ -45,6 +45,24 @@ Site.prototype.save = function (){
       }, "json");
   }
 };
+Site.prototype.remove = function(){
+  var that = this;
+  strUrl = this.map_parent.serverUrl + "/site";
+  console.log('API call: ' + strUrl);
+  $.delete( strUrl+"/"+this.id)
+    .done(function( data ) {
+      that.map_parent.map.removeLayer(that.marker);
+      that.map_parent.backMap();
+      that.map_parent.notify("Site deleted!");
+    }, "json");
+}
+Site.prototype.delete = function(){
+  if (!this.map_parent.havePaths(this.id) && this.countBox() == 0){
+    this.remove();
+  } else {
+    console.log('It is not possible. This site has paths or boxes.');
+  }
+}
 Site.prototype.clear = function(){
   if (this.marker)
     this.map_parent.map.removeLayer(this.marker);
@@ -193,6 +211,7 @@ Site.prototype.siteDefine = function() {
   }
   // Netejem events anteriors:
   $('#site-update').unbind("click");
+  $('#site-delete').unbind("click");
 
   // Load formulari
   $('#site-name').val(this.name);
@@ -209,6 +228,12 @@ Site.prototype.siteDefine = function() {
     that.status = $('#site-status').val();
     that.observations = $('#site-observation').val();
     that.save();
+  });
+  // Delete
+  $('#site-delete').on('click', function(e){
+    //Check if this site has some paths.
+    if (that)
+    that.delete();
   });
 
   // Posem el ID d'aquest site al
