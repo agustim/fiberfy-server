@@ -657,6 +657,9 @@ Mapa.prototype.havePaths = function (id){
   }
   return false;
 }
+Mapa.prototype.haveFibers = function (id){
+  
+}
 Mapa.prototype.setIconInSiteById = function (id, status, type){
   for(idx_site in this.sites){
     site = this.sites[idx_site];

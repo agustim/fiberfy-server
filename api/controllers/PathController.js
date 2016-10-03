@@ -22,4 +22,23 @@ module.exports = class PathController extends Controller{
   destroy(request, reply) {
     this.app.services.RestfulService.destroy(this._Model(), request, reply)
   }
+  getFibers(request, reply) {
+    const FootprintService = this.app.services.FootprintService
+
+    const id = request.params.id
+
+    this.log.debug('[',this.constructor.name,'] (find) model =',
+      'fusion', ', criteria =', request.query, id,
+      ', values = ', request.body)
+
+    let where =  { user: request.user.id }
+    if (id) where = { or: [
+                        { intermedial: "[" + id + "," },
+                        { intermedial: "," + id + "]" },
+                        { intermedial: "," + id + "," },
+                        { intermedial: "[" + id + "]" }
+    ]}
+
+    const response = FootprintService.find('Fiber', where)
+  }
 }

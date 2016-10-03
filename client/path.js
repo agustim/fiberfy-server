@@ -54,6 +54,13 @@ Path.prototype.findPathColor = function(status, type) {
   }
   return color;
 };
+Path.prototype.delete = function() {
+  if (!this.map_parent.haveFibers(this.id)){
+    //Check has fibers.
+  } else {
+    console.log('It is not possible. This path has fibers.');
+  }
+}
 Path.prototype.clear = function() {
   if (this.polyline)
     this.map_parent.map.removeLayer(this.polyline);
