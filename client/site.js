@@ -57,7 +57,17 @@ Site.prototype.remove = function(){
     }, "json");
 }
 Site.prototype.delete = function(){
-  if (!this.map_parent.havePaths(this.id) && this.countBox() == 0){
+  if (!this.map_parent.havePaths(this.id)){
+    this.loadBoxes();
+    if (this.countBox() > 0){
+      console.log('Remove all boxes in this site.');
+      for(idx_box in this.boxs){
+        actual_box = this.boxs[idx_box];
+        actual_box.delete( actual_box.id );
+        delete this.boxs[idx_box];
+      }
+    }
+    console.log("Remove site.");
     this.remove();
   } else {
     console.log('It is not possible. This site has paths or boxes.');
