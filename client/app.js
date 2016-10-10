@@ -5,6 +5,7 @@ var $ = require('jquery-browserify');
 // require leaflet.js
 var L = require('leaflet');
 
+//Plugin KML
 require('./plugins/KML');
 
 // Private Global functions

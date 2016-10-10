@@ -7,6 +7,12 @@ var Pfusion = require('./pfusion');
 var Projecte = require('./projecte');
 var Config = require('./config');
 
+// require leaflet-image to image
+console.log('load leaflet-image');
+var leafletImage = require('leaflet-image');
+console.log(leafletImage);
+
+
 //=====================
 // Mapa
 function Mapa(divMap){
@@ -18,7 +24,7 @@ function Mapa(divMap){
       'options' : {
          maxZoom: 20
        }
-    }, 
+    },
     {
       'tiles' : '  http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       'options' : {
@@ -145,16 +151,16 @@ function Mapa(divMap){
     var name = this.type_site[idx];
     name = name.toLowerCase();
     // Icon Base
-    eval ("var " +  name + "Icon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".png'}});");
+    eval ("var " +  name + "Icon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".png', iconSize: [ 25, 41 ], iconAnchor: [ 12, 41 ] }});");
     eval ("this.type_site_icon['" + name +"'] = new " + name +"Icon();");
     // Icon Over
-    eval ("var " +  name + "OverIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".over.png'}});");
+    eval ("var " +  name + "OverIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".over.png', iconSize: [ 25, 41 ], iconAnchor: [ 12, 41 ] }});");
     eval ("this.type_site_icon_over['" + name +"'] = new " + name +"OverIcon();");
     // Icon Active
-    eval ("var " +  name + "ActiveIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".active.png'}});");
+    eval ("var " +  name + "ActiveIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".active.png', iconSize: [ 25, 41 ], iconAnchor: [ 12, 41 ] }});");
     eval ("this.type_site_icon_active['" + name +"'] = new " + name +"ActiveIcon();");
     // Icon Grey
-    eval ("var " +  name + "GreyIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".grey.png'}});");
+    eval ("var " +  name + "GreyIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/" + name + ".grey.png', iconSize: [ 25, 41 ], iconAnchor: [ 12, 41 ] }});");
     eval ("this.type_site_icon_grey['" + name +"'] = new " + name +"GreyIcon();");
   }
   //console.log(this);
@@ -194,7 +200,8 @@ function Mapa(divMap){
   $('#split_path').click(function(){ that.clickMenu(this); that.makeSplit(); });
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
-  $('#tiles').click(function(){ that.rollTiles();})
+  $('.tiles_menu').click(function(){ that.rollTiles();})
+  $('.screenshot_menu').click(function(){ that.printImage();})
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
   $('#view_infrastructure').click(function() { that.changeMenu('infra'); });
@@ -213,6 +220,7 @@ function Mapa(divMap){
 
   this.loadProjects();
 }
+/* Tiles */
 Mapa.prototype.rollTiles = function(){
   this.tilesIndex = ( (this.tilesIndex + 1) % this.tiles.length);
   this.tileLayer(this.tiles[this.tilesIndex]);
@@ -227,6 +235,20 @@ Mapa.prototype.tileLayer = function(tiles){
   this.layer = L.tileLayer(tiles.tiles, tiles.options);
   this.layer.addTo(this.map);
 };
+
+/* Print Screen */
+Mapa.prototype.printImage = function() {
+  var map = this.map;
+  leafletImage(map, function(err, canvas) {
+    var img = document.createElement('img');
+    var dimensions = map.getSize();
+    img.width = dimensions.x;
+    img.height = dimensions.y;
+    img.src = canvas.toDataURL();
+    $('#imatge').html('');
+    $('#imatge').append(img);
+});
+}
 
 /* Project resouces */
 Mapa.prototype.loadProjects = function (){
