@@ -11,9 +11,45 @@ var Config = require('./config');
 // Mapa
 function Mapa(divMap){
   var that = this;
-  this.attribution = 'Guifi FO <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
+  this.attributionTiles = 'Guifi FO <a href="http://openstreetmap.org">&copy; OpenStreetMap</a>,<a href="http://maps.google.es">&copy; Google Maps</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>';
+  this.tiles = [
+    {
+      'tiles' : 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      'options' : {
+         maxZoom: 20
+       }
+    }, 
+    {
+      'tiles' : '  http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+      'options' : {
+         maxZoom: 20,
+         subdomains:['mt0','mt1','mt2','mt3']
+      }
+    },
+    {
+      'tiles' : '  http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+      'options' : {
+         maxZoom: 20,
+         subdomains:['mt0','mt1','mt2','mt3']
+      }
+    },
+    {
+      'tiles' : '  http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+      'options' : {
+         maxZoom: 20,
+         subdomains:['mt0','mt1','mt2','mt3']
+      }
+    },
+    {
+      'tiles' : '  http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+      'options' : {
+         maxZoom: 20,
+         subdomains:['mt0','mt1','mt2','mt3']
+      }
+    }
+  ];
+  this.tilesIndex = 0;
   // create a tileLayer with the tiles, attribution
-  this.tiles = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   this.serverUrl = "/api/v1";
   this.project_default_name = "default";
   this.project_default_latitude = 41.66060124302088;
@@ -46,7 +82,6 @@ function Mapa(divMap){
   // box
   // fibra
   // split ?
-
 
   this.status = "";
 
@@ -159,6 +194,7 @@ function Mapa(divMap){
   $('#split_path').click(function(){ that.clickMenu(this); that.makeSplit(); });
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
+  $('#tiles').click(function(){ that.rollTiles();})
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
   $('#view_infrastructure').click(function() { that.changeMenu('infra'); });
@@ -177,12 +213,18 @@ function Mapa(divMap){
 
   this.loadProjects();
 }
-Mapa.prototype.tileLayer = function(){
+Mapa.prototype.rollTiles = function(){
+  this.tilesIndex = ( (this.tilesIndex + 1) % this.tiles.length);
+  this.tileLayer(this.tiles[this.tilesIndex]);
+}
+Mapa.prototype.tileLayer = function(tiles){
   // add the tile layer to the map
-  this.layer = L.tileLayer(this.tiles, {
-      maxZoom: 19,
-      attribution: this.attribution
-    });
+  if (!tiles) {
+    tiles = this.tiles[this.tilesIndex];
+    tiles.options.attribution = this.attributionTiles;
+  }
+
+  this.layer = L.tileLayer(tiles.tiles, tiles.options);
   this.layer.addTo(this.map);
 };
 
@@ -658,7 +700,7 @@ Mapa.prototype.havePaths = function (id){
   return false;
 }
 Mapa.prototype.haveFibers = function (id){
-  
+
 }
 Mapa.prototype.setIconInSiteById = function (id, status, type){
   for(idx_site in this.sites){
