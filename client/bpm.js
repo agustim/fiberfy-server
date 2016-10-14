@@ -8,9 +8,7 @@ var Projecte = require('./projecte');
 var Config = require('./config');
 
 // require leaflet-image to image
-console.log('load leaflet-image');
 var leafletImage = require('leaflet-image');
-console.log(leafletImage);
 
 
 //=====================
@@ -116,11 +114,12 @@ function Mapa(divMap){
   // Llista de Projectees de l'usuari
   this.projects = new Array();
 
+  console.log(L.version);
   // Dibuix del Mapa
   this.map = L.map(divMap, {
-    scrollWheelZoom: false
+    scrollWheelZoom: false,
+    preferCanvas: true
   });
-
 
 // Declare new red Icon & blue icon.
 

@@ -2,8 +2,13 @@
 
 // require jquery
 var $ = require('jquery-browserify');
+
+// For use leaflet-image need mapbox...
 // require leaflet.js
-var L = require('leaflet');
+//var L = require('leaflet');
+
+L_PREFER_CANVAS = true;
+require('mapbox.js')
 
 //Plugin KML
 require('./plugins/KML');

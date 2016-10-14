@@ -44,7 +44,7 @@
     "eslint": "^2.8",
     "eslint-config-trails": "latest",
     "jquery-browserify": "^1.8.1",
-    "leaflet": "^1.0.1",
+    "mapbox.js": "^2.4.0",
     "leaflet-image": "^0.3.0",
     "mocha": "^2.4",
     "paper": "^0.9.25",
