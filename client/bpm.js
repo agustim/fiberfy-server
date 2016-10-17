@@ -5,6 +5,7 @@ var Path = require('./path');
 var Fiber = require('./fiber');
 var Pfusion = require('./pfusion');
 var Projecte = require('./projecte');
+var Llegenda = require('./llegenda');
 var Config = require('./config');
 
 // require leaflet-image to image
@@ -268,31 +269,15 @@ Mapa.prototype.printLegend = function(btn) {
   });
   info.update("S'està generant la Llegenda...")
 
-  var cnvs = $('</canvas')
-             .width(100)
-             .height(100);
-  var ctx = cnvs.getContext("2d");
-
-  ctx.font = "20px Georgia";
-  ctx.fillText("Hello World!", 10, 50);
-
-  ctx.font = "30px Verdana";
-  // Create gradient
-  var gradient = ctx.createLinearGradient(0, 0, c.width, 0);
-  gradient.addColorStop("0", "magenta");
-  gradient.addColorStop("0.5", "blue");
-  gradient.addColorStop("1.0", "red");
-  // Fill with gradient
-  ctx.fillStyle = gradient;
-  ctx.fillText("Big smile!", 10, 90);
-
-  btn.show();
-  $(btn).attr({
-      download: 'legend.png',
-      href: ctx.toDataURL('image/png')
+  var llgnd = new Llegenda(document, 400, 400, this, function(){
+    llgnd.test();
+    btn.show();
+    $(btn).attr({
+        download: 'legend.png',
+        href: llgnd.toPNG()
+    });
+    info.update("Llegenda generada.")
   });
-
-  info.update("Llegenda generada.")
 
 }
 
