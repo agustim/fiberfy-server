@@ -114,7 +114,8 @@ function Mapa(divMap){
   // Llista de Projectees de l'usuari
   this.projects = new Array();
 
-  console.log(L.version);
+  this.information();
+
   // Dibuix del Mapa
   this.map = L.map(divMap, {
     scrollWheelZoom: false,
@@ -200,7 +201,8 @@ function Mapa(divMap){
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
   $('.tiles_menu').click(function(){ that.rollTiles();})
-  $('.screenshot_menu').click(function(){ that.printImage();})
+  $('#screenshot_menu').click(function(){ that.printImage($('#screenshot_download'));})
+  $('#legend_image').click(function(){ that.printLegend($('#legend_download'));})
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
   $('#view_infrastructure').click(function() { that.changeMenu('infra'); });
@@ -236,17 +238,62 @@ Mapa.prototype.tileLayer = function(tiles){
 };
 
 /* Print Screen */
-Mapa.prototype.printImage = function() {
+Mapa.prototype.printImage = function(btn) {
   var map = this.map;
+  var info = this.info;
+  btn.hide();
+  $(btn).attr({
+      download: '',
+      href: ''
+  });
+  info.update("S'està generant l'imatge...")
   leafletImage(map, function(err, canvas) {
-    var img = document.createElement('img');
-    var dimensions = map.getSize();
-    img.width = dimensions.x;
-    img.height = dimensions.y;
-    img.src = canvas.toDataURL();
-    $('#imatge').html('');
-    $('#imatge').append(img);
-});
+    $(btn).attr({
+        download: 'screenshot.png',
+        href: canvas.toDataURL('image/png')
+    });
+    btn.show();
+    info.update("Imatge generada.")
+  });
+}
+
+/* Imprimir Llegenda */
+Mapa.prototype.printLegend = function(btn) {
+  console.log(this.layerActive);
+  var info = this.info;
+  btn.hide();
+  $(btn).attr({
+      download: '',
+      href: ''
+  });
+  info.update("S'està generant la Llegenda...")
+
+  var cnvs = $('</canvas')
+             .width(100)
+             .height(100);
+  var ctx = cnvs.getContext("2d");
+
+  ctx.font = "20px Georgia";
+  ctx.fillText("Hello World!", 10, 50);
+
+  ctx.font = "30px Verdana";
+  // Create gradient
+  var gradient = ctx.createLinearGradient(0, 0, c.width, 0);
+  gradient.addColorStop("0", "magenta");
+  gradient.addColorStop("0.5", "blue");
+  gradient.addColorStop("1.0", "red");
+  // Fill with gradient
+  ctx.fillStyle = gradient;
+  ctx.fillText("Big smile!", 10, 90);
+
+  btn.show();
+  $(btn).attr({
+      download: 'legend.png',
+      href: ctx.toDataURL('image/png')
+  });
+
+  info.update("Llegenda generada.")
+
 }
 
 /* Project resouces */
@@ -746,5 +793,11 @@ Mapa.prototype.getPath = function (id){
     }
   }
 };
+Mapa.prototype.information = function (){
+  console.log("fiberfy server - http://fiberfy.io");
+  console.log("----------------------------------");
+  console.log("Leaflet version: " + L.version);
+
+}
 //=====================
 module.exports = exports = Mapa;

@@ -26,7 +26,11 @@ html(lang="ca")
           li
             a.tiles_menu Enrajolat
           li
-            a.screenshot_menu Imprimir
+            a#screenshot_menu Imprimir&nbsp;
+            a#screenshot_download.hide &#8681;
+          li
+            a#legend_image Llegenda&nbsp;
+            a#legend_download.hide &#8681;
         a#nav_responsive.toggle-nav
           | ☰
           label
@@ -46,7 +50,6 @@ html(lang="ca")
           | ☰
           label
       #map
-      div#imatge
     // config
     #form-project-group.form-project-group.second-level.hide
       #form-project
