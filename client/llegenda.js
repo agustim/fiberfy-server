@@ -58,17 +58,16 @@ Llegenda.prototype.sites = function (s) {
 
 Llegenda.prototype.paths = function (p,list_paths, list_paths_colors) {
   var that = this
-  var list_paths = {};
+  var local_list_paths = {};
   p.forEach(function (item, index) {
     var type = item.type;
     var type_idx = list_paths.indexOf(type);
     var colorpath = list_paths_colors[type_idx];
 
-    if (!list_paths[type]) {
-      list_paths[type] = colorpath;
+    if (!local_list_paths[type]) {
+      local_list_paths[type] = colorpath;
       that.wirtePathLine(colorpath,"Tram "+type);
     }
-
   });
 }
 
