@@ -260,7 +260,7 @@ Mapa.prototype.printImage = function(btn) {
 
 /* Imprimir Llegenda */
 Mapa.prototype.printLegend = function(btn) {
-  console.log(this.layerActive);
+  var that = this;
   var info = this.info;
   btn.hide();
   $(btn).attr({
@@ -270,7 +270,14 @@ Mapa.prototype.printLegend = function(btn) {
   info.update("S'està generant la Llegenda...")
 
   var llgnd = new Llegenda(document, 400, 400, this, function(){
-    llgnd.test();
+    //llgnd.test();
+    if (that.layerActive == 'civil') {
+      llgnd.sites(that.sites);
+      llgnd.paths(that.paths, that.type_path, that.type_path_colors['normal']);
+    } else {
+      llgnd.sites(that.sites);
+      llgnd.fibers(that.fibers);
+    }
     btn.show();
     $(btn).attr({
         download: 'legend.png',

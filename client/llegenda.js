@@ -19,10 +19,10 @@ function Llegenda (d, width, height, m, cb) {
   this.loadImgAsync = 0;
   this.icons = {};
   //Load
+  this.loadImgAsync = m.type_site.length
   for(idx in m.type_site){
-    this.loadImgAsync++;
     baseimage = new Image();
-    baseimage.iconName = m.type_site[idx].toLowerCase();;
+    baseimage.iconName = m.type_site[idx].toLowerCase();
     baseimage.onload = function() {
       that.icons[ this.iconName ] = this;
       that.loadImgAsync--;
@@ -35,12 +35,45 @@ function Llegenda (d, width, height, m, cb) {
 }
 
 Llegenda.prototype.test = function () {
-
   this.writeIconLine("cambra","Legend 1");
   this.writeLine("Legend 2");
   this.writeIconLine("arqueta","Legend 3");
   this.writeLine("Legend 4");
+  this.wirtePathLine("red", "Legend 3");
+}
 
+Llegenda.prototype.sites = function (s) {
+  var that = this
+  var list_sites = {};
+  s.forEach(function (item, index) {
+    var name = item.type;
+    var typeName = name.toLowerCase();
+
+    if (!list_sites[typeName]) {
+      list_sites[typeName] = typeName;
+      that.writeIconLine(typeName,name);
+    }
+  });
+}
+
+Llegenda.prototype.paths = function (p,list_paths, list_paths_colors) {
+  var that = this
+  var list_paths = {};
+  p.forEach(function (item, index) {
+    var type = item.type;
+    var type_idx = list_paths.indexOf(type);
+    var colorpath = list_paths_colors[type_idx];
+
+    if (!list_paths[type]) {
+      list_paths[type] = colorpath;
+      that.wirtePathLine(colorpath,"Tram "+type);
+    }
+
+  });
+}
+
+Llegenda.prototype.fibers = function (f) {
+//
 }
 
 Llegenda.prototype.writeLine = function(text, color) {
@@ -59,8 +92,23 @@ Llegenda.prototype.writeIconLine = function(icon, text, color) {
   } else {
     this.ctx.fillStyle = color;
   }
-  this.ctx.drawImage(this.icons[icon], 10, this.top_margin + (this.line * this.line_distance) );
+  this.ctx.drawImage(this.icons[icon], 10, this.top_margin + (this.line * this.line_distance) - 41 );
   this.ctx.fillText(text, 50, this.top_margin + (this.line * this.line_distance) );
+  this.line++;
+}
+Llegenda.prototype.wirtePathLine = function(path_color, text, color) {
+  if (!color) {
+    this.ctx.fillStyle = this.color_default;
+  } else {
+    this.ctx.fillStyle = color;
+  }
+  this.ctx.beginPath();
+  this.ctx.moveTo(10, this.top_margin + (this.line * this.line_distance) - 8 );
+  this.ctx.lineTo(40, this.top_margin + (this.line * this.line_distance) - 8 );
+  this.ctx.lineWidth = 5;
+  this.ctx.strokeStyle = path_color;
+  this.ctx.stroke();
+  this.ctx.fillText(text, 50, this.top_margin + (this.line * this.line_distance));
   this.line++;
 }
 
