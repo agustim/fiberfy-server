@@ -200,6 +200,7 @@ function Mapa(divMap){
   //Button - Declare events
   $('#make_section').click(function(){ that.clickMenu(this); that.makeSection(); });
   $('#make_site').click(function(){ that.clickMenu(this); that.makeSite(); });
+  $('#edit_section').click(function(){ that.clickMenu(this); that.editSection(); });
   $('#split_path').click(function(){ that.clickMenu(this); that.makeSplit(); });
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
@@ -502,12 +503,12 @@ Mapa.prototype.redraw = function(){
   $.each( this.sites, function( index, site){
     site.draw();
   });
-  $.each(this.paths, function( index, path){
-    path.draw();
-  });
   this.map.off('click');
   this.map.on('click', function(e) {
       that.onClick(e);
+  });
+  $.each(this.paths, function( index, path){
+    path.draw();
   });
 };
 Mapa.prototype.clearLayers = function() {
@@ -663,6 +664,9 @@ Mapa.prototype.makeSite = function (){
 };
 Mapa.prototype.makeSplit = function (){
   this.changeStatus("split", "#split_path");
+};
+Mapa.prototype.editSection = function (){
+  this.changeStatus("edit_path", "#edit_section");
 };
 
 /* infraestructura */

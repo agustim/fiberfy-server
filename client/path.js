@@ -63,6 +63,7 @@ Path.prototype.delete = function() {
 }
 Path.prototype.clear = function() {
   if (this.polyline)
+    this.polyline.off('click').off('mouseover').off('mouseout');
     this.map_parent.map.removeLayer(this.polyline);
 };
 
@@ -182,14 +183,7 @@ Path.prototype.editForm = function() {
 Path.prototype.onPathClick = function(e){
   var that = this;
   switch(this.map_parent.status){
-    case "split":
-      alert("Fer un split!");
-      console.log(that);
-      console.log(e);
-      this.getSegment(e);
-      break;
-    case "path":
-    case "site":
+    case "edit_path":
       this.editForm();
       break;
     case "box":
