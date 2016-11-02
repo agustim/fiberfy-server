@@ -170,7 +170,9 @@ function Mapa(divMap){
   this.map.setView(L.latLng(this.project_default_latitude,this.project_default_longitude), this.project_default_zoom);
 
   // Event de click
-  this.map.on('click', function(e) { that.onClick(e); });
+  this.map.on('click', function(e) {
+      that.onClick(e);
+  });
 
   this.tileLayer();
 
@@ -342,6 +344,7 @@ Mapa.prototype.drawProjects = function (){
   $('.delete-project-button').unbind("click");
 
   $(addbutton).unbind('click');
+
   // Print List
   var llista = $("<div id='project-list'>");
   $(listprojects).html(llista);
@@ -401,12 +404,6 @@ Mapa.prototype.drawProjects = function (){
     that.active_project.zoom = that.map.getZoom();
     that.active_project.save();
   });
-  $('.report-project-button').on('click', function(e) {
-
-  });
-  $('.export-project-button').on('click', function(e) {
-
-  });
 
 };
 /* End of Project resources */
@@ -458,7 +455,7 @@ Mapa.prototype.load = function (){
   strUrl = that.serverUrl + "/site?project="+that.active_project.id;
   $.getJSON(strUrl, function (data) {
     $.each(data, function (index, value) {
-      site = new Site(value.id, value.name, L.latLng(value.latitude, value.longitude), value.type, that);
+      var site = new Site(value.id, value.name, L.latLng(value.latitude, value.longitude), value.type, that);
       site.observations = value.observations;
       that.sites.push(site);
     });
@@ -466,7 +463,7 @@ Mapa.prototype.load = function (){
     strUrl = that.serverUrl + "/path?project="+that.active_project.id;
     $.getJSON(strUrl, function (data) {
       $.each(data, function (index, value) {
-        path = new Path(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), value.type, that);
+        var path = new Path(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), value.type, that);
         path.observations = value.observations;
         that.paths.push(path);
       });
@@ -474,9 +471,9 @@ Mapa.prototype.load = function (){
       strUrl = that.serverUrl + "/fiber?project="+that.active_project.id;
       $.getJSON(strUrl, function (data) {
         $.each(data, function (index, value) {
-          path = new Fiber(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), $.parseJSON(value.colors), value.template, that);
-          path.observations = value.observations;
-          that.fibers.push(path);
+          var fiber = new Fiber(value.id, value.name, value.first, value.last, $.parseJSON(value.intermedial), $.parseJSON(value.colors), value.template, that);
+          fiber.observations = value.observations;
+          that.fibers.push(fiber);
         });
       });
       // Posició del projecte.
@@ -498,6 +495,7 @@ Mapa.prototype.loadInfra = function() {
   }
 };
 Mapa.prototype.redraw = function(){
+  var that = this;
   // Tornem a posar el tileLayer
   this.tileLayer();
   // Pintem tots les caixes
@@ -506,6 +504,10 @@ Mapa.prototype.redraw = function(){
   });
   $.each(this.paths, function( index, path){
     path.draw();
+  });
+  this.map.off('click');
+  this.map.on('click', function(e) {
+      that.onClick(e);
   });
 };
 Mapa.prototype.clearLayers = function() {
@@ -582,10 +584,10 @@ Mapa.prototype.loadExternalMap = function() {
   this.map.addLayer(track);
 };
 Mapa.prototype.debugFunction = function() {
-  for(idx_path in this.paths){
-    path = this.paths[idx_path];
-    console.log(path.id + " " + path.distance());
-  }
+  var that = this
+  var project = that.findProject(2);
+  that.active_project = project;
+  that.loadProjects();
 };
 Mapa.prototype.backMap = function(){
   if (this.layerActive == 'infra') this.loadInfra();
