@@ -23,7 +23,7 @@ var mapa = require('./bpm');
 $(document).ready(function(){
 
   myMapa = new mapa('map');
-  //myMapa.load();
+
   $('.toggle-nav').click(function(e) {
     $(this).toggleClass('active');
     $('.menu ul').toggleClass('active');
