@@ -7,6 +7,7 @@ var Pfusion = require('./pfusion');
 var Projecte = require('./projecte');
 var Llegenda = require('./llegenda');
 var Config = require('./config');
+var IOGeoJSON = require('./iogeojson');
 
 // require leaflet-image to image
 var leafletImage = require('leaflet-image');
@@ -89,6 +90,10 @@ function Mapa(divMap){
   // split ?
 
   this.status = "";
+
+
+  //Input-Output
+  this.ioMap = new IOGeoJSON(this);
 
   // Layer Active (civil, infra)
   this.layerActive = "civil";
@@ -207,6 +212,7 @@ function Mapa(divMap){
   $('.tiles_menu').click(function(){ that.rollTiles();})
   $('#screenshot_menu').click(function(){ that.printImage($('#screenshot_download'));})
   $('#legend_image').click(function(){ that.printLegend($('#legend_download'));})
+  $('#input_output').click(function(){ that.inputOutput(); });
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
   $('#view_infrastructure').click(function() { that.changeMenu('infra'); });
@@ -631,6 +637,21 @@ Mapa.prototype.backFusion = function(){
   $('#zoom-site-group').addClass('hide');
   $('#form-project-group').addClass('hide');
   this.changeStatus("","");
+};
+Mapa.prototype.inputOutput = function(){
+  var that = this
+  $('#map-group').hide();
+  $('#zoom-path-group').addClass('hide');
+  $('#zoom-site-fusion-group').addClass('hide');
+  $('#zoom-fusion-graph-group').addClass('hide');
+  $('#zoom-site-group').addClass('hide');
+  $('#form-project-group').addClass('hide');
+  this.changeStatus("","");
+  $('#zoom-io-group').removeClass('hide');
+
+  $('#import-button').on('click', function(e) {
+    that.ioMap.toGeoJSON();
+  });
 };
 
 Mapa.prototype.onClick = function(e) {
