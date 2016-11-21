@@ -43,6 +43,7 @@
     "browserify": "^13.0.1",
     "eslint": "^2.8",
     "eslint-config-trails": "latest",
+    "geojson": "^0.4.0",
     "jquery-browserify": "^1.8.1",
     "leaflet": "^0.7.7",
     "mocha": "^2.4",

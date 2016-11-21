@@ -25,6 +25,8 @@ html(lang="ca")
             a#projects_manager Projectes
           li
             a#tiles Enrajolat
+          li
+            a#input_output IO
         a#nav_responsive.toggle-nav
           | ☰
           label
@@ -218,6 +220,26 @@ html(lang="ca")
               #div-fiber-save.button
                 button#fiber-update Update
 
+    // Input-Output
+    #zoom-io-group.zoom-group.second-level.hide
+      #zoom-io
+        nav.menu
+          ul.active
+            li
+              a.back_map Torna Mapa
+        .io.box
+          .row
+            .col-s-12
+              .notify
+          .row
+            .col-s-6
+                label Input :
+                textarea(rows='30')#input-observation
+                button#import-button Import
+            .col-s-6
+                label Output :
+                textarea(rows='30')#output-observation
+                button#export-button Export
 
 
     script(src='js/bundle.js')

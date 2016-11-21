@@ -6,6 +6,7 @@ var Fiber = require('./fiber');
 var Pfusion = require('./pfusion');
 var Projecte = require('./projecte');
 var Config = require('./config');
+var IOGeoJSON = require('./iogeojson');
 
 //=====================
 // Mapa
@@ -18,7 +19,7 @@ function Mapa(divMap){
       'options' : {
          maxZoom: 20
        }
-    }, 
+    },
     {
       'tiles' : '  http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       'options' : {
@@ -85,6 +86,9 @@ function Mapa(divMap){
 
   this.status = "";
 
+
+  //Input-Output
+  this.ioMap = new IOGeoJSON(this);
   // Layer Active (civil, infra)
   this.layerActive = "civil";
   // Trams
@@ -195,6 +199,7 @@ function Mapa(divMap){
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
   $('#tiles').click(function(){ that.rollTiles();})
+  $('#input_output').click(function(){ that.inputOutput(); });
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
   $('#view_infrastructure').click(function() { that.changeMenu('infra'); });
@@ -568,6 +573,22 @@ Mapa.prototype.backFusion = function(){
   $('#zoom-site-group').addClass('hide');
   $('#form-project-group').addClass('hide');
   this.changeStatus("","");
+};
+
+Mapa.prototype.inputOutput = function(){
+  var that = this
+  $('#map-group').hide();
+  $('#zoom-path-group').addClass('hide');
+  $('#zoom-site-fusion-group').addClass('hide');
+  $('#zoom-fusion-graph-group').addClass('hide');
+  $('#zoom-site-group').addClass('hide');
+  $('#form-project-group').addClass('hide');
+  this.changeStatus("","");
+  $('#zoom-io-group').removeClass('hide');
+
+  $('#import-button').on('click', function(e) {
+    that.ioMap.toGeoJSON();
+  });
 };
 
 Mapa.prototype.onClick = function(e) {
