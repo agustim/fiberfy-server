@@ -8,7 +8,6 @@ function IOGeoJSON (m) {
 IOGeoJSON.prototype.toGeoJSON = function() {
 
   $('#input-observation').val('');
-  $('#output-observation').val('');
   var data3 = [];
   for(var idx_site in this.mapa.sites){
     var s = this.mapa.sites[idx_site];
@@ -24,10 +23,13 @@ IOGeoJSON.prototype.toGeoJSON = function() {
     }
     data3.push({ 'polyline': p_line, 'tipus': p.type, 'stroke': p.findPathColor()})
   }
-  console.log(data3);
 
   $('#input-observation').val(JSON.stringify(data3,null,4));
-  $('#output-observation').val(JSON.stringify(GeoJSON.parse(data3, {'Point': ['lat', 'lng'], 'LineString': 'polyline'}), null, 4));
+  var export_info = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(GeoJSON.parse(data3, {'Point': ['lat', 'lng'], 'LineString': 'polyline'}), null, 4));
+  $('#export-button').attr({
+    download: 'export.geojson',
+    href: export_info
+  });
 }
 
 module.exports = exports = IOGeoJSON;

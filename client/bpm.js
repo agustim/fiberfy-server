@@ -577,6 +577,7 @@ Mapa.prototype.backFusion = function(){
 
 Mapa.prototype.inputOutput = function(){
   var that = this
+  that.ioMap.toGeoJSON();
   $('#map-group').hide();
   $('#zoom-path-group').addClass('hide');
   $('#zoom-site-fusion-group').addClass('hide');
@@ -585,10 +586,6 @@ Mapa.prototype.inputOutput = function(){
   $('#form-project-group').addClass('hide');
   this.changeStatus("","");
   $('#zoom-io-group').removeClass('hide');
-
-  $('#import-button').on('click', function(e) {
-    that.ioMap.toGeoJSON();
-  });
 };
 
 Mapa.prototype.onClick = function(e) {
