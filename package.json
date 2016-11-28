@@ -54,7 +54,8 @@
   },
   "scripts": {
     "test": "eslint --ignore-pattern '/client/' --ignore-pattern '/public/' --fix . && eslint --no-eslintrc -c client/eslintrc.json client/. && mocha",
-    "build": "cd client && watchify *.js -o ../public/js/bundle.js -dv"
+    "build": "cd client && browserify app.js -o ../public/js/bundle.js",
+    "build-live": "cd client && watchify *.js -o ../public/js/bundle.js -dv"
   },
   "engines": {
     "node": ">= 4.0.0"
