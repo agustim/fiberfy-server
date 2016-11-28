@@ -232,6 +232,22 @@ Fiber.prototype.loadTypes = function(SelectField){
     SelectField.append(option);
   });
 };
+Fiber.prototype.loadTemplates = function(SelectField){
+
+  var that = this;
+
+  SelectField.find('option').remove().end();
+  $.each(this.map_parent.template_path, function(key, value) {
+    var option = $("<option></option>")
+                    .attr("value",key)
+                    .text(value);
+    if (that.type == value) {
+      option.attr("selected","selected");
+    }
+    SelectField.append(option);
+  });
+};
+
 Fiber.prototype.updateForm = function (){
   var that = this;
   // Carraguem els caps del formulari al objecte
@@ -269,12 +285,14 @@ Fiber.prototype.editForm = function() {
   var that = this;
   // Clear old click events.
   $('#fiber-update').unbind("click");
+  $('#fiber-template').unbind('change');
 
   // Carreguem les dades a on toqui
   $('#fiber-name').val(this.name);
   $('#fiber-first-site').val(this.first_site);
   $('#fiber-end-site').val(this.end_site);
   $('#fiber-intermedial').val(JSON.stringify(this.paths));
+  this.loadTemplates($('#fiber-template'));
   if(this.colors == null || this.colors == "") {
     $("#fiber-colors").val("");
   } else {
@@ -286,6 +304,16 @@ Fiber.prototype.editForm = function() {
 
   $('#fiber-observations').val(this.observations);
   $('#fiber-update').click(function(){ that.updateForm();});
+  $('#fiber-template').change( function(e) {
+    var template = $('#fiber-template').val();
+    if (template != 0) {
+      if(confirm('Estas segur que vols canviar aquesta fibra?')) {
+        that.colors = $.parseJSON(that.map_parent.template_jsons[template]);
+        $('#fiber-colors').val(that.map_parent.template_jsons[template]);
+        that.drawColors();
+      }
+    }
+  });
 
   // Canviem de pàgina
   $('#map-group').hide();
