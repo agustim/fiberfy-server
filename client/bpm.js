@@ -757,5 +757,24 @@ Mapa.prototype.getPath = function (id){
     }
   }
 };
+Mapa.prototype.deleteSiteById = function (id){
+  for(idx_site in this.sites){
+    site = this.sites[idx_site];
+    if (site.id == id){
+      delete this.sites[idx_site];
+      break;
+    }
+  }
+};
+Mapa.prototype.deletePathById = function (id){
+  for(idx_path in this.paths){
+    path = this.paths[idx_path];
+    if (path.id == id){
+      delete this.paths[idx_path];
+      break;
+    }
+  }
+};
+
 //=====================
 module.exports = exports = Mapa;

@@ -54,6 +54,7 @@ Site.prototype.remove = function(){
       that.map_parent.map.removeLayer(that.marker);
       that.map_parent.backMap();
       that.map_parent.notify("Site deleted!");
+      that.map_parent.deleteSiteById(that.id);
     }, "json");
 }
 Site.prototype.delete = function(){
@@ -70,7 +71,7 @@ Site.prototype.delete = function(){
     console.log("Remove site.");
     this.remove();
   } else {
-    console.log('It is not possible. This site has paths or boxes.');
+    alert('It is not possible. This site has paths or boxes.');
   }
 }
 Site.prototype.clear = function(){

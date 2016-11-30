@@ -63,6 +63,7 @@ Path.prototype.remove = function(){
       that.clear();
       that.map_parent.backMap();
       that.map_parent.notify("Path deleted!");
+      that.map_parent.deletePathById(that.id);
     }, "json");
 }
 Path.prototype.delete = function() {
@@ -70,7 +71,7 @@ Path.prototype.delete = function() {
     //This path has not any fibers. We can delete.
     this.remove();
   } else {
-    console.log('It is not possible. This path has fibers.');
+    alert('It is not possible. This path has fibers.');
   }
 }
 Path.prototype.clear = function() {
