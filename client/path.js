@@ -54,9 +54,21 @@ Path.prototype.findPathColor = function(status, type) {
   }
   return color;
 };
+Path.prototype.remove = function(){
+  var that = this;
+  strUrl = this.map_parent.serverUrl + "/path";
+  console.log('API call: ' + strUrl);
+  $.delete( strUrl+"/"+this.id)
+    .done(function( data ) {
+      that.clear();
+      that.map_parent.backMap();
+      that.map_parent.notify("Path deleted!");
+    }, "json");
+}
 Path.prototype.delete = function() {
   if (!this.map_parent.haveFibers(this.id)){
-    //Check has fibers.
+    //This path has not any fibers. We can delete.
+    this.remove();
   } else {
     console.log('It is not possible. This path has fibers.');
   }
@@ -129,7 +141,7 @@ Path.prototype.loadTypes = function(SelectField){
 };
 Path.prototype.updateForm = function (){
   var that = this;
-  // Carraguem els caps del formulari al objecte
+  // Carraguem els caps del formulari al objecte  $('#site-delete').unbind("click");
 
   this.name = $('#path-name').val();
   this.first_site = $('#path-first-site').val();
@@ -164,6 +176,7 @@ Path.prototype.editForm = function() {
   var that = this;
   // Clear old click events.
   $('#path-update').unbind("click");
+  $('#path-delete').unbind("click");
 
   // Carreguem les dades a on toqui
   $('#path-name').val(this.name);
@@ -172,8 +185,14 @@ Path.prototype.editForm = function() {
   $('#path-intermedial').val(JSON.stringify(this.dots));
 
   $('#path-observations').val(this.observations);
+  // Update
   $('#path-update').click(function(){ that.updateForm();});
-
+  // Delete
+  $('#path-delete').on('click', function(e){
+    //Check if this path have fibers.
+    if (that)
+    that.delete();
+  });
   this.loadTypes($('#path-type'));
   // Canviem de pàgina
   $('#map-group').hide();

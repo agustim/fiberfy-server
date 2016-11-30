@@ -726,7 +726,13 @@ Mapa.prototype.havePaths = function (id){
   return false;
 }
 Mapa.prototype.haveFibers = function (id){
-
+  for(idx_fiber in this.fibers){
+    var fiber = this.fibers[idx_fiber];
+    if ( fiber.paths.indexOf(id) != -1){
+      return true;
+    }
+  }
+  return false;
 }
 Mapa.prototype.setIconInSiteById = function (id, status, type){
   for(idx_site in this.sites){
