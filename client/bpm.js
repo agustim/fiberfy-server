@@ -7,6 +7,8 @@ var Pfusion = require('./pfusion');
 var Projecte = require('./projecte');
 var Config = require('./config');
 var IOGeoJSON = require('./iogeojson');
+// requier leaflet-search
+var LeafletSearch = require('leaflet-search');
 
 //=====================
 // Mapa
@@ -170,6 +172,19 @@ function Mapa(divMap){
     eval ("this.type_site_icon_grey['" + name +"'] = new " + name +"GreyIcon();");
   }
   //console.log(this);
+
+  // Search
+  this.map.addControl( new LeafletSearch({
+    url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
+    jsonpParam: 'json_callback',
+    propertyName: 'display_name',
+    propertyLoc: ['lat','lon'],
+    marker: L.circleMarker([0,0],{radius:30}),
+    autoCollapse: true,
+    autoType: false,
+    minLength: 2
+  }) );
+
   // Posicio inicial i zoom.
 
   this.map.setView(L.latLng(this.project_default_latitude,this.project_default_longitude), this.project_default_zoom);
