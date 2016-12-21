@@ -790,6 +790,14 @@ Mapa.prototype.deletePathById = function (id){
     }
   }
 };
-
+Mapa.prototype.deleteFiberById = function (id){
+  for(idx_fiber in this.fibers){
+    fiber = this.fibers[idx_fiber];
+    if (fiber.id == id){
+      delete this.fibers[idx_fiber];
+      break;
+    }
+  }
+};
 //=====================
 module.exports = exports = Mapa;

@@ -218,6 +218,39 @@ Fiber.prototype.save = function (){
       that.map_parent.loadInfra();
     }, "json");
 };
+
+Fiber.prototype.remove = function(){
+  var that = this;
+  strUrl = this.map_parent.serverUrl + "/fiber";
+  console.log('API call: ' + strUrl);
+  $.delete( strUrl+"/"+this.id)
+    .done(function( data ) {
+      that.clear();
+      that.map_parent.backMap();
+      that.map_parent.notify("Fiber deleted!");
+      that.map_parent.deleteFiberById(that.id);
+    }, "json");
+}
+Fiber.prototype.delete = function() {
+  var that = this;
+/* En realitat no hauria de ser dues crides a "/site/" + this.first_site + "/fusion" o "/site/" + this.end_site + "/fusion" */
+  var strUrlSection = that.map_parent.serverUrl + "/site/" + that.first_site + "/fusion";
+  $.getJSON(strUrlSection, function (dataSection) {
+    if (dataSection.length != 0){
+      alert('It is not possible. This fiber has fusions.');      
+    } else {
+      var strUrlSection = that.map_parent.serverUrl + "/site/" + that.end_site + "/fusion";
+        $.getJSON(strUrlSection, function (dataSection) {
+          if (dataSection.length != 0) {
+            alert('It is not possible. This fiber has fusions.');
+          } else {
+            that.remove();
+          }
+      });
+    }
+  });
+}
+
 Fiber.prototype.loadTypes = function(SelectField){
   var that = this;
 
@@ -286,6 +319,7 @@ Fiber.prototype.editForm = function() {
   // Clear old click events.
   $('#fiber-update').unbind("click");
   $('#fiber-template').unbind('change');
+  $('#fiber-delete').unbind("click");
 
   // Carreguem les dades a on toqui
   $('#fiber-name').val(this.name);
@@ -304,6 +338,7 @@ Fiber.prototype.editForm = function() {
 
   $('#fiber-observations').val(this.observations);
   $('#fiber-update').click(function(){ that.updateForm();});
+  $('#fiber-delete').click(function(){ that.delete();});
   $('#fiber-template').change( function(e) {
     var template = $('#fiber-template').val();
     if (template != 0) {
