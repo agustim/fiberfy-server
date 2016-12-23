@@ -77,7 +77,7 @@ function Mapa(divMap){
   this.type_path_default = this.type_path[0];
 
   // Llistat de box (TODO: Passar-ho a una taula.)
-  this.type_box = [ "caixa", "switch" ];
+  this.type_box = [ "caixa troncal", "CTO" ];
   this.type_box_default = this.type_box[0];
 
   // Llistat templates
