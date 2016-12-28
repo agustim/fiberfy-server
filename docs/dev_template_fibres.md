@@ -13,7 +13,7 @@ Cable 6 FO 1 Tub - codi 2
 - Verd
 - Vermell
 - Blau
-- Grog
+- Groc
 - Gris
 - Lila
 
