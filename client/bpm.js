@@ -221,7 +221,7 @@ function Mapa(divMap){
   $('#split_path').click(function(){ that.clickMenu(this); that.makeSplit(); });
   $('#load').click(function(){ that.clickMenu(this); that.loadExternalMap(); });
   $('#debug').click(function(){ that.clickMenu(this); that.debugFunction(); });
-  $('#tiles').click(function(){ that.rollTiles();})
+  $('.tiles').click(function(){ that.rollTiles();})
   $('#input_output').click(function(){ that.inputOutput(); });
 
   $('#projects_manager').click(function(){ that.clickMenu(this); that.projectManager(); });
