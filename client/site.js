@@ -32,7 +32,10 @@ Site.prototype.save = function (){
         that.map_parent.notify("Updated!");
         that.id = data.id;
         that.changeTypeIcon();
-      }, "json");
+      }, "json")
+      .fail(function( data ) {
+        alert("fail");
+      });
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
         "longitude": this.latlng.lng, "project": this.map_parent.active_project.id ,
