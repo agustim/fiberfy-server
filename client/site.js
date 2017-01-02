@@ -34,7 +34,9 @@ Site.prototype.save = function (){
         that.changeTypeIcon();
       }, "json")
       .fail(function( data ) {
-        alert("fail");
+        that.clear();
+        that.map_parent.deleteSiteById(that.id);
+        alert("There was a problem. Please, try again.");
       });
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
