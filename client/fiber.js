@@ -425,14 +425,21 @@ Fiber.prototype.drawColors = function (e) {
         var label_tub = $('<label>').text("Tub")
         var label_colors = $('<label>').text("Fibres")
         var input_tub = $('<input class="tub-name" type="text" class="readonly">').attr('value',tub.name);
+        var remove_tub = $('<a>').html("X");
+        remove_tub.on('click', function(e) {
+          that.onRemoveTub(e,itub);
+        });
         var this_tub = $('<div class="row">')
                       .append($('<div class="col-s-12">')
                         .append($('<div class="row">')
                           .append($('<div class="col-s-1">')
                             .append(label_tub)
                           )
-                          .append($('<div class="col-s-11">')
+                          .append($('<div class="col-s-10">')
                             .append(input_tub)
+                          )
+                          .append($('<div class="col-s-1">')
+                            .append(remove_tub)
                           )
                         )
                         .append($('<div class="row">')
@@ -481,6 +488,18 @@ Fiber.prototype.drawColors = function (e) {
   add_tub.on('click', function(e){ that.onAddTub(e); })
   $('#div-fiber-colors-gui').append(add_tub);
 
+}
+Fiber.prototype.onRemoveTub = function(e, itub) {
+    // Before remove, need check this tube is not fusion with other.
+    var that = this
+    delete that.colors[itub];
+    // delete mark item like "undefined", need clear array.
+    that.colors = $.grep(that.colors,function(n){ return n == 0 || n });
+    $('#fiber-colors').val(JSON.stringify(that.colors));
+    console.log(that.colors);
+    that.drawColors();
+    e.stopPropagation();
+    return false;
 }
 Fiber.prototype.onRemoveFiber = function(e, itub, ifiber) {
     var that = this
