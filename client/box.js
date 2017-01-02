@@ -66,13 +66,21 @@ Box.prototype.save = function (){
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.id = data.id;
-      }, "json");
+      }, "json")
+      .fail(function( data ) {
+        $('#box-'+ that.uuid).remove();
+        alert("There was a problem. Please, try again.");
+      });
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "uuid": this.uuid, "site": this.site_parent.id,
           "type": this.type, "observations" : this.observations, "project" : this.map_parent.active_project.id }))
       .done(function( data ) {
         that.map_parent.notify("Updated!");
-      }, "json");
+      }, "json")
+      .fail(function( data ) {
+        $('#box-'+ that.uuid).remove();
+        alert("There was a problem. Please, try again.");
+      });
   }
 };
 

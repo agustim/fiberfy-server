@@ -47,7 +47,12 @@ Site.prototype.save = function (){
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.changeTypeIcon();
-      }, "json");
+      }, "json")
+      .fail(function( data ) {
+        that.clear();
+        that.map_parent.deleteSiteById(that.id);
+        alert("There was a problem. Please, try again.");
+      });
   }
 };
 Site.prototype.remove = function(){
