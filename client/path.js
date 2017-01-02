@@ -124,7 +124,12 @@ Path.prototype.save = function (){
               "type": this.type}))
     .done(function( data ) {
       that.id = data.id;
-    }, "json");
+    }, "json")
+    .fail(function( data ) {
+      that.clear();
+      that.map_parent.deletePathById(that.id);
+      alert("There was a problem. Please, try again.");
+    });
 };
 Path.prototype.loadTypes = function(SelectField){
   var that = this;
@@ -171,7 +176,12 @@ Path.prototype.updateForm = function (){
     .done(function( data ) {
       that.map_parent.notify("Updated!");
       that.draw();
-    }, "json");
+    }, "json")
+    .fail(function( data ) {
+      that.clear();
+      that.map_parent.deletePathById(that.id);
+      alert("There was a problem. Please, try again.");
+    });
 };
 Path.prototype.editForm = function() {
   var that = this;

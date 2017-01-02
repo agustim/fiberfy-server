@@ -216,7 +216,12 @@ Fiber.prototype.save = function (){
       that.map_parent.active_fiber = null;
       // Maybe is not necessary reload all...
       that.map_parent.loadInfra();
-    }, "json");
+    }, "json")
+    .fail(function( data ) {
+      that.clear();
+      that.map_parent.deleteFiberById(that.id);
+      alert("There was a problem. Please, try again.");
+    });
 };
 
 Fiber.prototype.remove = function(){
@@ -237,7 +242,7 @@ Fiber.prototype.delete = function() {
   var strUrlSection = that.map_parent.serverUrl + "/site/" + that.first_site + "/fusion";
   $.getJSON(strUrlSection, function (dataSection) {
     if (dataSection.length != 0){
-      alert('It is not possible. This fiber has fusions.');      
+      alert('It is not possible. This fiber has fusions.');
     } else {
       var strUrlSection = that.map_parent.serverUrl + "/site/" + that.end_site + "/fusion";
         $.getJSON(strUrlSection, function (dataSection) {
@@ -312,7 +317,12 @@ Fiber.prototype.updateForm = function (){
     .done(function( data ) {
       that.map_parent.notify("Updated!");
       that.draw();
-    }, "json");
+    }, "json")
+    .fail(function( data ) {
+      that.clear();
+      that.map_parent.deleteFiberById(that.id);
+      alert("There was a problem. Please, try again.");
+    });
 };
 Fiber.prototype.editForm = function() {
   var that = this;

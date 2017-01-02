@@ -32,7 +32,12 @@ Site.prototype.save = function (){
         that.map_parent.notify("Updated!");
         that.id = data.id;
         that.changeTypeIcon();
-      }, "json");
+      }, "json")
+      .fail(function( data ) {
+        that.clear();
+        that.map_parent.deleteSiteById(that.id);
+        alert("There was a problem. Please, try again.");
+      });
   } else {
     $.put( strUrl+"/"+this.id, JSON.stringify({ "name": this.name, "latitude": this.latlng.lat,
         "longitude": this.latlng.lng, "project": this.map_parent.active_project.id ,
@@ -42,7 +47,12 @@ Site.prototype.save = function (){
       .done(function( data ) {
         that.map_parent.notify("Updated!");
         that.changeTypeIcon();
-      }, "json");
+      }, "json")
+      .fail(function( data ) {
+        that.clear();
+        that.map_parent.deleteSiteById(that.id);
+        alert("There was a problem. Please, try again.");
+      });
   }
 };
 Site.prototype.remove = function(){

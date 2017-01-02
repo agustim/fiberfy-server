@@ -9,6 +9,6 @@ module.exports = class ViewController extends Controller {
   }
 
   map (request, reply) {
-    reply.render('map', {})
+    reply.render('map', {'cache': false})
   }
 }
