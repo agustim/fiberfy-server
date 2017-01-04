@@ -397,7 +397,9 @@ Site.prototype.siteFusionPaint = function() {
           console.log(e);
           console.log(tram.colors);
         }
-        var dest_site_id = (tram.first == that.id) ? tram.end : tram.first;
+        console.log("TRAM---"+tram.id);
+        console.log(tram);
+        var dest_site_id = (tram.first == that.id) ? tram.last : tram.first;
         var dest_site = that.map_parent.getSite(dest_site_id);
         var columns = $('<div class="col-s-3">').appendTo(row);
         var title_tram = $('<h1 title="' + dest_site.id + '">' + dest_site.name + '</h1>');
