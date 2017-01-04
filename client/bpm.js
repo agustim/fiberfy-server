@@ -765,7 +765,7 @@ Mapa.prototype.notify = function (text){
   }, 1000);
 };
 Mapa.prototype.getSite = function (id){
-  for(idx_site in this.paths){
+  for(idx_site in this.sites){
     site = this.sites[idx_site];
     if (site.id == id){
       return site;
