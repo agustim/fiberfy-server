@@ -397,8 +397,10 @@ Site.prototype.siteFusionPaint = function() {
           console.log(e);
           console.log(tram.colors);
         }
+        var dest_site_id = (tram.first == that.id) ? tram.end : tram.first;
+        var dest_site = that.map_parent.getSite(dest_site_id);
         var columns = $('<div class="col-s-3">').appendTo(row);
-        var title_tram = $('<h1 title="' + tram.name + '">Del Tram ' + tram.id + '</h1>');
+        var title_tram = $('<h1 title="' + dest_site.id + '">' + dest_site.name + '</h1>');
         title_tram.on('click', function(){
           //that.map_parent.getPath(tram.id);
         });

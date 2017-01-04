@@ -764,6 +764,15 @@ Mapa.prototype.notify = function (text){
     $(".notify").text("");
   }, 1000);
 };
+Mapa.prototype.getSite = function (id){
+  for(idx_site in this.paths){
+    site = this.sites[idx_site];
+    if (site.id == id){
+      return site;
+    }
+  }
+  return null;
+};
 Mapa.prototype.getPath = function (id){
   for(idx_path in this.paths){
     path = this.paths[idx_path];
@@ -771,6 +780,7 @@ Mapa.prototype.getPath = function (id){
       return path;
     }
   }
+  return null;
 };
 Mapa.prototype.deleteSiteById = function (id){
   for(idx_site in this.sites){
