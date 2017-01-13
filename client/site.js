@@ -309,6 +309,10 @@ Site.prototype.loadBoxes = function() {
     // Iterem
     $.each(data, function (index, value) {
       var box = new Box(value.id, value.uuid, value.name, value.type, that, that.map_parent);
+      box.inputFO = value.inputFO;
+      box.inputFO = (box.inputFO  === parseInt(box.inputFO , 10)) ? box.inputFO : 0;
+      box.outputFO = value.outputFO;
+      box.outputFO = (box.outputFO  === parseInt(box.outputFO , 10)) ? box.outputFO : 0;
       box.observations = value.observations;
       that.boxs[box.uuid] = box;
     });
@@ -397,8 +401,6 @@ Site.prototype.siteFusionPaint = function() {
           console.log(e);
           console.log(tram.colors);
         }
-        console.log("TRAM---"+tram.id);
-        console.log(tram);
         var dest_site_id = (tram.first == that.id) ? tram.last : tram.first;
         var dest_site = that.map_parent.getSite(dest_site_id);
         var columns = $('<div class="col-s-3">').appendTo(row);
