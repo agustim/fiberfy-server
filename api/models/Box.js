@@ -26,6 +26,12 @@ module.exports = class Box extends Model {
       site: {
         model: 'site'
       },
+      inputFO: {
+        type: 'integer'
+      },
+      outputFO: {
+        type: 'integer'
+      },
       observations: {
         type: 'string'
       },
