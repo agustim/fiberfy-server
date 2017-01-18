@@ -47,7 +47,8 @@ module.exports = class FusionController extends Controller{
     response = FootprintService.destroy(this._Model(), request.body)
 
     response.then(elements => {
-      if (elements == "" && request.body.ffiber && request.body.fcolor && request.body.lfiber && request.body.lcolor) {
+
+      if (elements == "" && request.body.fcolor && request.body.lcolor) {
         const ffiber = request.body.ffiber
         const fcolor = request.body.fcolor
         request.body.ffiber = request.body.lfiber
