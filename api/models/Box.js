@@ -14,8 +14,7 @@ module.exports = class Box extends Model {
   static schema () {
     return {
       name: {
-        type: 'string',
-        unique: true
+        type: 'string'
       },
       uuid: {
         type: 'string'
