@@ -77,7 +77,7 @@ function Mapa(divMap){
   this.type_path_default = this.type_path[0];
 
   // Llistat de box (TODO: Passar-ho a una taula.)
-  this.type_box = [ "Troncal", "CTO" ];
+  this.type_box = [ {"name":"Troncal", "in": 0, "out": 0} , {"name":"CTO", "in": 0, "out": 0}, {"name":"Splitter", "in": 1, "out": 5}, {"name":"PatchPanel", "in": 12, "out" : 12} ];
   this.type_box_default = this.type_box[0];
 
   // Llistat templates
@@ -661,8 +661,34 @@ Mapa.prototype.getPathBeetwenSites = function(s1, s2){
   }
   return null;
 };
-Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
+Mapa.prototype.convertBoxesInPatchs = function (Boxes){
+  var siteFO = {};
+  siteFO.id = 0;
+  siteFO.colorsJSON = [];
+  for(idx_box in Boxes){
+    var box = Boxes[idx_box]
+    switch(box.type.toLowerCase()){
+      case "splitter":
+      case "patchpanel":
+        tmpColorsJSON = {};
+        tmpColorsJSON.name = box.name;
+        tmpColorsJSON.fibers = [];
+        for(var intX=1; intX <= box.inputFO; intX++){
+          tmpColorsJSON.fibers.push({"color": "in-"+intX});
+        }
+        for(var intX=1; intX <= box.outputFO; intX++){
+          tmpColorsJSON.fibers.push({"color": "out-"+intX});
+        }
+        siteFO.colorsJSON .push(tmpColorsJSON);
+        break;
+    }
+  }
+  siteFO.colors = JSON.stringify(siteFO.colorsJSON);
+  return(siteFO);
+}
+Mapa.prototype.buildSiteMerger = function (Trams,Fusions,Boxes){
   // Bucle  per "Marcar" les fusions existents.
+  Trams.push(this.convertBoxesInPatchs(Boxes));
   for(idx_tram in Trams){
     Tram = Trams[idx_tram];
     try {
@@ -697,7 +723,7 @@ Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
     var options_fiber = new Array();
     for(idx_tram_B in Trams){
       Tram_B = Trams[idx_tram_B];
-      if (Tram_A.id != Tram_B.id){
+//      if (Tram_A.id != Tram_B.id){
         try {
           colors_B = $.parseJSON(Tram_B.colors);
         } catch (e) {
@@ -715,7 +741,7 @@ Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
             }
           }
         }
-      }
+//      }
     }
     Trams[idx_tram_A].fusion_options = options_fiber;
   }
