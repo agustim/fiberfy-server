@@ -384,70 +384,74 @@ Site.prototype.siteFusionPaint = function() {
   var that =  this;
 
   var global = $('<div>');
-  // Carreguem les fusions
-  var strUrlMerger = that.map_parent.serverUrl + "/site/" + that.id + "/fusion";
-  $.getJSON(strUrlMerger, function (dataMerger){
-    // Carreguem les caixes.
-    var strUrlSection = that.map_parent.serverUrl + "/site/" + that.id + "/fibers";
-    $.getJSON(strUrlSection, function (dataSection) {
-      // Insertem els boto per fusionar o la fusió que té.
-      that.actualFusionSite = that.map_parent.buildSiteMerger(dataSection, dataMerger);
-      console.log(that.actualFusionSite);
-      var row = $('<div class="row">').appendTo(global);
-      $.each(that.actualFusionSite, function (index, tram) {
-        try {
-          colors = $.parseJSON(tram.colors);
-        } catch (e) {
-          console.log(e);
-          console.log(tram.colors);
-        }
-        var dest_site_id = (tram.first == that.id) ? tram.last : tram.first;
-        var dest_site = that.map_parent.getSite(dest_site_id);
-        var columns = $('<div class="col-s-3">').appendTo(row);
-        var title_tram = $('<h1 title="' + dest_site.id + '">' + dest_site.name + '</h1>');
-        title_tram.on('click', function(){
-          //that.map_parent.getPath(tram.id);
-        });
-        title_tram.appendTo(columns);
-        var this_site = $('<ul>').appendTo(columns);
-        if (colors) {
-          $.each(colors, function (itub,tub){
-              var this_tub = $(document.createElement("li")).text(tub.name);
-              var this_fibers = $(document.createElement("ul"));
-              $.each(tub.fibers, function (ifiber, fiber){
-                var this_select_fusio;
-                if (!fiber.fusionat){
-                  // Creem les opcions d'aquell cable.
-                  this_select_fusio = $(document.createElement('select')).attr('id', 'slct-' +  tram.id + "_" + tub.name + "_" + fiber.color).attr('class', 'select-fiber');
-                  this_select_fusio.append($('<option>').text("").attr('value', ""));
-                  $.each(tram.fusion_options, function(i, value) {
-                    this_select_fusio.append($('<option>').text(value.label).attr('value', value.value));
-                  });
-                  this_select_fusio.on('change',function(e){ that.onChangeSelect(e); });
-                } else {
-                  this_remove_link = $('<a class="fusion-fiber">')
-                                      .attr('data-input', tram.id + "_" + tub.name + "_" + fiber.color)
-                                      .html("&nbsp;X&nbsp;");
-                  this_select_fusio = $('<div class="input-group">')
-                                      .append($('<input type="text" class="readonly">')
-                                        .attr({'value':fiber.fusionat, 'id':tram.id + "_" + tub.name + "_" + fiber.color}))
-                                      .append($('<span class=".input-group-addon .supplement input-close">')
-                                        .append(this_remove_link)
-                                      );
-                 this_remove_link.on('click', function(e){ that.removeFusion(e); });
-                }
-                var row_line = $('<div class="row">');
-                var col_line_Name = $('<div class="col-s-4">')
-                    .append($('<input type="text" class="readonly">')
-                      .attr('value',fiber.color))
-                    .appendTo(row_line);
-                var col_line_Fusio = $('<div class="col-s-8">').append(this_select_fusio).appendTo(row_line);
-                var linea = row_line;
-                this_fibers.append(linea);
-              });
-             this_site.append(this_tub).append(this_fibers);
+  // Carreguem els boxes
+  var strUrlBoxOfSites = that.map_parent.serverUrl + "/site/" + that.id + "/boxes";
+  $.getJSON(strUrlBoxOfSites, function (dataBoxes){
+    // Carreguem les fusions
+    var strUrlMerger = that.map_parent.serverUrl + "/site/" + that.id + "/fusion";
+    $.getJSON(strUrlMerger, function (dataMerger){
+      // Carreguem les caixes.
+      var strUrlSection = that.map_parent.serverUrl + "/site/" + that.id + "/fibers";
+      $.getJSON(strUrlSection, function (dataSection) {
+        // Insertem els boto per fusionar o la fusió que té.
+        that.actualFusionSite = that.map_parent.buildSiteMerger(dataSection, dataMerger, dataBoxes);
+        console.log(that.actualFusionSite);
+        var row = $('<div class="row">').appendTo(global);
+        $.each(that.actualFusionSite, function (index, tram) {
+          try {
+            colors = $.parseJSON(tram.colors);
+          } catch (e) {
+            console.log(e);
+            console.log(tram.colors);
+          }
+          var dest_site_id = (tram.first == that.id) ? tram.last : tram.first;
+          var dest_site = that.map_parent.getSite(dest_site_id);
+          var columns = $('<div class="col-s-3">').appendTo(row);
+          var title_tram = $('<h1 title="' + dest_site.id + '">' + dest_site.name + '</h1>');
+          title_tram.on('click', function(){
+            //that.map_parent.getPath(tram.id);
           });
-        }
+          title_tram.appendTo(columns);
+          var this_site = $('<ul>').appendTo(columns);
+          if (colors) {
+            $.each(colors, function (itub,tub){
+                var this_tub = $(document.createElement("li")).text(tub.name);
+                var this_fibers = $(document.createElement("ul"));
+                $.each(tub.fibers, function (ifiber, fiber){
+                  var this_select_fusio;
+                  if (!fiber.fusionat){
+                    // Creem les opcions d'aquell cable.
+                    this_select_fusio = $(document.createElement('select')).attr('id', 'slct-' +  tram.id + "_" + tub.name + "_" + fiber.color).attr('class', 'select-fiber');
+                    this_select_fusio.append($('<option>').text("").attr('value', ""));
+                    $.each(tram.fusion_options, function(i, value) {
+                      this_select_fusio.append($('<option>').text(value.label).attr('value', value.value));
+                    });
+                    this_select_fusio.on('change',function(e){ that.onChangeSelect(e); });
+                  } else {
+                    this_remove_link = $('<a class="fusion-fiber">')
+                                        .attr('data-input', tram.id + "_" + tub.name + "_" + fiber.color)
+                                        .html("&nbsp;X&nbsp;");
+                    this_select_fusio = $('<div class="input-group">')
+                                        .append($('<input type="text" class="readonly">')
+                                          .attr({'value':fiber.fusionat, 'id':tram.id + "_" + tub.name + "_" + fiber.color}))
+                                        .append($('<span class=".input-group-addon .supplement input-close">')
+                                          .append(this_remove_link)
+                                        );
+                   this_remove_link.on('click', function(e){ that.removeFusion(e); });
+                  }
+                  var row_line = $('<div class="row">');
+                  var col_line_Name = $('<div class="col-s-4">')
+                      .append($('<input type="text" class="readonly">')
+                        .attr('value',fiber.color))
+                      .appendTo(row_line);
+                  var col_line_Fusio = $('<div class="col-s-8">').append(this_select_fusio).appendTo(row_line);
+                  var linea = row_line;
+                  this_fibers.append(linea);
+                });
+               this_site.append(this_tub).append(this_fibers);
+            });
+          }
+        });
       });
     });
   });

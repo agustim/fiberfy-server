@@ -661,8 +661,36 @@ Mapa.prototype.getPathBeetwenSites = function(s1, s2){
   }
   return null;
 };
-Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
+Mapa.prototype.convertBoxesInPatchs = function (Boxes){
+  var siteFO = {};
+  siteFO.colorsJSON = [];
+  for(idx_box in Boxes){
+    var box = Boxes[idx_box]
+    switch(box.type.toLowerCase()){
+      case "splitter":
+      case "patchpanel":
+        tmpColorsJSON = {};
+        tmpColorsJSON.name = box.name;
+        tmpColorsJSON.fibers = [];
+        for(var intX=1; intX <= box.inputFO; intX++){
+          tmpColorsJSON.fibers.push({"color": "in-"+intX});
+        }
+        for(var intX=1; intX <= box.outputFO; intX++){
+          tmpColorsJSON.fibers.push({"color": "out-"+intX});
+        }
+        siteFO.colorsJSON .push(tmpColorsJSON);
+        console.log(siteFO.colorsJSON);
+        break;
+    }
+  }
+  siteFO.colors = JSON.stringify(siteFO.colorsJSON);
+  console.log(siteFO.colors);
+  return(siteFO.colors);
+}
+Mapa.prototype.buildSiteMerger = function (Trams,Fusions,Boxes){
   // Bucle  per "Marcar" les fusions existents.
+  this.convertBoxesInPatchs(Boxes);
+  console.log(Trams);
   for(idx_tram in Trams){
     Tram = Trams[idx_tram];
     try {
@@ -681,6 +709,7 @@ Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
         if (fusionat != "") {
           fiber.fusionat = fusionat;
         }
+        console.log(fiber)
       }
     }
     Trams[idx_tram].colors = JSON.stringify(colors);
@@ -719,6 +748,7 @@ Mapa.prototype.buildSiteMerger = function (Trams,Fusions){
     }
     Trams[idx_tram_A].fusion_options = options_fiber;
   }
+  console.log(Trams);
   return (Trams);
 };
 function existMerger(tram, tub, color, mergers){
