@@ -395,7 +395,6 @@ Site.prototype.siteFusionPaint = function() {
       $.getJSON(strUrlSection, function (dataSection) {
         // Insertem els boto per fusionar o la fusió que té.
         that.actualFusionSite = that.map_parent.buildSiteMerger(dataSection, dataMerger, dataBoxes);
-        console.log(that.actualFusionSite);
         var row = $('<div class="row">').appendTo(global);
         $.each(that.actualFusionSite, function (index, tram) {
           try {
@@ -404,8 +403,14 @@ Site.prototype.siteFusionPaint = function() {
             console.log(e);
             console.log(tram.colors);
           }
-          var dest_site_id = (tram.first == that.id) ? tram.last : tram.first;
-          var dest_site = that.map_parent.getSite(dest_site_id);
+          // If tram.id == 0, this information is in this site!!!
+          if (tram.id === 0) {
+            var dest_site_id = that.id;
+            var dest_site = that.map_parent.getSite(dest_site_id);
+          } else {
+            var dest_site_id = (tram.first == that.id) ? tram.last : tram.first;
+            var dest_site = that.map_parent.getSite(dest_site_id);
+          }
           var columns = $('<div class="col-s-3">').appendTo(row);
           var title_tram = $('<h1 title="' + dest_site.id + '">' + dest_site.name + '</h1>');
           title_tram.on('click', function(){
@@ -423,8 +428,12 @@ Site.prototype.siteFusionPaint = function() {
                     // Creem les opcions d'aquell cable.
                     this_select_fusio = $(document.createElement('select')).attr('id', 'slct-' +  tram.id + "_" + tub.name + "_" + fiber.color).attr('class', 'select-fiber');
                     this_select_fusio.append($('<option>').text("").attr('value', ""));
+                    console.log(tram);
                     $.each(tram.fusion_options, function(i, value) {
-                      this_select_fusio.append($('<option>').text(value.label).attr('value', value.value));
+                      // Ell mateix no es pot sel·leccionar per fusionar-se
+                      if (tram.id+"."+tub.name+"."+fiber.color != value.value) {
+                        this_select_fusio.append($('<option>').text(value.label).attr('value', value.value));
+                      }
                     });
                     this_select_fusio.on('change',function(e){ that.onChangeSelect(e); });
                   } else {
