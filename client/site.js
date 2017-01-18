@@ -428,7 +428,6 @@ Site.prototype.siteFusionPaint = function() {
                     // Creem les opcions d'aquell cable.
                     this_select_fusio = $(document.createElement('select')).attr('id', 'slct-' +  tram.id + "_" + tub.name + "_" + fiber.color).attr('class', 'select-fiber');
                     this_select_fusio.append($('<option>').text("").attr('value', ""));
-                    console.log(tram);
                     $.each(tram.fusion_options, function(i, value) {
                       // Ell mateix no es pot sel·leccionar per fusionar-se
                       if (tram.id+"."+tub.name+"."+fiber.color != value.value) {
