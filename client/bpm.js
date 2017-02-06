@@ -322,7 +322,7 @@ Mapa.prototype.drawProjects = function (){
       buttonActiveProject = "<label class='active'>Project Actived ";
       buttonActiveProject += '   <button class="position-project-button" id="position-project-' + value.id + '" data-id="' + value.id + '">Save Pos</button>';
       buttonActiveProject += '   <button class="report-project-button" id="report-project-' + value.id + '" data-id="' + value.id + '">Report</button>';
-      buttonActiveProject += '   <button class="export-project-button" id="export-project-' + value.id + '" data-id="' + value.id + '">Export</button>';
+      buttonActiveProject += '   <a href="/api/v1/exports/' + value.id + '" target="_blank"><button class="export-project-button" id="export-project-' + value.id + '" data-id="' + value.id + '">Export</button></a>';
       buttonActiveProject += '</label>' ;
     } else {
       buttonActiveProject = '<button class="active-project-button" id="active-project-' + value.id + '" data-id="' + value.id + '">Active</button>' +

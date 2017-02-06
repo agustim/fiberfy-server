@@ -233,6 +233,21 @@ module.exports = [
     method: [ 'DELETE' ],
     path: '/api/v1/fusion',
     handler: 'FusionController.destroyByParameters'
-  }
+  },
+
+  /***
+   * Exports/Imports
+   ***/
+   {
+     method: [ 'GET' ],
+     path: '/api/v1/exports/{id?}',
+     handler: 'InputOutputController.exports'
+   },
+   {
+     method: [ 'POST' ],
+     path: '/api/v1/imports',
+     handler: 'InputOutputController.imports'
+   }
+
 
 ]
