@@ -26,7 +26,7 @@ module.exports = class InputOutputController extends Controller {
 
     sites.then(elem_sites => {
       elem_sites.forEach(function(s) {
-        data_geojson.push({ 'lat': s.latitude, 'lng': s.longitude, 'tipus': s.type, 'status': s.status });
+        data_geojson.push({ 'lat': s.latitude, 'lng': s.longitude, 'tipus': s.type, 'status': s.status, 'objecte': 'site' });
       })
       paths = FootprintService.find('Path', where)
       paths.then(elem_paths => {
@@ -37,7 +37,7 @@ module.exports = class InputOutputController extends Controller {
             p_line.push([ dot.lng, dot.lat ])
           })
           let p_color = stroke_colors[p.type];
-          data_geojson.push({ 'polyline': p_line, 'tipus': p.type, 'stroke': p_color})
+          data_geojson.push({ 'polyline': p_line, 'tipus': p.type, 'stroke': p_color, 'objecte': 'path' })
         })
         let name = "fiber_" + id + ".json";
         reply.status(data_geojson ? 200 : 404).attachment(name).json(GeoJSON.parse(data_geojson, {'Point': ['lat', 'lng'], 'LineString': 'polyline'}) || {})
