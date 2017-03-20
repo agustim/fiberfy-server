@@ -40,13 +40,18 @@ module.exports = class ProjectController extends Controller{
 
     let response
 
-    let where =  { user: request.user.id }
+    //let where =  { user: request.user.id }
+    let where = {};
     if (id) where.id = id
 
     response = FootprintService.find(this._Model(), where)
 
 
     response.then(elements => {
+      // Set readonly field, based in project.user != actual.user
+      elements.forEach(function(e){
+        e.readonly = (e.user != request.user.id)
+      })
       reply.status(elements ? 200 : 404).json(elements || {})
     }).catch(error => {
       if (error.code == 'E_VALIDATION') {

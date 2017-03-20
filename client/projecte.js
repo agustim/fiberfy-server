@@ -2,13 +2,14 @@
 //=====================
 // Projecte
 
-var Projecte = function(id, name, lat, lng, zoom, m){
+var Projecte = function(id, name, lat, lng, zoom, readonly, m){
   this.id = id;
   this.name = name;
   this.status = "define";
   this.latitude = lat;
   this.longitude = lng;
   this.zoom = zoom;
+  this.readonly = readonly;
   this.map_parent = m;
 };
 

@@ -31,7 +31,8 @@ module.exports = class SiteController extends Controller{
       'box', ', criteria =', request.query, id,
       ', values = ', request.body)
 
-    const where =  { user: request.user.id }
+    //const where =  { user: request.user.id }
+    let where = {}
     if (id) where.site = id
 
     const response = FootprintService.find('Box', where)
@@ -59,7 +60,8 @@ module.exports = class SiteController extends Controller{
       'fusion', ', criteria =', request.query, id,
       ', values = ', request.body)
 
-    let where =  { user: request.user.id }
+    //let where =  { user: request.user.id }
+    let where = {}
     if (id) where = { site: id }
 
     const response = FootprintService.find('Fusion', where)
@@ -87,7 +89,8 @@ module.exports = class SiteController extends Controller{
       'fibers', ', criteria =', request.query, id,
       ', values = ', request.body)
 
-    let where =  { user: request.user.id }
+    //let where =  { user: request.user.id }
+    let where = {}
     if (id) where = { or: [
                         { first: id },
                         { last: id }

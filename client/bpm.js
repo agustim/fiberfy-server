@@ -266,14 +266,14 @@ Mapa.prototype.loadProjects = function (){
   $.getJSON(strUrl, function (data) {
     // Iterem
     $.each(data, function (index, value) {
-      project = new Projecte(value.id, value.name, value.latitude, value.longitude, value.zoom, that);
+      project = new Projecte(value.id, value.name, value.latitude, value.longitude, value.zoom, value.readonly, that);
       that.projects.push(project);
     });
     // Hi ha projecte actiu?
     if (!that.active_project){
       // No hi ha cap actiu, però tampoc té cap projecte, creem un per defecte.
       if (that.projects.length == 0){
-        project = new Projecte(0, that.project_default_name , that.project_default_latitude,that.project_default_longitude, that.project_default_zoom, that);
+        project = new Projecte(0, that.project_default_name , that.project_default_latitude,that.project_default_longitude, that.project_default_zoom, false, that);
         project.save();
         that.projects.push(project);
       }
@@ -316,6 +316,7 @@ Mapa.prototype.drawProjects = function (){
   $.each(that.projects, function(index,value){
     // És l'Actiu?
     var projectName = value.name;
+    if (value.readonly) projectName += " (read-only)";
     var buttonActiveProject = '';
     if (value.id == that.active_project.id) {
       projectName = "<label class='active'>" + projectName + "</label>";
@@ -343,7 +344,7 @@ Mapa.prototype.drawProjects = function (){
   $(addbutton).on('click', function(e) {
     var name = $(addinput).val();
     if (name != "") {
-      var project = new Projecte(0, name,  that.project_default_latitude,that.project_default_longitude, that.project_default_zoom, that);
+      var project = new Projecte(0, name,  that.project_default_latitude,that.project_default_longitude, that.project_default_zoom, false, that);
       project.save();
       that.projects.push(project);
       $(addinput).val("");

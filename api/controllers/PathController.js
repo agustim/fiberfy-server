@@ -31,7 +31,8 @@ module.exports = class PathController extends Controller{
       'fusion', ', criteria =', request.query, id,
       ', values = ', request.body)
 
-    let where =  { user: request.user.id }
+    //let where =  { user: request.user.id }
+    let where = {}
     if (id) where = { or: [
                         { intermedial: "[" + id + "," },
                         { intermedial: "," + id + "]" },
