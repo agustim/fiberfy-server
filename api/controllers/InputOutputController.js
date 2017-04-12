@@ -26,7 +26,15 @@ module.exports = class InputOutputController extends Controller {
 
     sites.then(elem_sites => {
       elem_sites.forEach(function(s) {
-        data_geojson.push({ 'lat': s.latitude, 'lng': s.longitude, 'tipus': s.type, 'status': s.status, 'objecte': 'site' });
+        let boxs_site = [];
+        let boxs_where = where;
+        boxs = FootprintService.find('Box', boxs_where)
+        boxs.then(elem_boxs => {
+          elem_boxs.forEach(function(b) {
+            boxs_site.push({ 'name': b.name, 'uuid': b.uuid, 'tipus': b.type, 'inputFO': b.inputFO , 'outputFO': b.outputFO, 'status': b.status, 'observations': b.observations, 'objecte': 'box' });
+          })
+        })
+        data_geojson.push({ 'lat': s.latitude, 'lng': s.longitude, 'tipus': s.type, 'status': s.status, 'observations': s.observations,'objecte': 'site', 'box': boxs_site});
       })
       paths = FootprintService.find('Path', where)
       paths.then(elem_paths => {
@@ -37,8 +45,9 @@ module.exports = class InputOutputController extends Controller {
             p_line.push([ dot.lng, dot.lat ])
           })
           let p_color = stroke_colors[p.type];
-          data_geojson.push({ 'polyline': p_line, 'tipus': p.type, 'stroke': p_color, 'objecte': 'path' })
+          data_geojson.push({ 'polyline': p_line, 'tipus': p.type, 'stroke': p_color,  'observations': p.observations, 'objecte': 'path' })
         })
+
         let name = "fiber_" + id + ".json";
         reply.status(data_geojson ? 200 : 404).attachment(name).json(GeoJSON.parse(data_geojson, {'Point': ['lat', 'lng'], 'LineString': 'polyline'}) || {})
       })
