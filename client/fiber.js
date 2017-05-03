@@ -18,7 +18,9 @@ function Fiber(id, name, first_site, end_site, paths, colors, template, m){
   this.map_parent = m;
 
   //Calcule sites
-  if (this.paths.length > 0) {
+  if (this.paths == null) {
+    console.log("La fibra '" +  this.id + "', no té paths?");
+  } else if (this.paths.length > 0) {
     this.getSites();
   }
 
